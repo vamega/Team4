@@ -19,6 +19,8 @@ background:setFillColor(0, 0, 0)
 --load test level
 explosives.load_barrel(110, 110)
 explosives.load_barrel(250, 280)
+explosives.load_barrel(300, 600)
+explosives.load_barrel(400, 500)
 
 --add invisible boundaries so that the penguin doesn't fall offscreen
 local edge1 = display.newRect(0, 0, display.contentWidth, 10)
