@@ -4,6 +4,7 @@ module(..., package.seeall)
 gas_nodes = {}
 gas_nodes.size = 0
 gas_nodes.capacity = 250
+gas_nodes.done = false
 
 
 --initialize barrel container
@@ -88,7 +89,11 @@ function gas_node:new(x, y)--constructor
 end
 
 function add_gas(event)
-    if gas_nodes.size < gas_nodes.capacity then
+    if event.phase == "ended" then
+        gas_nodes.done = true
+    end
+
+    if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
         gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
         gas_nodes.size = gas_nodes.size + 1
     end
@@ -96,6 +101,7 @@ end
 
 function erase_gas(event)
     if(event.isShake == true) then
+        gas_nodes.done = false
         while gas_nodes.size > 0 do
             display.remove(gas_nodes[gas_nodes.size].image)
             table.remove(gas_nodes, gas_nodes.size)
