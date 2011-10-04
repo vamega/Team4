@@ -7,8 +7,7 @@ physics.start()
 physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
---BETH'S TESTING AREA
-
+--testing
 barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
