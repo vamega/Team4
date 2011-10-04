@@ -1,10 +1,16 @@
 sprite = require "sprite"
 physics = require "physics"
 
+physics.start()
+physics.setDrawMode("hybrid")
+physics.setGravity(0, 0)
+
+--BETH'S TESTING AREA
+
 --initialize gasoline container
 local gas_nodes = {}
 gas_nodes.size = 0
-gas_nodes.capacity = 350
+gas_nodes.capacity = 250
 --initialize barrel container
 barrels = {}
 barrels.size = 0
@@ -19,6 +25,7 @@ function barrel:new(x, y, i)--constructor
     local instance = {x=x, y=y, i=i, radius = 50, dead = false}
     instance.image = display.newCircle(x, y, 50)
     instance.image:setFillColor(255, 0, 0)
+    physics.addBody( instance.image, {density = 1.0, friction = 0.3, bounce = 0, radius = 50 } )
     setmetatable(instance, {__index = barrel})
     return instance
 end
