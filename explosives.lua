@@ -95,9 +95,11 @@ function add_gas(event)
 end
 
 function erase_gas(event)
-    while gas_nodes.size > 0 do
-        display.remove(gas_nodes[gas_nodes.size].image)
-        table.remove(gas_nodes, gas_nodes.size)
-        gas_nodes.size = gas_nodes.size -1
+    if(event.isShake == true) then
+        while gas_nodes.size > 0 do
+            display.remove(gas_nodes[gas_nodes.size].image)
+            table.remove(gas_nodes, gas_nodes.size)
+            gas_nodes.size = gas_nodes.size -1
+        end
     end
 end
