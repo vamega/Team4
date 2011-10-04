@@ -13,7 +13,7 @@ barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
 --background
-local background = display.newRect(0, 0, display.contentWidth, display.contentHeight)
+background = display.newImage( "Background.png", 0, 0)
 background:setFillColor(0, 0, 0)
 
 --load test level
