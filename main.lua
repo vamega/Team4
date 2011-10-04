@@ -31,6 +31,7 @@ function barrel:new(x, y, i)--constructor
 end
 
 local function kill_barrel(index)
+    explode(barrels[index].x, barrels[index].y, 300)
     display.remove(barrels[index].image)
     table.remove(barrels, index)
 end
@@ -47,6 +48,23 @@ end
 local function load_barrel(x, y)
     barrels[barrels.size + 1] = barrel:new(x, y, barrels.size + 1)
     barrels.size = barrels.size + 1
+end
+
+local function dist(x1, y1, x2, y2)
+    return math.sqrt((x1-x2)^2 + (y1-y2)^2)
+end
+
+function explode(x, y, radius)
+    for i =1, barrels.size do
+        if (x ~= barrels[i].x and y ~= barrels[i].y and dist(x, y, barrels[i].x, barrels[i].y) < radius) then
+            print ("Trying to displace barrel " .. i)
+            print ("Point 1 is " .. x .. ", " .. y)
+            print ("Point 2 is " .. barrels[i].x .. ", " .. barrels[i].y)
+            angle = math.atan2(y-barrels[i].y, x-barrels[i].x)
+            print ("Angle is " .. angle)
+            barrels[i].image:applyLinearImpulse(-math.cos(angle)*50, -math.sin(angle)*50, barrels[i].x, barrels[i].y)
+        end
+    end
 end
 
 --THE GAS STATION
