@@ -25,22 +25,47 @@ function barrel:new(x, y, i)--constructor
     local instance = {x=x, y=y, i=i, radius = 50, dead = false}
     instance.image = display.newCircle(x, y, 50)
     instance.image:setFillColor(255, 0, 0)
-    physics.addBody( instance.image, {density = 1.0, friction = 0.3, bounce = 0, radius = 50 } )
+    physics.addBody( instance.image, {density = 1.0, friction = 5, bounce = 0, radius = 50 } )
     setmetatable(instance, {__index = barrel})
     return instance
 end
 
-local function kill_barrel(index)
+local function kill_barrel(index, size)
+    --if barrels have been deleted since we were triggered
+    print ("size is " .. size .. " and barrels size is " .. barrels.size)
+    if barrels.size < index then
+        print ("Changing index...")
+        --look for the right barrel
+        found = false
+        for x=1, barrels.size do
+            if barrels[x].i == index then
+                index = x
+                found = true
+            end
+        end
+        if found == false then
+            return
+        end
+     --else everything should be fine
+        print("new index is " .. index)
+    end
     explode(barrels[index].x, barrels[index].y, 300)
     display.remove(barrels[index].image)
     table.remove(barrels, index)
+    barrels.size = barrels.size-1
 end
 
 function barrel:touch(event) --detonate barrel
     if event.phase == "began" and self.dead == false then
+        self:react()
+    end
+end
+
+function barrel:react() --set off a chain reaction
+    if self.dead == false then
         self.dead = true
         self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-        local myclosure = function() return kill_barrel(self.i) end
+        local myclosure = function() return kill_barrel(self.i, barrels.size) end
         timer.performWithDelay(2000, myclosure)
     end
 end
@@ -57,11 +82,9 @@ end
 function explode(x, y, radius)
     for i =1, barrels.size do
         if (x ~= barrels[i].x and y ~= barrels[i].y and dist(x, y, barrels[i].x, barrels[i].y) < radius) then
-            print ("Trying to displace barrel " .. i)
-            print ("Point 1 is " .. x .. ", " .. y)
-            print ("Point 2 is " .. barrels[i].x .. ", " .. barrels[i].y)
             angle = math.atan2(y-barrels[i].y, x-barrels[i].x)
             print ("Angle is " .. angle)
+            barrels[i]:react()
             barrels[i].image:applyLinearImpulse(-math.cos(angle)*50, -math.sin(angle)*50, barrels[i].x, barrels[i].y)
         end
     end
