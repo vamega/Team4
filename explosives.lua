@@ -16,7 +16,7 @@ function barrel:new(x, y, i)--constructor
     local instance = {x=x, y=y, i=i, radius = 50, dead = false}
     instance.image = display.newCircle(x, y, 50)
     instance.image:setFillColor(255, 0, 0)
-    mainDisplay:inesrt(instance)
+    --mainDisplay:inesrt(instance)
     physics.addBody( instance.image, {density = 1.0, friction = 5, bounce = 0, radius = 50 } )
     setmetatable(instance, {__index = barrel})
     return instance
@@ -54,7 +54,7 @@ function kill_barrel(index)
     end
     explode(barrels[index].x, barrels[index].y, 300)
     display.remove(barrels[index].image)
-    mainDisplay:remove(barrels[index].image)
+    --mainDisplay:remove(barrels[index].image)
     table.remove(barrels, index)
     barrels.size = barrels.size-1
 end
@@ -85,6 +85,7 @@ function gas_node:new(x, y)--constructor
     local node = {x = x, y=y, radius = 15}
     node.image = display.newCircle(x, y, 15)
     node.image:setFillColor(255, 250, 205)
+    node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
     setmetatable(node, {__index = gas_node})
     return node
 end
