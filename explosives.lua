@@ -30,9 +30,19 @@ function barrel:new(x, y)
     instance.health = 30
     
     setmetatable(instance, {__index = barrel})
-    --instance.body:addEventListener("touch", instance)
+    instance.body:addEventListener("touch", instance)
     
     return instance
+end
+
+
+function barrel:react() --set off a chain reaction
+    if self.dead == false then
+        self.dead = true
+        --self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+        local myclosure = function() return kill_barrel(self.i) end
+        timer.performWithDelay(2000, myclosure)
+    end
 end
 
 --sets off the barrel when it's touched
