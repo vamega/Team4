@@ -30,7 +30,7 @@ function barrel:new(x, y)
     instance.health = 30
     
     setmetatable(instance, {__index = barrel})
-    instance.body:addEventListener("touch", instance)
+    --instance.body:addEventListener("touch", instance)
     
     return instance
 end
