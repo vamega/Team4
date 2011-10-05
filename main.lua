@@ -5,7 +5,7 @@ local intro = require("levels/intro")
 local explosives = require("explosives")
 
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 --initialization

@@ -14,8 +14,9 @@ barrels.size = 0
 barrel = {}
 function barrel:new(x, y, i)--constructor
     local instance = {x=x, y=y, i=i, radius = 50, dead = false}
-    instance.image = display.newCircle(x, y, 50)
-    instance.image:setFillColor(255, 0, 0)
+    instance.image = display.newImage("img/Barrel.png", x, y)
+    --newCircle(x, y, 50)
+    --instance.image:setFillColor(255, 0, 0)
     --mainDisplay:inesrt(instance)
     physics.addBody( instance.image, {density = 1.0, friction = 5, bounce = 0, radius = 50 } )
     setmetatable(instance, {__index = barrel})
@@ -31,7 +32,7 @@ end
 function barrel:react() --set off a chain reaction
     if self.dead == false then
         self.dead = true
-        self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+        --self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
         local myclosure = function() return kill_barrel(self.i) end
         timer.performWithDelay(2000, myclosure)
     end
@@ -77,7 +78,6 @@ function explode(x, y, radius)
         end
     end
 end
-
 
 --THE GAS STATION
 gas_node = {}
