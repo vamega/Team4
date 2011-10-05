@@ -19,9 +19,9 @@ gas_nodes = gas.gas_nodes
 --local intro_img = intro.background
 
 --background
-background = display.newImage("background.png")
+--background = display.newImage("background.png")
 mainDisplay = display.newGroup()
-mainDisplay:insert(background)
+--mainDisplay:insert(background)
 
 print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 

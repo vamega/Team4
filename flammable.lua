@@ -48,7 +48,7 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	--represent how slowly/quickly it can burn (if it is just barely at
 	--the flash point, it will burn at min_burn_rate, whereas if it is
 	--much hotter, it will burn at up to max_burn_rate)
-	instance.health = 50
+	instance.health = 80
 	instance.min_burn_rate = 2
 	instance.max_burn_rate = 15
 	
