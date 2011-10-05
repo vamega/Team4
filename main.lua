@@ -1,19 +1,26 @@
 sprite = require "sprite"
 physics = require "physics"
 
+--local intro = require("levels/intro")
 local explosives = require("explosives")
+
 
 physics.start()
 physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
---testing
+--initialization
 barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
+--local intro_img = intro.background
+
 --background
-background = display.newImage( "Background.png", 0, 0)
-background:setFillColor(0, 0, 0)
+background = display.newImage("background.png")
+
+
+
+print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 
 --load test level
 explosives.load_barrel(110, 110)
