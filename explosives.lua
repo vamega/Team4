@@ -19,7 +19,9 @@ barrel = {}
 
     
 function barrel:new(x, y)
-    local instance = flammable:new(display.newImage("img/Barrel.png", x, y), true)
+    barrelImage = display.newImage("img/Barrel.png", x, y)
+    mainDisplay:insert(barrelImage)
+    local instance = flammable:new(barrelImage, true)
     
     instance.body.density = 1.0
     instance.body.friction = 5
@@ -97,6 +99,7 @@ gas_node = {}
 function gas_node:new(x, y)--constructor
     local node = {x = x, y=y, radius = 15}
     node.image = display.newCircle(x, y, 15)
+    mainDisplay:insert(node.image)
     node.image:setFillColor(255, 250, 205)
     node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
     setmetatable(node, {__index = gas_node})
@@ -121,6 +124,7 @@ function erase_gas(event)
         gas_nodes.done = false
         while gas_nodes.size > 0 do
             display.remove(gas_nodes[gas_nodes.size].image)
+            displayMain:remove(gas_nodes[gas_nodes.size].image)
             table.remove(gas_nodes, gas_nodes.size)
             gas_nodes.size = gas_nodes.size -1
         end
