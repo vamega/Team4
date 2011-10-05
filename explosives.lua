@@ -1,3 +1,8 @@
+math = require "math"
+utils = require "utils"
+flammable_module = require "flammable"
+flammable = flammable_module.flammable
+
 module(..., package.seeall)
 
 --initialize gasoline container
@@ -6,73 +11,88 @@ gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
 
-
---initialize barrel container
+--all barrels onscreen
 barrels = {}
-barrels.size = 0
 
---THE BARREL ZONE
+--explosive barrels
 barrel = {}
-function barrel:new(x, y, i)--constructor
-    local instance = {x=x, y=y, i=i, radius = 50, dead = false}
-    instance.image = display.newCircle(x, y, 50)
-    instance.image:setFillColor(255, 0, 0)
-    physics.addBody( instance.image, {density = 1.0, friction = 5, bounce = 0, radius = 50 } )
+function barrel:new(x, y)
+    local instance = flammable:new(display.newCircle(x, y, 50), true)
+    
+    instance.body.density = 1.0
+    instance.body.friction = 5
+    instance.body.bounce = 0
+    
+    --barrels catch fire more easily than normal and burn up quickly
+    instance.flash_point = instance.flash_point - 5
+    instance.health = 30
+    
     setmetatable(instance, {__index = barrel})
+    instance.body:addEventListener("touch", instance)
+    
     return instance
 end
 
-function barrel:touch(event) --detonate barrel
+--sets off the barrel when it's touched
+function barrel:touch(event)
     if event.phase == "began" and self.dead == false then
-        self:react()
+        self:apply_heat(self.flash_point + 5)
     end
 end
 
-function barrel:react() --set off a chain reaction
-    if self.dead == false then
-        self.dead = true
-        self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-        local myclosure = function() return kill_barrel(self.i) end
-        timer.performWithDelay(2000, myclosure)
-    end
+--makes the barrel explode shortly after catching fire
+function barrel:on_enter_frame(elapsed_time)
+	--update heat
+	flammable.on_enter_frame(self, elapsed_time)
+	
+	--update the countdown if on fire
+	if self.current_heat >= self.flash_point then
+		--when on fire, the barrel is orange/yellow
+		self.body:setFillColor(255, 180, 0)
+		
+		--the countdown counts down at a rate of at least 5 units per second
+		self.explosion_countdown = self.explosion_countdown
+				- math.max(5, self.current_heat - self.flash_point) * elapsed_time
+		
+		--the barrel explodes once the countdown ends
+		--if self.explosion_countdown <= 0 then
+			self:explode()
+		--end
+	else
+		--when not on fire, the barrel is red
+		self.body:setFillColor(255, 0, 0)
+	end
 end
 
-function kill_barrel(index)
-    --if barrels have been deleted since we were triggered
-    if barrels.size < index then
-        --look for the right barrel
-        found = false
-        for x=1, barrels.size do
-            if barrels[x].i == index then
-                index = x
-                found = true
-            end
-        end
-        if found == false then
-            return
-        end
-    end
-    explode(barrels[index].x, barrels[index].y, 300)
-    display.remove(barrels[index].image)
-    table.remove(barrels, index)
-    barrels.size = barrels.size-1
+--makes the barrel explode
+function barrel:burn_up()
+	if self.dead == false then
+		self:removeSelf()
+		table.remove(barrels, utils.index_of(barrels, self))
+    	
+    	spawn_explosion(self.x, self.y, 300, self.current_heat)
+	end
 end
 
-function load_barrel(x, y)
-    barrels[barrels.size + 1] = barrel:new(x, y, barrels.size + 1)
-    barrels.size = barrels.size + 1
+function spawn_barrel(x, y)
+    table.insert(barrels, barrel:new(x, y))
 end
 
-local function dist(x1, y1, x2, y2)
-    return math.sqrt((x1-x2)^2 + (y1-y2)^2)
-end
-
-function explode(x, y, radius)
-    for i =1, barrels.size do
-        if (x ~= barrels[i].x and y ~= barrels[i].y and dist(x, y, barrels[i].x, barrels[i].y) < radius) then
-            angle = math.atan2(y-barrels[i].y, x-barrels[i].x)
-            barrels[i]:react()
-            barrels[i].image:applyLinearImpulse(-math.cos(angle)*50, -math.sin(angle)*50, barrels[i].x, barrels[i].y)
+function spawn_explosion(x, y, radius, heat)
+    for i, barrel in ipairs(barrels) do
+        local xDist = barrel.x - x
+        local yDist = barrel.y - y
+    	local dist_squared = xDist^2 + yDist^2
+        if x ~= barrel.x and y ~= barrel.y
+        		and dist_squared < radius^2 then
+            barrel:apply_heat(heat)
+            
+            local dist = math.sqrt(dist_squared)
+            local force = (radius - dist) * 30
+            barrel.image:applyLinearImpulse(
+            				force * xDist / dist,
+            				force * yDist / dist,
+            				barrel.x, barrel.y)
         end
     end
 end
@@ -94,7 +114,7 @@ function add_gas(event)
     end
 
     if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
-        gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
+        table.insert(gas_nodes, gas_node:new(event.x, event.y))
         gas_nodes.size = gas_nodes.size + 1
     end
 end

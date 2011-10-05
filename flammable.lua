@@ -42,6 +42,15 @@ function flammable:new(image, circular, object_shape)
 	instance.heat_increase_rate = 20
 	instance.flash_point = 20
 	
+	--when this object is on fire, it burns up and eventually is removed
+	--health represents how long it has left, and min_burn_rate/max_burn_rate
+	--represent how slowly/quickly it can burn (if it is just barely at
+	--the flash point, it will burn at min_burn_rate, whereas if it is
+	--much hotter, it will burn at up to max_burn_rate)
+	instance.health = 50
+	instance.min_burn_rate = 2
+	instance.max_burn_rate = 15
+	
 	instance.nearby_objects={}
 	
 	setmetatable(instance, {__index = flammable})
@@ -69,6 +78,11 @@ function flammable:collision(event)
 	end
 end
 
+--removes a flammable object when it fully burns up
+function flammable:burn_up()
+	self.body:removeSelf()
+end
+
 --increases a flammable object's heat if it is touching burning objects
 function flammable:on_enter_frame(elapsed_time)
 	local highest_heat_value = 0
@@ -87,4 +101,21 @@ function flammable:on_enter_frame(elapsed_time)
 							self.current_heat +
 							self.heat_increase_rate * elapsed_time)
 	end
+	
+	--if this is on fire, decrease its health
+	if self.current_heat >= self.flash_point then
+		self.health = self.health - math.max(self.min_burn_rate,
+					  			math.min(self.max_burn_rate,
+								self.current_heat - self.flash_point))
+		
+		if self.health <= 0 then
+			self:burn_up()
+		end
+	end
+end
+
+--increases the flammable object's heat to match the given heat value
+function flammable:apply_heat(heat)
+	--TODO: increase this based on heat_increase_rate rather than all the way
+	self.current_heat = heat
 end

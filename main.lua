@@ -13,20 +13,20 @@ barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
 --background
-background = display.newImage( "Background.png", 0, 0)
-background:setFillColor(0, 0, 0)
+--background = display.newImage( "Background.png", 0, 0)
+--background:setFillColor(0, 0, 0)
 
 --load test level
-explosives.load_barrel(110, 110)
-explosives.load_barrel(250, 280)
-explosives.load_barrel(300, 600)
-explosives.load_barrel(400, 360)
+explosives.spawn_barrel(110, 110)
+explosives.spawn_barrel(250, 280)
+explosives.spawn_barrel(300, 600)
+explosives.spawn_barrel(400, 360)
 
-crate.add_crate(300, 380)
-crate.add_crate(249, 400)
-crate.add_crate(198, 389)
-crate.add_crate(240, 451)
-crate.add_crate(70, 580)
+crate.spawn_crate(300, 380)
+crate.spawn_crate(249, 400)
+crate.spawn_crate(198, 389)
+crate.spawn_crate(240, 451)
+crate.spawn_crate(70, 580)
 crate.crates[2].current_heat = crate.crates[2].flash_point + 1
 crate.crates[5].body:applyForce(20, -20, crate.crates[1].body.x,
 										crate.crates[1].body.y - 2)
@@ -46,12 +46,14 @@ physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
 --event listeners
-Runtime:addEventListener("touch", explosives.add_gas)
-for i=1, barrels.size do
-    barrels[i].image:addEventListener("touch", barrels[i])
-end
-
 Runtime:addEventListener("accelerometer", explosives.erase_gas)
+
+--calls on_enter_frame for all items in the given table
+local function update_all(table_to_update, elapsed_time)
+	for i, object in ipairs(table_to_update) do
+		object:on_enter_frame(elapsed_time)
+	end
+end
 
 --game loop
 local last_frame_time = 0
@@ -61,7 +63,8 @@ local function on_enter_frame(event)
 	
 	last_frame_time = event.time
 	
-	crate.on_enter_frame(elapsed_time)
+	update_all(crate.crates, elapsed_time)
+	update_all(explosives.barrels, elapsed_time)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
