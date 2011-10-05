@@ -4,17 +4,25 @@ math = require "math"
 
 crate = require "crate"
 explosives = require "explosives"
+local intro = require("levels/intro")
+local explosives = require("explosives")
 
 physics.start()
 physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
+--initialization
 barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
+--local intro_img = intro.background
+
 --background
---background = display.newImage( "Background.png", 0, 0)
---background:setFillColor(0, 0, 0)
+background = display.newImage("background.png")
+mainDisplay = display.newGroup()
+mainDisplay:insert(background)
+
+print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 
 --load test level
 explosives.spawn_barrel(110, 110)
@@ -44,6 +52,11 @@ right_edge.isVisible = false
 local bottom_edge = display.newRect(0, display.contentHeight-10, display.contentWidth, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
+
+--mainDisplay:insert(edge1)
+--mainDisplay:insert(edge2)
+--mainDisplay:insert(edge3)
+--mainDisplay:insert(edge4)
 
 --event listeners
 Runtime:addEventListener("accelerometer", explosives.erase_gas)

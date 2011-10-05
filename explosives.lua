@@ -11,7 +11,7 @@ gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
 
---all barrels onscreen
+--initialize barrel container
 barrels = {}
 
 --explosive barrels
@@ -104,6 +104,7 @@ function gas_node:new(x, y)--constructor
     local node = {x = x, y=y, radius = 15}
     node.image = display.newCircle(x, y, 15)
     node.image:setFillColor(255, 250, 205)
+    node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
     setmetatable(node, {__index = gas_node})
     return node
 end
