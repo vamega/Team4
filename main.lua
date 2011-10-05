@@ -4,6 +4,7 @@ math = require "math"
 
 crate = require "crate"
 explosives = require "explosives"
+gas = require "gas"
 local intro = require("levels/intro")
 local explosives = require("explosives")
 
@@ -13,7 +14,7 @@ physics.setGravity(0, 0)
 
 --initialization
 barrels = explosives.barrels
-gas_nodes = explosives.gas_nodes
+gas_nodes = gas.gas_nodes
 
 --local intro_img = intro.background
 
@@ -59,7 +60,8 @@ bottom_edge.isVisible = false
 --mainDisplay:insert(edge4)
 
 --event listeners
-Runtime:addEventListener("accelerometer", explosives.erase_gas)
+Runtime:addEventListener("touch", gas.add_gas)
+Runtime:addEventListener("accelerometer", gas.erase_gas)
 
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
@@ -78,8 +80,7 @@ local function on_enter_frame(event)
 	
 	update_all(crate.crates, elapsed_time)
 	update_all(explosives.barrels, elapsed_time)
+	update_all(gas.gas_nodes, elapsed_time)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
-Runtime:addEventListener("touch", explosives.add_gas)
-Runtime:addEventListener("accelerometer", explosives.erase_gas)

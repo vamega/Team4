@@ -12,7 +12,7 @@ flammable = {}
 --if object_shape is defined, it is used as the shape of the physics
 --object; otherwise, the object will be defined as a circle or rectangle
 --depending on whether circular is specified
-function flammable:new(image, circular, object_shape)
+function flammable:new(image, circular, object_shape, collision_filter)
 	instance = {body=image}
 	instance.body.flammable = instance
 	
@@ -20,14 +20,15 @@ function flammable:new(image, circular, object_shape)
 	if object_shape then
 		--use a polygonal physics object
 		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-						shape=object_shape})
+					shape=object_shape, filter=collision_filter})
 	elseif circular then
 		--use a circular physics object
 		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-						radius=instance.body.width/2})
+					radius=instance.body.width/2, filter=collision_filter})
 	else
 		--use a rectangular physics object
-		physics.addBody(instance.body, "dynamic", {bounce=0.1})
+		physics.addBody(instance.body, "dynamic", {bounce=0.1,
+					filter=collision_filter})
 	end
 	
 	instance.body.linearDamping = 3
