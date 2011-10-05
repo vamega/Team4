@@ -64,19 +64,19 @@ end
 
 function spawn_explosion(x, y, radius, heat)
     for i, barrel in ipairs(barrels) do
-        local xDist = barrel.x - x
-        local yDist = barrel.y - y
+        local xDist = barrel.body.x - x
+        local yDist = barrel.body.y - y
     	local dist_squared = xDist^2 + yDist^2
-        if x ~= barrel.x and y ~= barrel.y
+        if x ~= barrel.body.x and y ~= barrel.body.y
         		and dist_squared < radius^2 then
             barrel:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)
             local force = (radius - dist) * 30
-            barrel.image:applyLinearImpulse(
+            barrel.body:applyLinearImpulse(
             				force * xDist / dist,
             				force * yDist / dist,
-            				barrel.x, barrel.y)
+            				barrel.body.x, barrel.body.y)
         end
     end
 end
