@@ -47,7 +47,34 @@ function add_gas(event)
     if event.phase == "ended" then
         gas_nodes.done = true
     end
-
+    
+	if event.phase == "began" and gas_nodes.done == false then
+        table.insert(gas_nodes, gas_node:new(event.x, event.y))
+        gas_nodes.size = gas_nodes.size+1
+        return
+    elseif event.phase == "moved" and gas_nodes.done == false then
+        local distance = math.sqrt(utils.dist_squared(
+        		gas_nodes[gas_nodes.size].body.x,
+        		gas_nodes[gas_nodes.size].body.y,
+            	event.x, event.y))
+  
+        local angle = math.atan2((gas_nodes[gas_nodes.size].body.y-event.y),
+        						(gas_nodes[gas_nodes.size].body.x-event.x))
+        local displacement = gas_nodes[gas_nodes.size].body.width / 2
+        
+        for i=0, distance, gas_nodes[gas_nodes.size].body.width do
+            table.insert(gas_nodes,
+            	gas_node:new(event.x+math.cos(angle)*displacement, 
+                			event.y+math.sin(angle)*displacement))
+            displacement = displacement + gas_nodes[gas_nodes.size+1].body.width / 2
+            gas_nodes.size = gas_nodes.size+1
+            if gas_nodes.size > gas_nodes.capacity then
+                gase_nodes.done = true
+                return
+            end
+        end
+    end
+    
     if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
         table.insert(gas_nodes, gas_node:new(event.x, event.y))
         gas_nodes.size = gas_nodes.size + 1
