@@ -6,7 +6,6 @@ gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
 
-
 --initialize barrel container
 barrels = {}
 barrels.size = 0
@@ -55,7 +54,7 @@ function kill_barrel(index)
     end
     explode(barrels[index].x, barrels[index].y, 300)
     display.remove(barrels[index].image)
-    mainDisplay:remove(barrels[index].image)
+    --mainDisplay:remove(barrels[index].image)
     table.remove(barrels, index)
     barrels.size = barrels.size-1
 end
@@ -86,6 +85,7 @@ function gas_node:new(x, y)--constructor
     local node = {x = x, y=y, radius = 15}
     node.image = display.newCircle(x, y, 15)
     node.image:setFillColor(255, 250, 205)
+    node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
     setmetatable(node, {__index = gas_node})
     return node
 end

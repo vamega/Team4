@@ -1,9 +1,8 @@
 sprite = require "sprite"
 physics = require "physics"
 
---local intro = require("levels/intro")
+local intro = require("levels/intro")
 local explosives = require("explosives")
-
 
 physics.start()
 physics.setDrawMode("hybrid")
@@ -45,10 +44,10 @@ local edge4 = display.newRect(0, display.contentHeight-10, display.contentWidth,
 physics.addBody(edge4, "static", {bounce = 0.4})
 edge4.isVisible = false
 
-mainDisplay:insert(edge1)
-mainDisplay:insert(edge2)
-mainDisplay:insert(edge3)
-mainDisplay:insert(edge4)
+--mainDisplay:insert(edge1)
+--mainDisplay:insert(edge2)
+--mainDisplay:insert(edge3)
+--mainDisplay:insert(edge4)
 
 --event listeners
 Runtime:addEventListener("touch", explosives.add_gas)
