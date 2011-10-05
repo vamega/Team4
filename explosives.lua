@@ -18,6 +18,7 @@ function barrel:new(x, y, i)--constructor
     --newCircle(x, y, 50)
     --instance.image:setFillColor(255, 0, 0)
     --mainDisplay:inesrt(instance)
+    mainDisplay:insert(instance.image)
     physics.addBody( instance.image, {density = 1.0, friction = 5, bounce = 0, radius = 50 } )
     setmetatable(instance, {__index = barrel})
     return instance

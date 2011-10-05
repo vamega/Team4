@@ -13,13 +13,11 @@ barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
 --local intro_img = intro.background
---Set up DisplayGroup for everything
---mainDisplay = display.newGroup()
 
 --background
 background = display.newImage("background.png")
---mainDisplay:insert(background)
-
+mainDisplay = display.newGroup()
+mainDisplay:insert(background)
 
 print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 
