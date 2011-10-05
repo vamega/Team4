@@ -35,7 +35,6 @@ function barrel:new(x, y)
     return instance
 end
 
-
 function barrel:react() --set off a chain reaction
     if self.dead == false then
         self.dead = true
@@ -93,23 +92,49 @@ end
 --THE GAS STATION
 gas_node = {}
 function gas_node:new(x, y)--constructor
-    local node = {x = x, y=y, radius = 15}
+    local node = {x=x, y=y}
     node.image = display.newCircle(x, y, 15)
     node.image:setFillColor(255, 250, 205)
+    node.radius = 15*(1-(gas_nodes.size/gas_nodes.capacity))
     node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
     setmetatable(node, {__index = gas_node})
     return node
+end
+
+local function dist(x1, y1, x2, y2)
+    return math.sqrt((x1-x2)^2+(y1-y2)^2)
 end
 
 function add_gas(event)
     if event.phase == "ended" then
         gas_nodes.done = true
     end
-
-    if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
-        table.insert(gas_nodes, gas_node:new(event.x, event.y))
-        gas_nodes.size = gas_nodes.size + 1
+    
+    if event.phase == "began" and gas_nodes.done == false then
+        print ("beginning touch")
+        gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
+        gas_nodes.size = gas_nodes.size+1
+        return
+    else
+        if event.phase == "moved" and gas_nodes.done == false then
+            local distance = dist(gas_nodes[gas_nodes.size].x, gas_nodes[gas_nodes.size].y,
+                event.x, event.y)
+      
+            local angle = math.atan2((gas_nodes[gas_nodes.size].y-event.y),(gas_nodes[gas_nodes.size].x-event.x))
+            local displacement = gas_nodes[gas_nodes.size].radius
+            print (" angle is " .. angle)
+            for i=0, distance, gas_nodes[gas_nodes.size].radius*2 do
+                gas_nodes[gas_nodes.size+1] = gas_node:new(event.x+math.cos(angle)*displacement, 
+                    event.y+math.sin(angle)*displacement)
+                displacement = displacement + gas_nodes[gas_nodes.size+1].radius
+                gas_nodes.size = gas_nodes.size+1
+                if(gas_nodes.size > gas_nodes.capacity) then
+                    return
+                end
+            end
+        end
     end
+
 end
 
 function erase_gas(event)
