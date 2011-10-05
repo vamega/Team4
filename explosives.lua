@@ -27,7 +27,7 @@ function barrel:new(x, y)
     
     --barrels catch fire more easily than normal and burn up quickly
     instance.flash_point = instance.flash_point - 5
-    instance.health = 30
+    --instance.health = 30
     
     setmetatable(instance, {__index = barrel})
     instance.body:addEventListener("touch", instance)
@@ -48,7 +48,7 @@ end
 --sets off the barrel when it's touched
 function barrel:touch(event)
     if event.phase == "began" then
-        self:apply_heat(self.flash_point + 5)
+        self:apply_heat(self.flash_point)
     end
 end
 
@@ -56,7 +56,6 @@ end
 function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
-	
 end
 
 --makes the barrel explode
@@ -65,7 +64,7 @@ function barrel:burn_up()
 	
 	flammable.burn_up(self)
 	
-	spawn_explosion(self.x, self.y, 300, self.current_heat)
+	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat)
 end
 
 function spawn_barrel(x, y)
