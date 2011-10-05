@@ -55,7 +55,7 @@ function barrel:burn_up()
 	
 	flammable.burn_up(self)
 	
-	spawn_explosion(self.x, self.y, 300, self.current_heat)
+	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat)
 end
 
 function spawn_barrel(x, y)
