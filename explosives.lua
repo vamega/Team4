@@ -16,8 +16,8 @@ barrels = {}
 
 --explosive barrels
 barrel = {}
+setmetatable(barrel, {__index = flammable})
 
-    
 function barrel:new(x, y)
     barrelImage = display.newImage("img/Barrel.png", x, y)
     mainDisplay:insert(barrelImage)
@@ -29,7 +29,7 @@ function barrel:new(x, y)
     
     --barrels catch fire more easily than normal and burn up quickly
     instance.flash_point = instance.flash_point - 5
-    instance.health = 30
+    --instance.health = 30
     
     setmetatable(instance, {__index = barrel})
     instance.body:addEventListener("touch", instance)
@@ -39,18 +39,8 @@ end
 
 --sets off the barrel when it's touched
 function barrel:touch(event)
-    if event.phase == "began" and self.dead == false then
-        self:react()
-    end
-end
-
-function barrel:react() --set off a chain reaction
-    if self.dead == false then
-        self.dead = true
-        local myclosure = function() return kill_barrel(self.i) end
-        timer.performWithDelay(2000, myclosure)
-        self:apply_heat(self.flash_point + 5)
-
+    if event.phase == "began" then
+        self:apply_heat(self.flash_point)
     end
 end
 
@@ -58,17 +48,15 @@ end
 function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
-	
 end
 
 --makes the barrel explode
 function barrel:burn_up()
-	if self.dead == false then
-		self:removeSelf()
-		table.remove(barrels, utils.index_of(barrels, self))
-    	
-    	spawn_explosion(self.x, self.y, 300, self.current_heat)
-	end
+	table.remove(barrels, utils.index_of(barrels, self))
+	
+	flammable.burn_up(self)
+	
+	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat)
 end
 
 function spawn_barrel(x, y)
@@ -77,19 +65,19 @@ end
 
 function spawn_explosion(x, y, radius, heat)
     for i, barrel in ipairs(barrels) do
-        local xDist = barrel.x - x
-        local yDist = barrel.y - y
+        local xDist = barrel.body.x - x
+        local yDist = barrel.body.y - y
     	local dist_squared = xDist^2 + yDist^2
-        if x ~= barrel.x and y ~= barrel.y
+        if x ~= barrel.body.x and y ~= barrel.body.y
         		and dist_squared < radius^2 then
             barrel:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)
             local force = (radius - dist) * 30
-            barrel.image:applyLinearImpulse(
+            barrel.body:applyLinearImpulse(
             				force * xDist / dist,
             				force * yDist / dist,
-            				barrel.x, barrel.y)
+            				barrel.body.x, barrel.body.y)
         end
     end
 end
@@ -107,7 +95,6 @@ function gas_node:new(x, y)--constructor
 end
 
 function add_gas(event)
-
     if event.phase == "ended" then
         gas_nodes.done = true
     end
@@ -116,7 +103,6 @@ function add_gas(event)
         table.insert(gas_nodes, gas_node:new(event.x, event.y))
         gas_nodes.size = gas_nodes.size + 1
     end
-    
 end
 
 function erase_gas(event)
