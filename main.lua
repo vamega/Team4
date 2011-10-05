@@ -13,9 +13,12 @@ barrels = explosives.barrels
 gas_nodes = explosives.gas_nodes
 
 --local intro_img = intro.background
+--Set up DisplayGroup for everything
+mainDisplay = display.newGroup()
 
 --background
 background = display.newImage("background.png")
+mainDisplay:insert(background)
 
 
 print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
@@ -42,6 +45,11 @@ edge3.isVisible = false
 local edge4 = display.newRect(0, display.contentHeight-10, display.contentWidth, 10)
 physics.addBody(edge4, "static", {bounce = 0.4})
 edge4.isVisible = false
+
+mainDisplay:insert(edge1)
+mainDisplay:insert(edge2)
+mainDisplay:insert(edge3)
+mainDisplay:insert(edge4)
 
 --event listeners
 Runtime:addEventListener("touch", explosives.add_gas)
