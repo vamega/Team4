@@ -6,7 +6,6 @@ gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
 
-
 --initialize barrel container
 barrels = {}
 barrels.size = 0

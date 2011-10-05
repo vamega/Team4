@@ -1,9 +1,8 @@
 sprite = require "sprite"
 physics = require "physics"
 
---local intro = require("levels/intro")
+local intro = require("levels/intro")
 local explosives = require("explosives")
-
 
 physics.start()
 physics.setDrawMode("hybrid")
@@ -17,7 +16,6 @@ gas_nodes = explosives.gas_nodes
 
 --background
 background = display.newImage("background.png")
-
 
 
 print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
