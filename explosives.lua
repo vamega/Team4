@@ -16,6 +16,8 @@ barrels = {}
 
 --explosive barrels
 barrel = {}
+setmetatable(barrel, {__index = flammable})
+
 function barrel:new(x, y)
     local instance = flammable:new(display.newCircle(x, y, 50), true)
     
@@ -24,7 +26,7 @@ function barrel:new(x, y)
     instance.body.bounce = 0
     
     --barrels catch fire more easily than normal and burn up quickly
-    instance.flash_point = instance.flash_point - 5
+    instance.flash_point = 5
     instance.health = 30
     
     setmetatable(instance, {__index = barrel})
@@ -35,7 +37,7 @@ end
 
 --sets off the barrel when it's touched
 function barrel:touch(event)
-    if event.phase == "began" and self.dead == false then
+    if event.phase == "began" then
         self:apply_heat(self.flash_point + 5)
     end
 end
@@ -45,33 +47,21 @@ function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
 	
-	--update the countdown if on fire
+	--update the barrel's color to indicate whether it's on fire
 	if self.current_heat >= self.flash_point then
-		--when on fire, the barrel is orange/yellow
 		self.body:setFillColor(255, 180, 0)
-		
-		--the countdown counts down at a rate of at least 5 units per second
-		self.explosion_countdown = self.explosion_countdown
-				- math.max(5, self.current_heat - self.flash_point) * elapsed_time
-		
-		--the barrel explodes once the countdown ends
-		--if self.explosion_countdown <= 0 then
-			self:explode()
-		--end
 	else
-		--when not on fire, the barrel is red
-		self.body:setFillColor(255, 0, 0)
+		self.body:setFillColor(0, 0, 255)
 	end
 end
 
 --makes the barrel explode
 function barrel:burn_up()
-	if self.dead == false then
-		self:removeSelf()
-		table.remove(barrels, utils.index_of(barrels, self))
-    	
-    	spawn_explosion(self.x, self.y, 300, self.current_heat)
-	end
+	table.remove(barrels, utils.index_of(barrels, self))
+	
+	flammable.burn_up(self)
+	
+	spawn_explosion(self.x, self.y, 300, self.current_heat)
 end
 
 function spawn_barrel(x, y)
