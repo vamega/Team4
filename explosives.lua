@@ -19,14 +19,14 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-    local instance = flammable:new(display.newCircle(x, y, 50), true)
+    local instance = flammable:new(display.newImage("img/Barrel.png", x, y), true)
     
     instance.body.density = 1.0
     instance.body.friction = 5
     instance.body.bounce = 0
     
     --barrels catch fire more easily than normal and burn up quickly
-    instance.flash_point = 5
+    instance.flash_point = instance.flash_point - 5
     instance.health = 30
     
     setmetatable(instance, {__index = barrel})
@@ -47,12 +47,6 @@ function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
 	
-	--update the barrel's color to indicate whether it's on fire
-	if self.current_heat >= self.flash_point then
-		self.body:setFillColor(255, 180, 0)
-	else
-		self.body:setFillColor(0, 0, 255)
-	end
 end
 
 --makes the barrel explode
@@ -86,7 +80,6 @@ function spawn_explosion(x, y, radius, heat)
         end
     end
 end
-
 
 --THE GAS STATION
 gas_node = {}

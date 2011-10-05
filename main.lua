@@ -8,7 +8,7 @@ local intro = require("levels/intro")
 local explosives = require("explosives")
 
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 --initialization
@@ -81,3 +81,5 @@ local function on_enter_frame(event)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
+Runtime:addEventListener("touch", explosives.add_gas)
+Runtime:addEventListener("accelerometer", explosives.erase_gas)
