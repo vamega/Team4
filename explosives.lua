@@ -19,6 +19,7 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
+    local instance = flammable:new(display.newImage("img/Barrel.png", x, y), true)
     barrelImage = display.newImage("img/Barrel.png", x, y)
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, true)
@@ -78,6 +79,39 @@ function spawn_explosion(x, y, radius, heat)
             				force * xDist / dist,
             				force * yDist / dist,
             				barrel.body.x, barrel.body.y)
+        end
+    end
+end
+
+--THE GAS STATION
+gas_node = {}
+function gas_node:new(x, y)--constructor
+    local node = {x = x, y=y, radius = 15}
+    node.image = display.newCircle(x, y, 15)
+    node.image:setFillColor(255, 250, 205)
+    node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
+    setmetatable(node, {__index = gas_node})
+    return node
+end
+
+function add_gas(event)
+    if event.phase == "ended" then
+        gas_nodes.done = true
+    end
+
+    if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
+        table.insert(gas_nodes, gas_node:new(event.x, event.y))
+        gas_nodes.size = gas_nodes.size + 1
+    end
+end
+
+function erase_gas(event)
+    if(event.isShake == true) then
+        gas_nodes.done = false
+        while gas_nodes.size > 0 do
+            display.remove(gas_nodes[gas_nodes.size].image)
+            table.remove(gas_nodes, gas_nodes.size)
+            gas_nodes.size = gas_nodes.size -1
         end
     end
 end
