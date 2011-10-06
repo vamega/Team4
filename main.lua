@@ -138,15 +138,17 @@ explosives.spawn_barrel(110, 110)
 explosives.spawn_barrel(250, 280)
 explosives.spawn_barrel(300, 600)
 explosives.spawn_barrel(400, 360)
+explosives.barrels[1].body:applyForce(50, 0, explosives.barrels[1].body.x,
+								explosives.barrels[1].body.y - 10)
 
 crate.spawn_crate(300, 380)
 crate.spawn_crate(249, 400)
 crate.spawn_crate(198, 389)
 crate.spawn_crate(240, 451)
 crate.spawn_crate(70, 580)
---crate.crates[2].current_heat = crate.crates[2].flash_point + 1
---crate.crates[5].body:applyForce(20, -20, crate.crates[1].body.x,
---										crate.crates[1].body.y - 2)
+crate.crates[2].current_heat = crate.crates[2].flash_point + 1
+crate.crates[5].body:applyForce(20, -20, crate.crates[1].body.x,
+										crate.crates[1].body.y - 2)
 
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)
@@ -192,7 +194,7 @@ local function on_enter_frame(event)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
---Runtime:addEventListener("touch", gas.add_gas)
+Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
 
-mainDisplay:addEventListener( "touch", mainDisplay )
+--mainDisplay:addEventListener( "touch", mainDisplay )

@@ -18,10 +18,8 @@ function crate:new(x, y)
     mainDisplay:insert(crateImage)
 	setmetatable(instance, {__index = crate})
 	
-	--crates have plenty of health and burn slowly
-	instance.health = 100
-	instance.min_burn_rate = 1
-	instance.max_burn_rate = 10
+	--crates have plenty of health, so they last a while
+	instance.health = 300
 	
 	return instance
 end

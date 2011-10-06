@@ -25,7 +25,7 @@ function barrel:new(x, y)
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, true)
 
-    
+    instance.body.isFixedRotation = true
     instance.body.density = 1.0
     instance.body.friction = 5
     instance.body.bounce = 0

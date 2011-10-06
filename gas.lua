@@ -17,18 +17,17 @@ setmetatable(gas_node, {__index = flammable})
 
 function gas_node:new(x, y)
 	--gas nodes don't collide with anything
-	local collision_filter = {categoryBits = 0x1, maskBits = 0}
+	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
 	
     local instance = flammable:new(display.newCircle(x, y,
-    				15-10*(gas_nodes.size/gas_nodes.capacity)), true, nil,
-    				collision_filter)
+    				15-10*(gas_nodes.size/gas_nodes.capacity)), true, nil)
     
-    
+    instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
     
     --gas starts burning early but lasts a while
-    instance.flash_point = 5
-    instance.health = 100
+    instance.flash_point = 4
+    instance.health = 200
     
     setmetatable(instance, {__index = gas_node})
     return instance
@@ -43,29 +42,30 @@ function gas_node:burn_up()
 	--draw an infinitely long line of gas
 end
 
+local prev_touch_x = 0
+local prev_touch_y = 0
+
 function add_gas(event)
     if event.phase == "ended" then
         gas_nodes.done = true
     end
     
 	if event.phase == "began" and gas_nodes.done == false then
-        table.insert(gas_nodes, gas_node:new(event.x, event.y))
-        gas_nodes.size = gas_nodes.size+1
+        prev_touch_x = event.x
+        prev_touch_y = event.y
         return
     elseif event.phase == "moved" and gas_nodes.done == false then
         local distance = math.sqrt(utils.dist_squared(
-        		gas_nodes[gas_nodes.size].body.x,
-        		gas_nodes[gas_nodes.size].body.y,
-            	event.x, event.y))
+        		prev_touch_x, prev_touch_y, event.x, event.y))
   
-        local angle = math.atan2((gas_nodes[gas_nodes.size].body.y-event.y),
-        						(gas_nodes[gas_nodes.size].body.x-event.x))
-        local displacement = gas_nodes[gas_nodes.size].body.width / 2
+        local angle = math.atan2(event.y - prev_touch_y,
+        						event.x - prev_touch_x)
+        local displacement = 0
         
-        for i=0, distance, gas_nodes[gas_nodes.size].body.width do
+        while displacement < distance do
             table.insert(gas_nodes,
-            	gas_node:new(event.x+math.cos(angle)*displacement, 
-                			event.y+math.sin(angle)*displacement))
+            	gas_node:new(prev_touch_x+math.cos(angle)*displacement, 
+                			prev_touch_y+math.sin(angle)*displacement))
             displacement = displacement + gas_nodes[gas_nodes.size+1].body.width / 2
             gas_nodes.size = gas_nodes.size+1
             if gas_nodes.size > gas_nodes.capacity then
@@ -73,6 +73,9 @@ function add_gas(event)
                 return
             end
         end
+        
+        prev_touch_x = event.x
+        prev_touch_y = event.y
     end
     
     if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then

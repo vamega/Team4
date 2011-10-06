@@ -5,7 +5,9 @@ utils = require "utils"
 
 module(..., package.seeall)
 
---a superclass for all flammable objects
+
+
+--the superclass for all flammable objects
 flammable = {}
 
 --takes an image and converts it to a flammable physics object
@@ -50,7 +52,7 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	--much hotter, it will burn at up to max_burn_rate)
 	instance.health = 80
 	instance.min_burn_rate = 2
-	instance.max_burn_rate = 15
+	instance.max_burn_rate = 10
 	
 	instance.nearby_objects={}
 	
