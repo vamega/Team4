@@ -5,7 +5,7 @@ utils = require "utils"
 crate = require "crate"
 explosives = require "explosives"
 gas = require "gas"
-local intro = require("levels/intro")
+--local intro = require("levels/intro")
 local explosives = require("explosives")
 
 system.activate( "multitouch" )
@@ -128,8 +128,8 @@ gas_nodes = gas.gas_nodes
 --local intro_img = intro.background
 
 --background
---background = display.newImage("background.png")
---mainDisplay:insert(background)
+background = display.newImage("background.png")
+mainDisplay:insert(background)
 
 
 --load test level
@@ -191,7 +191,7 @@ local function on_enter_frame(event)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
---Runtime:addEventListener("touch", explosives.add_gas)
+--Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
 
 mainDisplay:addEventListener( "touch", mainDisplay )
