@@ -6,11 +6,7 @@ flammable = flammable_module.flammable
 
 module(..., package.seeall)
 
---initialize gasoline container
---gas_nodes = {}
---gas_nodes.size = 0
---gas_nodes.capacity = 250
---gas_nodes.done = false
+--THE BARREL ZONE
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
@@ -36,8 +32,6 @@ function barrel:new(x, y)
     instance.body.density = 1.0
     instance.body.friction = 5
     instance.body.bounce = 0.5
-    instance.burn_played = false
-    
     
     --barrels catch fire more easily than normal and burn up quickly
     instance.flash_point = instance.flash_point - 5
@@ -103,55 +97,3 @@ function spawn_explosion(x, y, radius, heat)
     end
 end
 
---THE GAS STATION
--- gas_node = {}
--- function gas_node:new(x, y)--constructor
-    -- local node = {x = x, y=y, radius = 15}
-    -- node.image = display.newCircle(x, y, 15)
-    -- node.image:setFillColor(255, 250, 205)
-    -- node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
-    -- setmetatable(node, {__index = gas_node})
-    -- return node
--- end
-
--- function add_gas(event)
-    -- if event.phase == "ended" then
-        -- gas_nodes.done = true
-    -- end
-    
-    -- if event.phase == "began" and gas_nodes.done == false then
-        -- print ("beginning touch")
-        -- gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
-        -- gas_nodes.size = gas_nodes.size+1
-        -- return
-    -- else
-        -- if event.phase == "moved" and gas_nodes.done == false then
-            -- local distance = dist(gas_nodes[gas_nodes.size].x, gas_nodes[gas_nodes.size].y,
-                -- event.x, event.y)
-      
-            -- local angle = math.atan2((gas_nodes[gas_nodes.size].y-event.y),(gas_nodes[gas_nodes.size].x-event.x))
-            -- local displacement = gas_nodes[gas_nodes.size].radius
-            -- for i=0, distance, gas_nodes[gas_nodes.size].radius*2 do
-                -- gas_nodes[gas_nodes.size+1] = gas_node:new(event.x+math.cos(angle)*displacement, 
-                    -- event.y+math.sin(angle)*displacement)
-                -- displacement = displacement + gas_nodes[gas_nodes.size+1].radius
-                -- gas_nodes.size = gas_nodes.size+1
-                -- if(gas_nodes.size > gas_nodes.capacity) then
-                    -- return
-                -- end
-            -- end
-        -- end
-    -- end
--- end
-
--- function erase_gas(event)
-    -- if(event.isShake == true) then
-        -- gas_nodes.done = false
-        -- while gas_nodes.size > 0 do
-            -- display.remove(gas_nodes[gas_nodes.size].image)
-            -- displayMain:remove(gas_nodes[gas_nodes.size].image)
-            -- table.remove(gas_nodes, gas_nodes.size)
-            -- gas_nodes.size = gas_nodes.size -1
-        -- end
-    -- end
--- end
