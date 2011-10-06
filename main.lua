@@ -131,7 +131,6 @@ gas_nodes = gas.gas_nodes
 --background = display.newImage("background.png")
 --mainDisplay:insert(background)
 
-print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 
 --load test level
 explosives.spawn_barrel(110, 110)
