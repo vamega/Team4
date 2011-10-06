@@ -69,7 +69,7 @@ function add_gas(event)
             displacement = displacement + gas_nodes[gas_nodes.size+1].body.width / 2
             gas_nodes.size = gas_nodes.size+1
             if gas_nodes.size > gas_nodes.capacity then
-                gase_nodes.done = true
+                gas_nodes.done = true
                 return
             end
         end
