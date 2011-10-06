@@ -20,11 +20,10 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-
     barrelImage = display.newImage("Barrel.png", x, y)
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, true)
-
+	
     instance.body.isFixedRotation = true
     instance.body.density = 1.0
     instance.body.friction = 5
@@ -32,7 +31,8 @@ function barrel:new(x, y)
     
     --barrels catch fire more easily than normal and burn up quickly
     instance.flash_point = instance.flash_point - 5
-    --instance.health = 30
+    instance.health = 80
+    instance.max_burn_rate = 4
     
     setmetatable(instance, {__index = barrel})
     instance.body:addEventListener("touch", instance)
@@ -59,7 +59,7 @@ function barrel:burn_up()
 	
 	flammable.burn_up(self)
 	
-	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat)
+	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat + 50)
 end
 
 function spawn_barrel(x, y)

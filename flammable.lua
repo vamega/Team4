@@ -5,7 +5,8 @@ utils = require "utils"
 
 module(..., package.seeall)
 
-
+--all flammable objects
+flammable_list = {}
 
 --the superclass for all flammable objects
 flammable = {}
@@ -39,8 +40,6 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	--current_heat increases by heat_increase_rate units per second
 	--if this is touching a burning object; when current_heat
 	--passes flash_point, this object starts to burn
-	--(note that current_heat never decreases, but it also never
-	--goes higher than the heat value of the hottest nearby object)
 	instance.current_heat = 0
 	instance.heat_increase_rate = 20
 	instance.flash_point = 20
@@ -49,12 +48,17 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	--health represents how long it has left, and min_burn_rate/max_burn_rate
 	--represent how slowly/quickly it can burn (if it is just barely at
 	--the flash point, it will burn at min_burn_rate, whereas if it is
-	--much hotter, it will burn at up to max_burn_rate)
+	--hotter, it will burn at up to max_burn_rate)
 	instance.health = 80
 	instance.min_burn_rate = 2
-	instance.max_burn_rate = 10
+	instance.max_burn_rate = 5
 	
-	instance.nearby_objects={}
+	--if this object gains heat but not enough to catch fire, it will
+	--start to cool off after this many seconds away from heat sources
+	instance.cool_off_delay = 2
+	instance.time_away_from_heat = 0
+	
+	instance.nearby_objects = {}
 	
 	setmetatable(instance, {__index = flammable})
 	instance.body:addEventListener("collision", instance)
@@ -113,6 +117,16 @@ function flammable:on_enter_frame(elapsed_time)
 		
 		if self.health <= 0 then
 			self:burn_up()
+		end
+	
+	--if this isn't on fire and it isn't next to a burning object,
+	--let it cool off
+	elseif highest_heat_value == 0 then
+		self.time_away_from_heat = self.time_away_from_heat + elapsed_time
+		
+		if self.time_away_from_heat >= self.cool_off_delay then
+			self.current_heat = math.max(0, self.current_heat
+							- self.heat_increase_rate * 0.7 * elapsed_time)
 		end
 	end
 end

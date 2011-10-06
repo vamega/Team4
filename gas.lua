@@ -24,6 +24,7 @@ function gas_node:new(x, y)
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
+    instance.body.density = 300
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
@@ -37,9 +38,7 @@ function gas_node:burn_up()
 	flammable.burn_up(self)
 	
 	table.remove(gas_nodes, utils.index_of(gas_nodes, self))
-	
-	--do not decrement gas_nodes.size, because otherwise the player could
-	--draw an infinitely long line of gas
+	gas_nodes.size = gas_nodes.size - 1
 end
 
 local prev_touch_x = 0
@@ -48,6 +47,11 @@ local prev_touch_y = 0
 function add_gas(event)
     if event.phase == "ended" then
         gas_nodes.done = true
+        return
+    end
+    
+    if gas_nodes.size == 0 then
+    	gas_nodes.done = false
     end
     
 	if event.phase == "began" and gas_nodes.done == false then
