@@ -13,7 +13,9 @@ crate = {}
 setmetatable(crate, {__index = flammable})
 
 function crate:new(x, y)
-	local instance = flammable:new(display.newRect(x, y, 50, 50))
+    local crateImage = display.newRect(x, y, 50, 50)
+	local instance = flammable:new(crateImage)
+    mainDisplay:insert(crateImage)
 	setmetatable(instance, {__index = crate})
 	
 	--crates have plenty of health and burn slowly
