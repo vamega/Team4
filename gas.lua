@@ -11,6 +11,8 @@ gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
 
+--THE GAS STATION
+
 --gasoline is made up of a number of small 
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})

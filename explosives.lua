@@ -12,6 +12,11 @@ module(..., package.seeall)
 --gas_nodes.capacity = 250
 --gas_nodes.done = false
 
+--animations
+barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
+barrel_burning_set = sprite.newSpriteSet(barrel_burning_sheet, 1, 8)
+--sprite.add(barrel_burning_set, "burning", 1, 8, 400)
+
 --initialize barrel container
 barrels = {}
 
@@ -20,14 +25,19 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-    barrelImage = display.newImage("Barrel.png", x, y)
+    local barrelImage = sprite.newSprite(barrel_burning_set)--display.newImage("barrel1.png", x, y)
+    barrelImage.x = x
+    barrelImage.y = y
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, true)
 	
     instance.body.isFixedRotation = true
+	
     instance.body.density = 1.0
     instance.body.friction = 5
-    instance.body.bounce = 0
+    instance.body.bounce = 0.5
+    instance.burn_played = false
+    
     
     --barrels catch fire more easily than normal and burn up quickly
     instance.flash_point = instance.flash_point - 5
@@ -38,6 +48,12 @@ function barrel:new(x, y)
     instance.body:addEventListener("touch", instance)
     
     return instance
+end
+
+function barrel:animate()
+    if self.current_heat >= self.flash_point then
+        self.image.currentFrame = (80-self.health)/10
+    end
 end
 
 --sets off the barrel when it's touched
@@ -51,6 +67,8 @@ end
 function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
+    --update animation
+    self:animate()
 end
 
 --makes the barrel explode
