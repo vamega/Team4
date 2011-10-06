@@ -1,5 +1,6 @@
 math = require "math"
 utils = require "utils"
+sprite = require "sprite"
 flammable_module = require "flammable"
 flammable = flammable_module.flammable
 
@@ -19,7 +20,7 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-    local instance = flammable:new(display.newImage("img/Barrel.png", x, y), true)
+    local instance = flammable:new(display.newImage("img/barrel_sprites.png", x, y), true)
     
     instance.body.density = 1.0
     instance.body.friction = 5
@@ -122,7 +123,6 @@ function add_gas(event)
       
             local angle = math.atan2((gas_nodes[gas_nodes.size].y-event.y),(gas_nodes[gas_nodes.size].x-event.x))
             local displacement = gas_nodes[gas_nodes.size].radius
-            print (" angle is " .. angle)
             for i=0, distance, gas_nodes[gas_nodes.size].radius*2 do
                 gas_nodes[gas_nodes.size+1] = gas_node:new(event.x+math.cos(angle)*displacement, 
                     event.y+math.sin(angle)*displacement)
