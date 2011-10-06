@@ -192,7 +192,7 @@ local function on_enter_frame(event)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
-Runtime:addEventListener("touch", explosives.add_gas)
+Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
 
 --mainDisplay:addEventListener( "touch", mainDisplay )
