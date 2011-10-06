@@ -7,10 +7,10 @@ flammable = flammable_module.flammable
 module(..., package.seeall)
 
 --initialize gasoline container
-gas_nodes = {}
-gas_nodes.size = 0
-gas_nodes.capacity = 250
-gas_nodes.done = false
+--gas_nodes = {}
+--gas_nodes.size = 0
+--gas_nodes.capacity = 250
+--gas_nodes.done = false
 
 --initialize barrel container
 barrels = {}
@@ -20,7 +20,11 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-    local instance = flammable:new(display.newImage("img/barrel_sprites.png", x, y), true)
+
+    barrelImage = display.newImage("img/Barrel.png", x, y)
+    mainDisplay:insert(barrelImage)
+    local instance = flammable:new(barrelImage, true)
+
     
     instance.body.density = 1.0
     instance.body.friction = 5
@@ -34,15 +38,6 @@ function barrel:new(x, y)
     instance.body:addEventListener("touch", instance)
     
     return instance
-end
-
-function barrel:react() --set off a chain reaction
-    if self.dead == false then
-        self.dead = true
-        --self.image:setFillColor(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-        local myclosure = function() return kill_barrel(self.i) end
-        timer.performWithDelay(2000, myclosure)
-    end
 end
 
 --sets off the barrel when it's touched
@@ -91,59 +86,54 @@ function spawn_explosion(x, y, radius, heat)
 end
 
 --THE GAS STATION
-gas_node = {}
-function gas_node:new(x, y)--constructor
-    local node = {x=x, y=y}
-    node.image = display.newCircle(x, y, 15)
-    node.image:setFillColor(255, 250, 205)
-    node.radius = 15*(1-(gas_nodes.size/gas_nodes.capacity))
-    node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
-    setmetatable(node, {__index = gas_node})
-    return node
-end
+-- gas_node = {}
+-- function gas_node:new(x, y)--constructor
+    -- local node = {x = x, y=y, radius = 15}
+    -- node.image = display.newCircle(x, y, 15)
+    -- node.image:setFillColor(255, 250, 205)
+    -- node.image:scale(1-(gas_nodes.size/gas_nodes.capacity), 1-(gas_nodes.size/gas_nodes.capacity))
+    -- setmetatable(node, {__index = gas_node})
+    -- return node
+-- end
 
-local function dist(x1, y1, x2, y2)
-    return math.sqrt((x1-x2)^2+(y1-y2)^2)
-end
-
-function add_gas(event)
-    if event.phase == "ended" then
-        gas_nodes.done = true
-    end
+-- function add_gas(event)
+    -- if event.phase == "ended" then
+        -- gas_nodes.done = true
+    -- end
     
-    if event.phase == "began" and gas_nodes.done == false then
-        print ("beginning touch")
-        gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
-        gas_nodes.size = gas_nodes.size+1
-        return
-    else
-        if event.phase == "moved" and gas_nodes.done == false then
-            local distance = dist(gas_nodes[gas_nodes.size].x, gas_nodes[gas_nodes.size].y,
-                event.x, event.y)
+    -- if event.phase == "began" and gas_nodes.done == false then
+        -- print ("beginning touch")
+        -- gas_nodes[gas_nodes.size+1] = gas_node:new(event.x, event.y)
+        -- gas_nodes.size = gas_nodes.size+1
+        -- return
+    -- else
+        -- if event.phase == "moved" and gas_nodes.done == false then
+            -- local distance = dist(gas_nodes[gas_nodes.size].x, gas_nodes[gas_nodes.size].y,
+                -- event.x, event.y)
       
-            local angle = math.atan2((gas_nodes[gas_nodes.size].y-event.y),(gas_nodes[gas_nodes.size].x-event.x))
-            local displacement = gas_nodes[gas_nodes.size].radius
-            for i=0, distance, gas_nodes[gas_nodes.size].radius*2 do
-                gas_nodes[gas_nodes.size+1] = gas_node:new(event.x+math.cos(angle)*displacement, 
-                    event.y+math.sin(angle)*displacement)
-                displacement = displacement + gas_nodes[gas_nodes.size+1].radius
-                gas_nodes.size = gas_nodes.size+1
-                if(gas_nodes.size > gas_nodes.capacity) then
-                    return
-                end
-            end
-        end
-    end
+            -- local angle = math.atan2((gas_nodes[gas_nodes.size].y-event.y),(gas_nodes[gas_nodes.size].x-event.x))
+            -- local displacement = gas_nodes[gas_nodes.size].radius
+            -- for i=0, distance, gas_nodes[gas_nodes.size].radius*2 do
+                -- gas_nodes[gas_nodes.size+1] = gas_node:new(event.x+math.cos(angle)*displacement, 
+                    -- event.y+math.sin(angle)*displacement)
+                -- displacement = displacement + gas_nodes[gas_nodes.size+1].radius
+                -- gas_nodes.size = gas_nodes.size+1
+                -- if(gas_nodes.size > gas_nodes.capacity) then
+                    -- return
+                -- end
+            -- end
+        -- end
+    -- end
+-- end
 
-end
-
-function erase_gas(event)
-    if(event.isShake == true) then
-        gas_nodes.done = false
-        while gas_nodes.size > 0 do
-            display.remove(gas_nodes[gas_nodes.size].image)
-            table.remove(gas_nodes, gas_nodes.size)
-            gas_nodes.size = gas_nodes.size -1
-        end
-    end
-end
+-- function erase_gas(event)
+    -- if(event.isShake == true) then
+        -- gas_nodes.done = false
+        -- while gas_nodes.size > 0 do
+            -- display.remove(gas_nodes[gas_nodes.size].image)
+            -- displayMain:remove(gas_nodes[gas_nodes.size].image)
+            -- table.remove(gas_nodes, gas_nodes.size)
+            -- gas_nodes.size = gas_nodes.size -1
+        -- end
+    -- end
+-- end
