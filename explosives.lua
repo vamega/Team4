@@ -21,7 +21,7 @@ setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
 
-    barrelImage = display.newImage("img/Barrel.png", x, y)
+    barrelImage = display.newImage("Barrel.png", x, y)
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, true)
 
