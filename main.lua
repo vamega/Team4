@@ -8,7 +8,7 @@ gas = require "gas"
 local intro = require("levels/intro")
 local explosives = require("explosives")
 
-system.activate( "multitouch" )
+--system.activate( "multitouch" )
 
 physics.start()
 --physics.setDrawMode("hybrid")
@@ -128,8 +128,8 @@ gas_nodes = gas.gas_nodes
 --local intro_img = intro.background
 
 --background
---background = display.newImage("background.png")
---mainDisplay:insert(background)
+background = display.newImage("background.png")
+mainDisplay:insert(background)
 
 print("width" .. display.contentWidth .. " height: " .. display.contentHeight)
 
@@ -192,7 +192,7 @@ local function on_enter_frame(event)
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)
---Runtime:addEventListener("touch", explosives.add_gas)
+Runtime:addEventListener("touch", explosives.add_gas)
 Runtime:addEventListener("accelerometer", explosives.erase_gas)
 
-mainDisplay:addEventListener( "touch", mainDisplay )
+--mainDisplay:addEventListener( "touch", mainDisplay )
