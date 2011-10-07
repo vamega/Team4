@@ -5,6 +5,8 @@ utils = require "utils"
 crate = require "crate"
 explosives = require "explosives"
 gas = require "gas"
+water = require "water"
+require "collisionmanager"
 --local intro = require("levels/intro")
 local explosives = require("explosives")
 
@@ -121,16 +123,22 @@ function mainDisplay:touch( event )
 	return false
 end
 
+
+
+
+
+
+
 --initialization
 barrels = explosives.barrels
 gas_nodes = gas.gas_nodes
+waters = water.waters
 
 --local intro_img = intro.background
 
 --background
 background = display.newImage("background.png")
 mainDisplay:insert(background)
-
 
 --load test level
 explosives.spawn_barrel(110, 110)
@@ -143,6 +151,8 @@ crate.spawn_crate(249, 400)
 crate.spawn_crate(198, 389)
 crate.spawn_crate(240, 451)
 crate.spawn_crate(70, 580)
+
+water.load_water(400, 400)
 
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)
@@ -177,6 +187,8 @@ end
 --game loop
 local last_frame_time = 0
 local function on_enter_frame(event)
+    collisionManager = CollisionManagerBuilder:new()
+    collisionManager:addCollisionTables(gas.gas_nodes, water.waters)
 	local elapsed_time = (event.time - last_frame_time) / 1000
 	elapsed_time = math.min(0.2, elapsed_time)
 	
