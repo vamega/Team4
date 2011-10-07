@@ -126,12 +126,6 @@ function mainDisplay:touch( event )
 	return false
 end
 
-
-
-
-
-
-
 --initialization
 barrels = explosives.barrels
 gas_nodes = gas.gas_nodes
@@ -149,6 +143,7 @@ mainDisplay:insert(background)
  -- explosives.spawn_barrel(250, 280)
  -- explosives.spawn_barrel(300, 600)
  -- explosives.spawn_barrel(400, 360)
+ -- crate.crates[1].current_heat = crate.crates[1].flash_point - 1
 
  -- crate.spawn_crate(300, 380)
  -- crate.spawn_crate(249, 400)
