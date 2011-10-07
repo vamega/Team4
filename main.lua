@@ -150,7 +150,7 @@ mainDisplay:insert(background)
  -- crate.spawn_crate(198, 389)
  -- crate.spawn_crate(240, 451)
  -- crate.spawn_crate(70, 580)
-levels.tutorial_level()
+
     
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)
@@ -182,6 +182,10 @@ local function update_all(table_to_update, elapsed_time)
 	end
 end
 
+
+level = 0
+spawned = false
+
 --game loop
 local last_frame_time = 0
 local function on_enter_frame(event)
@@ -195,6 +199,21 @@ local function on_enter_frame(event)
 	update_all(crate.crates, elapsed_time)
 	update_all(explosives.barrels, elapsed_time)
 	update_all(gas.gas_nodes, elapsed_time)
+    if spawned == false then
+        if level == 0 then
+            levels.tutorial_level()
+        end
+        if level == 1 then
+            levels.level_one()
+        end
+        spawned = true
+    end
+    
+    if table.getn(crate.crates)==0 and table.getn(explosives.barrels)==0 then
+        levels.kill_level()
+        level = level+1
+        spawned = false
+    end
 end
 
 Runtime:addEventListener("enterFrame", on_enter_frame)

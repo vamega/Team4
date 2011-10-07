@@ -8,20 +8,37 @@ water = require "water"
 
 module(..., package.seeall)
 
+text = {}
+
+function kill_level()
+    table_size = table.getn(text)
+    for i=1, table_size do
+        display.remove(text[i])
+    end
+    
+end
+
 function tutorial_level()
     crate.spawn_crate(400, 600)
     crate.spawn_crate(100, 100)
     explosives.spawn_barrel(150, 700)
     explosives.spawn_barrel(100, 800)
-    myText = display.newText("Draw a gas line \nbetween the crates", 0, 200, "Helvetica", 48)
-    myText:setTextColor(255, 255, 255)
-    myText2 = display.newText("If you mess up,\nshake the phone to\nreset the level", 0, 500, "Helvetica", 48)
-    water.load_water(300, 500)
+    text[1]= display.newText("Draw a gas line \nbetween the crates", 0, 200, "Helvetica", 48)
+    text[1]:setTextColor(255, 255, 255)
+    text[2] = display.newText("If you mess up,\nshake the phone to\nreset the level", 0, 500, "Helvetica", 48)
+    text[2]:setTextColor(255, 255, 255)
+    --water.load_water(300, 500)
     
 end
 
 function level_one()
-
+    crate.spawn_crate(50, 50)
+    crate.spawn_crate(50, 700)
+    crate.spawn_crate(400, 300)
+    explosives.spawn_barrel(100, 150)
+    explosives.spawn_barrel(100, 150)
+    explosives.spawn_barrel(100, 150)
+    explosives.spawn_barrel(100, 150)
 
 end
 
@@ -41,11 +58,6 @@ function level_four()
 end
 
 function level_five()
-
-
-end
-
-function kill_level()
 
 
 end
