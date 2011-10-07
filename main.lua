@@ -150,18 +150,6 @@ waters = water.waters
 
 --load test level
 
- -- explosives.spawn_barrel(110, 110)
- -- explosives.spawn_barrel(250, 280)
- -- explosives.spawn_barrel(300, 600)
- -- explosives.spawn_barrel(400, 360)
- -- crate.crates[1].current_heat = crate.crates[1].flash_point - 1
-
- -- crate.spawn_crate(300, 380)
- -- crate.spawn_crate(249, 400)
- -- crate.spawn_crate(198, 389)
- -- crate.spawn_crate(240, 451)
- -- crate.spawn_crate(70, 580)
-
     
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)
@@ -207,6 +195,7 @@ local function on_enter_frame(event)
 	update_all(explosives.barrels, elapsed_time)
 	update_all(gas.gas_nodes, elapsed_time)
     if spawned == false then
+        print ("spawning level")
         if level == 0 then
             levels.tutorial_level()
         end
@@ -216,7 +205,7 @@ local function on_enter_frame(event)
         spawned = true
     end
     
-    if table.getn(crate.crates)==0 and table.getn(explosives.barrels)==0 then
+    if crate.crates.size==0 and table.getn(explosives.barrels)==0 then
         levels.kill_level()
         level = level+1
         spawned = false
@@ -224,7 +213,7 @@ local function on_enter_frame(event)
 end
 
 --event listeners
---Runtime:addEventListener("touch", gas.add_gas)
+Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
---Runtime:addEventListener("enterFrame", on_enter_frame)
+Runtime:addEventListener("enterFrame", on_enter_frame)
 mainDisplay:addEventListener( "touch", mainDisplay )

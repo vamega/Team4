@@ -58,7 +58,7 @@ end
 
 function crate:burn_up()
 	table.remove(crates, utils.index_of(crates, self))
-	
+	crates.size = crates.size -1
 	flammable.burn_up(self)
 end
 
