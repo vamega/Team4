@@ -154,6 +154,7 @@ waters = water.waters
  -- explosives.spawn_barrel(250, 280)
  -- explosives.spawn_barrel(300, 600)
  -- explosives.spawn_barrel(400, 360)
+ -- crate.crates[1].current_heat = crate.crates[1].flash_point - 1
 
  -- crate.spawn_crate(300, 380)
  -- crate.spawn_crate(249, 400)
