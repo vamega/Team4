@@ -44,6 +44,10 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	instance.heat_increase_rate = 20
 	instance.flash_point = 20
 	
+	--once an object catches on fire, its temperature increases until
+	--it reaches burn_temperature 
+	instance.burn_temperature = 25
+	
 	--when this object is on fire, it burns up and eventually is removed
 	--health represents how long it has left, and min_burn_rate/max_burn_rate
 	--represent how slowly/quickly it can burn (if it is just barely at
@@ -100,6 +104,12 @@ function flammable:on_enter_frame(elapsed_time)
 				object.current_heat >= object.flash_point then
 			highest_heat_value = object.current_heat
 		end
+	end
+	
+	--if this is burning, its heat should increase up to burn_temperature
+	if self.current_heat >= self.flash_point
+			and self.burn_temperature > highest_heat_value then
+		highest_heat_value = self.burn_temperature
 	end
 	
 	--increase this object's heat to approach the highest heat value found

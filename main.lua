@@ -143,6 +143,7 @@ crate.spawn_crate(249, 400)
 crate.spawn_crate(198, 389)
 crate.spawn_crate(240, 451)
 crate.spawn_crate(70, 580)
+crate.crates[1].current_heat = crate.crates[1].flash_point - 1
 
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)

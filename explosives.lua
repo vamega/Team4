@@ -46,7 +46,7 @@ end
 
 function barrel:animate()
     if self.current_heat >= self.flash_point then
-        self.image.currentFrame = (80-self.health)/10
+        self.body.currentFrame = (80-self.health)/10
     end
 end
 

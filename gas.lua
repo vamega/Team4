@@ -13,7 +13,7 @@ gas_nodes.done = false
 
 --THE GAS STATION
 
---gasoline is made up of a number of small 
+--gasoline is made up of a number of small circular nodes
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
 
@@ -30,7 +30,7 @@ function gas_node:new(x, y)
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
-    instance.health = 200
+    instance.health = 120
     
     setmetatable(instance, {__index = gas_node})
     return instance
