@@ -10,6 +10,7 @@ module(..., package.seeall)
 function tutorial_level()
     crate.spawn_crate(400, 600)
     crate.spawn_crate(100, 100)
+    explosives.spawn_barrel(200, 200)
     myText = display.newText("Draw a gas line between the crates", 0, 200, "Helvetica", 48)
     myText:setTextColor(255, 255, 255)
 
