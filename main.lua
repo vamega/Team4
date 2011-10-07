@@ -5,6 +5,7 @@ utils = require "utils"
 crate = require "crate"
 explosives = require "explosives"
 gas = require "gas"
+levels = require "levels"
 --local intro = require("levels/intro")
 local explosives = require("explosives")
 
@@ -133,17 +134,19 @@ mainDisplay:insert(background)
 
 
 --load test level
-explosives.spawn_barrel(110, 110)
-explosives.spawn_barrel(250, 280)
-explosives.spawn_barrel(300, 600)
-explosives.spawn_barrel(400, 360)
+ -- explosives.spawn_barrel(110, 110)
+ -- explosives.spawn_barrel(250, 280)
+ -- explosives.spawn_barrel(300, 600)
+ -- explosives.spawn_barrel(400, 360)
 
-crate.spawn_crate(300, 380)
-crate.spawn_crate(249, 400)
-crate.spawn_crate(198, 389)
-crate.spawn_crate(240, 451)
-crate.spawn_crate(70, 580)
-
+ -- crate.spawn_crate(300, 380)
+ -- crate.spawn_crate(249, 400)
+ -- crate.spawn_crate(198, 389)
+ -- crate.spawn_crate(240, 451)
+ -- crate.spawn_crate(70, 580)
+levels.tutorial_level()
+    
+    
 --add invisible boundaries so that objects don't go offscreen
 local top_edge = display.newRect(0, 0, display.contentWidth, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
@@ -191,4 +194,4 @@ Runtime:addEventListener("enterFrame", on_enter_frame)
 Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
 
-mainDisplay:addEventListener( "touch", mainDisplay )
+--mainDisplay:addEventListener( "touch", mainDisplay )
