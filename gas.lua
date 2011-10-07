@@ -59,7 +59,7 @@ function add_gas(event)
 	if event.phase == "began" and gas_nodes.done == false then
         prev_touch_x = event.x
         prev_touch_y = event.y
-        return
+        --return
     elseif event.phase == "moved" and gas_nodes.done == false then
         local distance = math.sqrt(utils.dist_squared(
         		prev_touch_x, prev_touch_y, event.x, event.y))

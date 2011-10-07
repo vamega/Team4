@@ -24,6 +24,8 @@ function crate:new(x, y)
     local instance = flammable:new(crateImage)
     mainDisplay:insert(crateImage)
     instance.image = crateImage
+    --instance.body.density = 100
+    --instance.body.friction = 100
 	setmetatable(instance, {__index = crate})
 	
 	--crates have plenty of health, so they last a while
