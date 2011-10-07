@@ -21,13 +21,30 @@ physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
 
+--background
+background = display.newImage("background.png")
+mainDisplay:insert(background)
+
+--[[
+This function calculates the distance between the two fingers
+--]]
+local function calculateDelta( previousTouches, event )
+	local id,touch = next( previousTouches )
+	if event.id == id then
+		id,touch = next( previousTouches, id )
+		assert( id ~= event.id )
+	end
+
+	local dx = touch.x - event.x
+	local dy = touch.y - event.y
+	return dx, dy
+end
+
 -- Code to Handle zoom on the mainDisplay
 -- create a table listener object for the background image
 function mainDisplay:touch( event )
 	local result = true
-
 	local phase = event.phase
-
 	local previousTouches = self.previousTouches
 
 	local numTotalTouches = 1
@@ -53,7 +70,7 @@ function mainDisplay:touch( event )
 			local dx,dy
 
 			if previousTouches and ( numTotalTouches ) >= 2 then
-				dx,dy = utils.calculateDelta( previousTouches, event )
+				dx,dy = calculateDelta( previousTouches, event )
 			end
 
 			-- initialize to distance between two touches
@@ -78,7 +95,7 @@ function mainDisplay:touch( event )
 			if ( self.distance ) then
 				local dx,dy
 				if previousTouches and ( numTotalTouches ) >= 2 then
-					dx,dy = utils.calculateDelta( previousTouches, event )
+					dx,dy = calculateDelta( previousTouches, event )
 				end
 	
 				if ( dx and dy ) then
@@ -126,22 +143,10 @@ function mainDisplay:touch( event )
 	return false
 end
 
-
-
-
-
-
-
 --initialization
 barrels = explosives.barrels
 gas_nodes = gas.gas_nodes
 waters = water.waters
-
---local intro_img = intro.background
-
---background
-background = display.newImage("background.png")
-mainDisplay:insert(background)
 
 --load test level
 
@@ -176,10 +181,6 @@ mainDisplay:insert(left_edge)
 mainDisplay:insert(right_edge)
 mainDisplay:insert(bottom_edge)
 
---event listeners
-Runtime:addEventListener("touch", gas.add_gas)
-Runtime:addEventListener("accelerometer", gas.erase_gas)
-
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
 	for i, object in ipairs(table_to_update) do
@@ -202,8 +203,8 @@ local function on_enter_frame(event)
 	update_all(gas.gas_nodes, elapsed_time)
 end
 
-Runtime:addEventListener("enterFrame", on_enter_frame)
-Runtime:addEventListener("touch", gas.add_gas)
+--event listeners
+--Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
-
---mainDisplay:addEventListener( "touch", mainDisplay )
+--Runtime:addEventListener("enterFrame", on_enter_frame)
+mainDisplay:addEventListener( "touch", mainDisplay )
