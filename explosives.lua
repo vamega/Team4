@@ -30,7 +30,7 @@ function barrel:new(x, y)
     instance.image = barrelImage
     instance.body.isFixedRotation = true
 	
-    instance.body.density = 1.0
+    instance.body.density = 1
     instance.body.friction = 5
     instance.body.bounce = 0.5
     
@@ -90,7 +90,7 @@ function spawn_explosion(x, y, radius, heat)
             flammable_obj:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)
-            local force = (radius - dist) * 10
+            local force = (radius - dist) * 20
             flammable_obj.body:applyLinearImpulse(
             				force * xDist / dist,
             				force * yDist / dist,

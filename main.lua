@@ -144,28 +144,6 @@ barrels = explosives.barrels
 gas_nodes = gas.gas_nodes
 waters = water.waters
 
---load test level
-levels.tutorial_level()
-
-    
---add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, levels.background.width, 10)
-physics.addBody(top_edge, "static", {bounce = 0.4})
-top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, levels.background.height)
-physics.addBody(left_edge, "static", {bounce = 0.4})
-left_edge.isVisible = false
-local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
-physics.addBody(right_edge, "static", {bounce = 0.4})
-right_edge.isVisible = false
-local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
-physics.addBody(bottom_edge, "static", {bounce = 0.4})
-bottom_edge.isVisible = false
-
-mainDisplay:insert(top_edge)
-mainDisplay:insert(left_edge)
-mainDisplay:insert(right_edge)
-mainDisplay:insert(bottom_edge)
 
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
@@ -190,30 +168,39 @@ local function on_enter_frame(event)
 	
 	update_all(flammable_module.flammable_list, elapsed_time)
 	
-    if spawned == false then
+    if spawned == false and level < levels.number_of_levels then
         print ("spawning level"..level)
-        if level == 0 then
-            levels.tutorial_level()
-        end
-        if level == 1 then
-            levels.level_one()
-        end
-        if level == 2 then
-            levels.level_two()
-        end
-        if level == 3 then
-            levels.level_three()
-        end
+        levels.spawn_level(level)
         spawned = true
     end
     
-    if crate.crates.size==0 and table.getn(explosives.barrels)==0 then
+    if crate.crates.size==0 and table.getn(explosives.barrels)==0
+            and level< levels.number_of_levels then
         print ("killing level")
         levels.kill_level()
         level = level+1
         spawned = false
     end
 end
+
+--add invisible boundaries so that objects don't go offscreen
+local top_edge = display.newRect(0, 0, levels.background.width, 10)
+physics.addBody(top_edge, "static", {bounce = 0.4})
+top_edge.isVisible = false
+local left_edge = display.newRect(0, 0, 10, levels.background.height)
+physics.addBody(left_edge, "static", {bounce = 0.4})
+left_edge.isVisible = false
+local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
+physics.addBody(right_edge, "static", {bounce = 0.4})
+right_edge.isVisible = false
+local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
+physics.addBody(bottom_edge, "static", {bounce = 0.4})
+bottom_edge.isVisible = false
+
+mainDisplay:insert(top_edge)
+mainDisplay:insert(left_edge)
+mainDisplay:insert(right_edge)
+mainDisplay:insert(bottom_edge)
 
 --event listeners
 Runtime:addEventListener("touch", gas.add_gas)

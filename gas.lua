@@ -10,6 +10,7 @@ gas_nodes = {}
 gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
+gas_nodes.lock = false
 
 --THE GAS STATION
 
@@ -38,10 +39,12 @@ function gas_node:new(x, y)
 end
 
 function gas_node:on_enter_frame(elapsed_time)
-	--update heat
-	flammable.on_enter_frame(self, elapsed_time)
-    --update animation
-    self:animate()
+    if gas_nodes.lock == false then
+        --update heat
+        flammable.on_enter_frame(self, elapsed_time)
+        --update animation
+        self:animate()
+    end
 end
 
 function gas_node:animate()
@@ -104,15 +107,19 @@ function add_gas(event)
     end
 end
 
+function reset_gas()
+     gas_nodes.done = false
+    while gas_nodes.size > 0 do
+        if gas_nodes[gas_nodes.size] ~= nil then
+            gas_nodes[gas_nodes.size]:burn_up()
+        else
+            gas_nodes.size = gas_nodes.size - 1
+        end
+    end
+end
+
 function erase_gas(event)
     if(event.isShake == true) then
-        gas_nodes.done = false
-        while gas_nodes.size > 0 do
-        	if gas_nodes[gas_nodes.size] ~= nil then
-	            gas_nodes[gas_nodes.size].body:removeSelf()
-	            table.remove(gas_nodes, gas_nodes.size)
-	        end
-	        gas_nodes.size = gas_nodes.size - 1
-        end
+        reset_gas()
     end
 end
