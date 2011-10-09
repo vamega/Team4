@@ -10,37 +10,42 @@ gas_nodes = {}
 gas_nodes.size = 0
 gas_nodes.capacity = 250
 gas_nodes.done = false
+gas_nodes.lock = false
 
 --THE GAS STATION
 
 --gasoline is made up of a number of small circular nodes
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
+gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y)
-	--gas nodes don't collide with anything
-	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
+	local radius = 15-10*(gas_nodes.size/gas_nodes.capacity)
 	
-    circle = display.newCircle(x, y, 15-10*(gas_nodes.size/gas_nodes.capacity))
-    local instance = flammable:new((circle), true,nil, 10000)
+	circle = display.newCircle(x, y, radius)
+    local instance = flammable:new(circle, {radius = radius, density = 4000})
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
     mainDisplay:insert(circle)
+    instance.body.density = 100
     
-    --gas starts burning early but lasts a while
+    --gas starts burning early and gets hot quickly
     instance.flash_point = 4
-    instance.health = 120-40*(gas_nodes.size/gas_nodes.capacity)
+    instance.heat_increase_rate = 30 - radius / 3
+    instance.health = 120
     
-    setmetatable(instance, {__index = gas_node})
+    setmetatable(instance, gas_metatable)
     return instance
 end
 
 function gas_node:on_enter_frame(elapsed_time)
-	--update heat
-	flammable.on_enter_frame(self, elapsed_time)
-    --update animation
-    self:animate()
+    if gas_nodes.lock == false then
+        --update heat
+        flammable.on_enter_frame(self, elapsed_time)
+        --update animation
+        self:animate()
+    end
 end
 
 function gas_node:animate()
@@ -104,15 +109,19 @@ function add_gas(event)
     end
 end
 
+function reset_gas()
+     gas_nodes.done = false
+    while gas_nodes.size > 0 do
+        if gas_nodes[gas_nodes.size] ~= nil then
+            gas_nodes[gas_nodes.size]:burn_up()
+        else
+            gas_nodes.size = gas_nodes.size - 1
+        end
+    end
+end
+
 function erase_gas(event)
     if(event.isShake == true) then
-        gas_nodes.done = false
-        while gas_nodes.size > 0 do
-        	if gas_nodes[gas_nodes.size] ~= nil then
-	            gas_nodes[gas_nodes.size].body:removeSelf()
-	            table.remove(gas_nodes, gas_nodes.size)
-	        end
-	        gas_nodes.size = gas_nodes.size - 1
-        end
+        reset_gas()
     end
 end
