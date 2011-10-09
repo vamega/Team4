@@ -118,9 +118,3 @@ function reset_gas()
         end
     end
 end
-
-function erase_gas(event)
-    if(event.isShake == true) then
-        reset_gas()
-    end
-end

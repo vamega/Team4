@@ -23,7 +23,7 @@ function crate:new(x, y)
 	crateImage.x = x
     crateImage.y = y
     
-    local instance = flammable:new(crateImage)
+    local instance = flammable:new(crateImage, {density=5})
     mainDisplay:insert(crateImage)
     
 	setmetatable(instance, {__index = crate})

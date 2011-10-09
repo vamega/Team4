@@ -10,21 +10,46 @@ gas = require "gas"
 module(..., package.seeall)
 
 text = {}
-levels_capacity = {0, 250, 250, 250}
+levels_capacity = {0, 150, 150, 150}
 background = display.newImage("background.png")
 number_of_levels = 6
+cur_level = 1
+reset_lock = false
 
+
+function reset_level(event)
+    if(event.isShake == true) then
+        reset_lock = true
+        kill_level()
+        spawn_level(cur_level)
+    end
+end
 
 function kill_level()
     table_size = table.getn(text)
     for i=1, table_size do
         display.remove(text[i])
     end
+    table_size = table.getn(barrel.barrels)
+    for i=table_size, 1, -1 do
+        barrel.barrels[i]:burn_up()
+    end
+   table_size = table.getn(crate.crates)
+    for i=table_size, 1, -1 do
+        crate.crates[i]:burn_up()
+    end
     
     gas.reset_gas()
+    --[[table_size = table.getn(flammable.flammable_list)
+    for i =table_size, 1, -1 do
+        flammable.flammable_list[i]:burn_up()
+    end]]
+    
 end
 
 function spawn_level(level)
+    reset_lock = false
+    cur_level = level
     gas.gas_nodes.capacity = levels_capacity[level]
     if level == 1 then
         background = display.newImage("background.png")
@@ -48,8 +73,8 @@ function spawn_level(level)
         crate.spawn_crate(50, 50)
         crate.spawn_crate(50, 700)
         barrel.spawn_barrel(100, 300)
-        barrel.spawn_barrel(100, 350)
         barrel.spawn_barrel(100, 400)
+        barrel.spawn_barrel(100, 500)
         crate.spawn_crate(display.contentWidth-50, 200)
     elseif level == 4 then
         crate.spawn_crate(400, 600)
