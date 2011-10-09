@@ -145,6 +145,17 @@ gas_nodes = gas.gas_nodes
 waters = water.waters
 
 --load test level
+
+ --explosives.spawn_barrel(110, 110)
+ -- explosives.spawn_barrel(250, 280)
+ -- explosives.spawn_barrel(300, 600)
+ -- explosives.spawn_barrel(400, 360)
+
+ -- crate.spawn_crate(300, 380)
+ -- crate.spawn_crate(249, 400)
+ -- crate.spawn_crate(198, 389)
+ -- crate.spawn_crate(240, 451)
+ -- crate.spawn_crate(70, 580)
 levels.tutorial_level()
 
     
