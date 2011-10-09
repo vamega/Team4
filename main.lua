@@ -21,10 +21,6 @@ physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
 
---background
-background = display.newImage("background.png")
-mainDisplay:insert(background)
-
 --[[
 This function calculates the distance between the two fingers
 --]]

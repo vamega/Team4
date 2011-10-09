@@ -36,6 +36,19 @@ function gas_node:new(x, y)
     return instance
 end
 
+function gas_node:on_enter_frame(elapsed_time)
+	--update heat
+	flammable.on_enter_frame(self, elapsed_time)
+    --update animation
+    self:animate()
+end
+
+function gas_node:animate()
+    if self.current_heat >= self.flash_point then
+        self.body:setFillColor(255,0,0)
+    end
+end
+
 function gas_node:burn_up()
 	flammable.burn_up(self)
 	
