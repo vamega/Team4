@@ -15,7 +15,6 @@ function kill_level()
     for i=1, table_size do
         display.remove(text[i])
     end
-    
 end
 
 function tutorial_level()
@@ -32,7 +31,6 @@ function tutorial_level()
     text[2] = display.newText("If you mess up,\nshake the phone to\nreset the level", 0, 500, "Helvetica", 48)
     text[2]:setTextColor(255, 255, 255)
     --water.load_water(300, 500)
-    
 end
 
 function level_one()
@@ -51,21 +49,17 @@ function level_one()
 end
 
 function level_two()
-
-
+	
 end
 
 function level_three()
-
-
+	
 end
 
 function level_four()
-
-
+	
 end
 
 function level_five()
-
-
+	
 end

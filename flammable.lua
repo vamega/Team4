@@ -15,28 +15,22 @@ flammable = {}
 --if object_shape is defined, it is used as the shape of the physics
 --object; otherwise, the object will be defined as a circle or rectangle
 --depending on whether circular is specified
-function flammable:new(image, circular, object_shape, density)
+function flammable:new(image, extra_physics_params)
 	instance = {body=image}
 	instance.body.flammable = instance
 	
-	if density == nil then
-		density = 3.0
+	--determine the physics parameters, using default values unless the
+	--values are overwritten by extra_physics_params
+	local physics_params = {density = 3, friction = 5, bounce = 0}
+	
+	if extra_physics_params ~= nil then
+		for k, v in pairs(extra_physics_params) do
+			physics_params[k] = v
+		end
 	end
 	
-	--convert to a physics object
-	if object_shape then
-		--use a polygonal physics object
-		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					shape=object_shape, density=density})
-	elseif circular then
-		--use a circular physics object
-		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					radius=instance.body.width/2, density=density})
-	else
-		--use a rectangular physics object
-		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					density=density})
-	end
+	--convert the image to a physics object
+	physics.addBody(instance.body, "dynamic", physics_params)
 	
 	instance.body.linearDamping = 3
 	instance.body.angularDamping = 3
