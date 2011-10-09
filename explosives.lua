@@ -55,6 +55,7 @@ end
 function barrel:touch(event)
     if event.phase == "began" then
         self:apply_heat(self.flash_point)
+        return true
     end
 end
 
@@ -72,7 +73,7 @@ function barrel:burn_up()
 	
 	flammable.burn_up(self)
 	
-	spawn_explosion(self.body.x, self.body.y, 300, self.current_heat + 50)
+	spawn_explosion(self.body.x, self.body.y, 200, self.burn_temperature)
 end
 
 function spawn_barrel(x, y)
@@ -80,20 +81,20 @@ function spawn_barrel(x, y)
 end
 
 function spawn_explosion(x, y, radius, heat)
-    for i, barrel in ipairs(barrels) do
-        local xDist = barrel.body.x - x
-        local yDist = barrel.body.y - y
+    for i, flammable_obj in ipairs(flammable_module.flammable_list) do
+        local xDist = flammable_obj.body.x - x
+        local yDist = flammable_obj.body.y - y
     	local dist_squared = xDist^2 + yDist^2
-        if x ~= barrel.body.x and y ~= barrel.body.y
+        if x ~= flammable_obj.body.x and y ~= flammable_obj.body.y
         		and dist_squared < radius^2 then
-            barrel:apply_heat(heat)
+            flammable_obj:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)
-            local force = (radius - dist) * 30
-            barrel.body:applyLinearImpulse(
+            local force = (radius - dist) * 10
+            flammable_obj.body:applyLinearImpulse(
             				force * xDist / dist,
             				force * yDist / dist,
-            				barrel.body.x, barrel.body.y)
+            				flammable_obj.body.x, flammable_obj.body.y)
         end
     end
 end

@@ -16,14 +16,10 @@ local explosives = require("explosives")
 system.activate( "multitouch" )
 
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
-
---background
-background = display.newImage("background.png")
-mainDisplay:insert(background)
 
 --[[
 This function calculates the distance between the two fingers
@@ -149,19 +145,20 @@ gas_nodes = gas.gas_nodes
 waters = water.waters
 
 --load test level
+levels.tutorial_level()
 
     
 --add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, display.contentWidth, 10)
+local top_edge = display.newRect(0, 0, levels.background.width, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
 top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, display.contentHeight)
+local left_edge = display.newRect(0, 0, 10, levels.background.height)
 physics.addBody(left_edge, "static", {bounce = 0.4})
 left_edge.isVisible = false
-local right_edge = display.newRect(display.contentWidth-10, 0, 10, display.contentHeight)
+local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
 physics.addBody(right_edge, "static", {bounce = 0.4})
 right_edge.isVisible = false
-local bottom_edge = display.newRect(0, display.contentHeight-10, display.contentWidth, 10)
+local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
@@ -179,7 +176,7 @@ end
 
 
 level = 0
-spawned = false
+spawned = true
 
 --game loop
 local last_frame_time = 0
@@ -191,11 +188,10 @@ local function on_enter_frame(event)
 	
 	last_frame_time = event.time
 	
-	update_all(crate.crates, elapsed_time)
-	update_all(explosives.barrels, elapsed_time)
-	update_all(gas.gas_nodes, elapsed_time)
+	update_all(flammable_module.flammable_list, elapsed_time)
+	
     if spawned == false then
-        print ("spawning level")
+        print ("spawning level"..level)
         if level == 0 then
             levels.tutorial_level()
         end
@@ -204,6 +200,9 @@ local function on_enter_frame(event)
         end
         if level == 2 then
             levels.level_two()
+        end
+        if level == 3 then
+            levels.level_three()
         end
         spawned = true
     end
