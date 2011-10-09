@@ -17,24 +17,25 @@ gas_nodes.lock = false
 --gasoline is made up of a number of small circular nodes
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
+gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y)
-	--gas nodes don't collide with anything
-	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
+	local radius = 15-10*(gas_nodes.size/gas_nodes.capacity)
 	
-    local instance = flammable:new(display.newCircle(x, y,
-    				15-10*(gas_nodes.size/gas_nodes.capacity)), true,
-    				nil, 10000)
+    local instance = flammable:new(display.newCircle(x, y, radius),
+    				{radius = radius, density = 4000})
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
+    instance.body.density = 100
+
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
-    instance.heat_increase_rate = 25 + 5*(gas_nodes.size/gas_nodes.capacity)
+    instance.heat_increase_rate = 30 - radius / 3
     instance.health = 120
     
-    setmetatable(instance, {__index = gas_node})
+    setmetatable(instance, gas_metatable)
     return instance
 end
 

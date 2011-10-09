@@ -145,6 +145,7 @@ gas_nodes = gas.gas_nodes
 waters = water.waters
 
 
+
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
 	for i, object in ipairs(table_to_update) do
