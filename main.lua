@@ -16,7 +16,7 @@ local explosives = require("explosives")
 system.activate( "multitouch" )
 
 physics.start()
---physics.setDrawMode("hybrid")
+physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
@@ -145,19 +145,20 @@ gas_nodes = gas.gas_nodes
 waters = water.waters
 
 --load test level
+levels.tutorial_level()
 
     
 --add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, display.contentWidth, 10)
+local top_edge = display.newRect(0, 0, levels.background.width, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
 top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, display.contentHeight)
+local left_edge = display.newRect(0, 0, 10, levels.background.height)
 physics.addBody(left_edge, "static", {bounce = 0.4})
 left_edge.isVisible = false
-local right_edge = display.newRect(display.contentWidth-10, 0, 10, display.contentHeight)
+local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
 physics.addBody(right_edge, "static", {bounce = 0.4})
 right_edge.isVisible = false
-local bottom_edge = display.newRect(0, display.contentHeight-10, display.contentWidth, 10)
+local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
@@ -175,7 +176,7 @@ end
 
 
 level = 0
-spawned = false
+spawned = true
 
 --game loop
 local last_frame_time = 0
