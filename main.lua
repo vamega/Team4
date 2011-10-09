@@ -202,10 +202,14 @@ local function on_enter_frame(event)
         if level == 1 then
             levels.level_one()
         end
+        if level == 2 then
+            levels.level_two()
+        end
         spawned = true
     end
     
     if crate.crates.size==0 and table.getn(explosives.barrels)==0 then
+        print ("killing level")
         levels.kill_level()
         level = level+1
         spawned = false
