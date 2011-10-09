@@ -22,13 +22,13 @@ gas_metatable = {__index = gas_node}
 function gas_node:new(x, y)
 	local radius = 15-10*(gas_nodes.size/gas_nodes.capacity)
 	
-    local instance = flammable:new(display.newCircle(x, y, radius),
-    				{radius = radius, density = 4000})
+	circle = display.newCircle(x, y, radius)
+    local instance = flammable:new(circle, {radius = radius, density = 4000})
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
+    mainDisplay:insert(circle)
     instance.body.density = 100
-
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
@@ -55,6 +55,7 @@ function gas_node:animate()
 end
 
 function gas_node:burn_up()
+    --mainDisplay:remove(self.body)
 	flammable.burn_up(self)
 	
 	table.remove(gas_nodes, utils.index_of(gas_nodes, self))
