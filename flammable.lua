@@ -15,23 +15,27 @@ flammable = {}
 --if object_shape is defined, it is used as the shape of the physics
 --object; otherwise, the object will be defined as a circle or rectangle
 --depending on whether circular is specified
-function flammable:new(image, circular, object_shape, collision_filter)
+function flammable:new(image, circular, object_shape, density)
 	instance = {body=image}
 	instance.body.flammable = instance
+	
+	if density == nil then
+		density = 3.0
+	end
 	
 	--convert to a physics object
 	if object_shape then
 		--use a polygonal physics object
 		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					shape=object_shape, filter=collision_filter})
+					shape=object_shape, density=density})
 	elseif circular then
 		--use a circular physics object
 		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					radius=instance.body.width/2, filter=collision_filter})
+					radius=instance.body.width/2, density=density})
 	else
 		--use a rectangular physics object
-		physics.addBody(instance.body, "dynamic", {bounce=0.1,
-					filter=collision_filter})
+		physics.addBody(instance.body, "dynamic", {bounce=0,
+					density=density})
 	end
 	
 	instance.body.linearDamping = 3
@@ -43,6 +47,10 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	instance.current_heat = 0
 	instance.heat_increase_rate = 20
 	instance.flash_point = 20
+	
+	--once an object catches on fire, its temperature increases until
+	--it reaches burn_temperature 
+	instance.burn_temperature = 25
 	
 	--when this object is on fire, it burns up and eventually is removed
 	--health represents how long it has left, and min_burn_rate/max_burn_rate
@@ -62,6 +70,8 @@ function flammable:new(image, circular, object_shape, collision_filter)
 	
 	setmetatable(instance, {__index = flammable})
 	instance.body:addEventListener("collision", instance)
+	
+	table.insert(flammable_list, instance)
 	return instance
 end
 
@@ -88,6 +98,8 @@ end
 --removes a flammable object when it fully burns up
 function flammable:burn_up()
 	self.body:removeSelf()
+	
+	table.remove(flammable_list, utils.index_of(flammable_list, self))
 end
 
 --increases a flammable object's heat if it is touching burning objects
@@ -100,6 +112,12 @@ function flammable:on_enter_frame(elapsed_time)
 				object.current_heat >= object.flash_point then
 			highest_heat_value = object.current_heat
 		end
+	end
+	
+	--if this is burning, its heat should increase up to burn_temperature
+	if self.current_heat >= self.flash_point
+			and self.burn_temperature > highest_heat_value then
+		highest_heat_value = self.burn_temperature
 	end
 	
 	--increase this object's heat to approach the highest heat value found

@@ -1,3 +1,4 @@
+math = require "math"
 utils = require "utils"
 flammable_module = require "flammable"
 sprite = require "sprite"
@@ -21,44 +22,38 @@ function crate:new(x, y)
     local crateImage = sprite.newSprite(crate_burning_set)--display.newRect(x, y, 50, 50)
 	crateImage.x = x
     crateImage.y = y
+    
     local instance = flammable:new(crateImage)
     mainDisplay:insert(crateImage)
-    instance.image = crateImage
-    --instance.body.density = 100
-    --instance.body.friction = 100
+    
 	setmetatable(instance, {__index = crate})
 	
 	--crates have plenty of health, so they last a while
 	instance.health = 300
+	
+	local frame_count = 8
+	instance.frames_per_health_lost = (frame_count - 1) / instance.health
 	
 	return instance
 end
 
 function crate:animate()
     if self.current_heat >= self.flash_point then
-        self.image.currentFrame = (300-self.health)/37.5
+        self.body.currentFrame = 1 + math.ceil((300-self.health) * self.frames_per_health_lost)
     end
-
 end
 
 function crate:on_enter_frame(elapsed_time)
 	flammable.on_enter_frame(self, elapsed_time)
 	
-	if self.health <= 0 then
-		return
+	if self.health > 0 then
+		self:animate()
 	end
-	
-    self:animate()
-	--if self.current_heat >= self.flash_point then
-	--	self.body:setFillColor(230, 140, 10)
-	--else
-	--	self.body:setFillColor(180, 50, 10)
-	--end
 end
 
 function crate:burn_up()
 	table.remove(crates, utils.index_of(crates, self))
-	
+	crates.size = crates.size -1
 	flammable.burn_up(self)
 end
 

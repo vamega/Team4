@@ -21,13 +21,26 @@ physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
 
+--[[
+This function calculates the distance between the two fingers
+--]]
+local function calculateDelta( previousTouches, event )
+	local id,touch = next( previousTouches )
+	if event.id == id then
+		id,touch = next( previousTouches, id )
+		assert( id ~= event.id )
+	end
+
+	local dx = touch.x - event.x
+	local dy = touch.y - event.y
+	return dx, dy
+end
+
 -- Code to Handle zoom on the mainDisplay
 -- create a table listener object for the background image
 function mainDisplay:touch( event )
 	local result = true
-
 	local phase = event.phase
-
 	local previousTouches = self.previousTouches
 
 	local numTotalTouches = 1
@@ -53,7 +66,7 @@ function mainDisplay:touch( event )
 			local dx,dy
 
 			if previousTouches and ( numTotalTouches ) >= 2 then
-				dx,dy = utils.calculateDelta( previousTouches, event )
+				dx,dy = calculateDelta( previousTouches, event )
 			end
 
 			-- initialize to distance between two touches
@@ -78,7 +91,7 @@ function mainDisplay:touch( event )
 			if ( self.distance ) then
 				local dx,dy
 				if previousTouches and ( numTotalTouches ) >= 2 then
-					dx,dy = utils.calculateDelta( previousTouches, event )
+					dx,dy = calculateDelta( previousTouches, event )
 				end
 	
 				if ( dx and dy ) then
@@ -126,22 +139,10 @@ function mainDisplay:touch( event )
 	return false
 end
 
-
-
-
-
-
-
 --initialization
 barrels = explosives.barrels
 gas_nodes = gas.gas_nodes
 waters = water.waters
-
---local intro_img = intro.background
-
---background
-background = display.newImage("background.png")
-mainDisplay:insert(background)
 
 --load test level
 
@@ -156,18 +157,19 @@ mainDisplay:insert(background)
  -- crate.spawn_crate(240, 451)
  -- crate.spawn_crate(70, 580)
 levels.tutorial_level()
+
     
 --add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, display.contentWidth, 10)
+local top_edge = display.newRect(0, 0, levels.background.width, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
 top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, display.contentHeight)
+local left_edge = display.newRect(0, 0, 10, levels.background.height)
 physics.addBody(left_edge, "static", {bounce = 0.4})
 left_edge.isVisible = false
-local right_edge = display.newRect(display.contentWidth-10, 0, 10, display.contentHeight)
+local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
 physics.addBody(right_edge, "static", {bounce = 0.4})
 right_edge.isVisible = false
-local bottom_edge = display.newRect(0, display.contentHeight-10, display.contentWidth, 10)
+local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
@@ -176,16 +178,16 @@ mainDisplay:insert(left_edge)
 mainDisplay:insert(right_edge)
 mainDisplay:insert(bottom_edge)
 
---event listeners
-Runtime:addEventListener("touch", gas.add_gas)
-Runtime:addEventListener("accelerometer", gas.erase_gas)
-
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
 	for i, object in ipairs(table_to_update) do
 		object:on_enter_frame(elapsed_time)
 	end
 end
+
+
+level = 0
+spawned = true
 
 --game loop
 local last_frame_time = 0
@@ -197,13 +199,35 @@ local function on_enter_frame(event)
 	
 	last_frame_time = event.time
 	
-	update_all(crate.crates, elapsed_time)
-	update_all(explosives.barrels, elapsed_time)
-	update_all(gas.gas_nodes, elapsed_time)
+	update_all(flammable_module.flammable_list, elapsed_time)
+	
+    if spawned == false then
+        print ("spawning level"..level)
+        if level == 0 then
+            levels.tutorial_level()
+        end
+        if level == 1 then
+            levels.level_one()
+        end
+        if level == 2 then
+            levels.level_two()
+        end
+        if level == 3 then
+            levels.level_three()
+        end
+        spawned = true
+    end
+    
+    if crate.crates.size==0 and table.getn(explosives.barrels)==0 then
+        print ("killing level")
+        levels.kill_level()
+        level = level+1
+        spawned = false
+    end
 end
 
-Runtime:addEventListener("enterFrame", on_enter_frame)
+--event listeners
 Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", gas.erase_gas)
-
---mainDisplay:addEventListener( "touch", mainDisplay )
+Runtime:addEventListener("enterFrame", on_enter_frame)
+mainDisplay:addEventListener( "touch", mainDisplay )

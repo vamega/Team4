@@ -13,7 +13,7 @@ gas_nodes.done = false
 
 --THE GAS STATION
 
---gasoline is made up of a number of small 
+--gasoline is made up of a number of small circular nodes
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
 gas_metatable = {__index = gas_node}
@@ -23,18 +23,34 @@ function gas_node:new(x, y)
 	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
 	
     local instance = flammable:new(display.newCircle(x, y,
-    				15-10*(gas_nodes.size/gas_nodes.capacity)), true, nil)
+    				15-10*(gas_nodes.size/gas_nodes.capacity)), true,
+    				nil, 10000)
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
     instance.body.density = 100
+
     
-    --gas starts burning early but lasts a while
+    --gas starts burning early and gets hot quickly
     instance.flash_point = 4
-    instance.health = 200
+    instance.heat_increase_rate = 25 + 5*(gas_nodes.size/gas_nodes.capacity)
+    instance.health = 120
     
     setmetatable(instance, gas_metatable)
     return instance
+end
+
+function gas_node:on_enter_frame(elapsed_time)
+	--update heat
+	flammable.on_enter_frame(self, elapsed_time)
+    --update animation
+    self:animate()
+end
+
+function gas_node:animate()
+    if self.current_heat >= self.flash_point then
+        self.body:setFillColor(255,0,0)
+    end
 end
 
 function gas_node:burn_up()

@@ -4,6 +4,16 @@ gas = require("gas")
 --initialize water
 waters = {}
 waters.size = 0
+buckets = {}
+buckets.size = 0
+
+
+--make water containers
+--bucket = {}
+
+--function bucket:new(x, y)--constructor
+--    local instance = {x=x, y=y}
+
 
 
 --make individual water
@@ -36,6 +46,4 @@ function load_water(x, y)
     waters[waters.size + 1] = water:new(x, y)
     waters.size = waters.size + 1
 end
-
-
 
