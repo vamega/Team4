@@ -38,7 +38,6 @@ function crate:animate()
     if self.current_heat >= self.flash_point then
         self.image.currentFrame = (300-self.health)/37.5
     end
-
 end
 
 function crate:on_enter_frame(elapsed_time)
@@ -49,11 +48,6 @@ function crate:on_enter_frame(elapsed_time)
 	end
 	
     self:animate()
-	--if self.current_heat >= self.flash_point then
-	--	self.body:setFillColor(230, 140, 10)
-	--else
-	--	self.body:setFillColor(180, 50, 10)
-	--end
 end
 
 function crate:burn_up()

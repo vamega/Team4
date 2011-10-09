@@ -191,9 +191,8 @@ local function on_enter_frame(event)
 	
 	last_frame_time = event.time
 	
-	update_all(crate.crates, elapsed_time)
-	update_all(explosives.barrels, elapsed_time)
-	update_all(gas.gas_nodes, elapsed_time)
+	update_all(flammable_module.flammable_list, elapsed_time)
+	
     if spawned == false then
         print ("spawning level")
         if level == 0 then

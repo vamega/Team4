@@ -22,15 +22,15 @@ function gas_node:new(x, y)
 	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
 	
     local instance = flammable:new(display.newCircle(x, y,
-    				15-10*(gas_nodes.size/gas_nodes.capacity)), true, nil)
+    				15-10*(gas_nodes.size/gas_nodes.capacity)), true,
+    				nil, 10000)
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
-    instance.body.density = 300
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
-    instance.health = 120
+    instance.health = 120-40*(gas_nodes.size/gas_nodes.capacity)
     
     setmetatable(instance, {__index = gas_node})
     return instance
