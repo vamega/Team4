@@ -1,7 +1,7 @@
 math = require "math"
 utils = require "utils"
 sprite = require "sprite"
-flammable = require "flammable"
+flammable_module = require "flammable"
 barrel = require "explosives"
 crate = require "crate"
 water = require "water"
@@ -30,21 +30,11 @@ function kill_level()
     for i=1, table_size do
         display.remove(text[i])
     end
-    table_size = table.getn(barrel.barrels)
-    for i=table_size, 1, -1 do
-        barrel.barrels[i]:burn_up()
-    end
-   table_size = table.getn(crate.crates)
-    for i=table_size, 1, -1 do
-        crate.crates[i]:burn_up()
-    end
     
-    gas.reset_gas()
-    --[[table_size = table.getn(flammable.flammable_list)
+    table_size = table.getn(flammable_module.flammable_list)
     for i =table_size, 1, -1 do
-        flammable.flammable_list[i]:burn_up()
-    end]]
-    
+        flammable_module.flammable_list[i]:burn_up()
+    end 
 end
 
 function spawn_level(level)

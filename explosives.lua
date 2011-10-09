@@ -91,6 +91,8 @@ function spawn_explosion(x, y, radius, heat)
             
             local dist = math.sqrt(dist_squared)
             local force = (radius - dist) * 20
+            force = math.min(1500, force)
+            
             flammable_obj.body:applyLinearImpulse(
             				force * xDist / dist,
             				force * yDist / dist,
