@@ -28,9 +28,10 @@ function gas_node:new(x, y)
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
     
-    --gas starts burning early but lasts a while
+    --gas starts burning early and gets hot quickly
     instance.flash_point = 4
-    instance.health = 120-40*(gas_nodes.size/gas_nodes.capacity)
+    instance.heat_increase_rate = 25 + 5*(gas_nodes.size/gas_nodes.capacity)
+    instance.health = 120
     
     setmetatable(instance, {__index = gas_node})
     return instance
