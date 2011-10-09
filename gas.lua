@@ -20,18 +20,17 @@ setmetatable(gas_node, {__index = flammable})
 function gas_node:new(x, y)
 	--gas nodes don't collide with anything
 	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
-	local image = display.newCircle(x, y, 15-10*(gas_nodes.size/gas_nodes.capacity))
+	
+    local instance = flammable:new(display.newCircle(x, y,
+    				15-10*(gas_nodes.size/gas_nodes.capacity)), true,
+    				nil, 10000)
     
-    local instance = flammable:new(image, true, nil)
-    
-    instance.image = image
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
-    instance.body.density = 300
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
-    instance.health = 120
+    instance.health = 120-40*(gas_nodes.size/gas_nodes.capacity)
     
     setmetatable(instance, {__index = gas_node})
     return instance
@@ -46,7 +45,7 @@ end
 
 function gas_node:animate()
     if self.current_heat >= self.flash_point then
-        self.image:setFillColor(255,0,0)
+        self.body:setFillColor(255,0,0)
     end
 end
 
