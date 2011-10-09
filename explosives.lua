@@ -9,7 +9,7 @@ module(..., package.seeall)
 --THE BARREL ZONE
 
 --animations
-barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 50, 100)
+barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
 barrel_burning_set = sprite.newSpriteSet(barrel_burning_sheet, 1, 8)
 --sprite.add(barrel_burning_set, "burning", 1, 8, 400)
 

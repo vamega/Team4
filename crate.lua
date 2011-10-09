@@ -11,7 +11,7 @@ crates = {}
 crates.size = 0
 
 --animations for crate
-crate_burning_sheet = sprite.newSpriteSheet("crate_burning.png", 45, 95)
+crate_burning_sheet = sprite.newSpriteSheet("crate_burning.png", 150, 150)
 crate_burning_set = sprite.newSpriteSet(crate_burning_sheet, 1, 8)
 
 --the crate class
