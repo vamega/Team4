@@ -1,5 +1,5 @@
 module(..., package.seeall)
-explosives = require("explosives")
+gas = require("gas")
 
 --initialize water
 waters = {}
@@ -9,18 +9,31 @@ waters.size = 0
 --make individual water
 water = {}
 
-function water:new(x, y, i)--constructor
-    local instance = {x=x, y=y, i=i, length = 40, height = 40}
-    water.name = "water"
-    instance.image = display.newRect(x, y, 70, 70)
-    instance.image:setFillColor(0, 0, 255)
-    physics.addBody(instance.image,"static", {bounce = 0.4} )
+function water:new(x, y)--constructor
+    local instance = {}
+    instance.name = "water"
+    instance.body = display.newRect(x, y, 70, 70)
+    instance.body:setFillColor(0, 0, 255)
+    physics.addBody(instance.body,"static")
+    instance.body.isSensor = true
+    instance.body:addEventListener("collision", instance)
     setmetatable(instance, {__index = water})
     return instance
 end
 
+function water:collision(event)
+    if(event.phase == "began") then
+        if(getmetatable(event.other) == gas.gas_metatable)then
+            event.other:burn_up()
+        elseif(event.other.current_heat ~= nil) then
+            event.other.current_heat = 0
+        end
+        
+    end
+end
+
 function load_water(x, y)
-    waters[waters.size + 1] = water:new(x, y, waters.size + 1)
+    waters[waters.size + 1] = water:new(x, y)
     waters.size = waters.size + 1
 end
 

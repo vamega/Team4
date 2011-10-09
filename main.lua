@@ -145,7 +145,7 @@ mainDisplay:insert(background)
 
 --load test level
 
- -- explosives.spawn_barrel(110, 110)
+ --explosives.spawn_barrel(110, 110)
  -- explosives.spawn_barrel(250, 280)
  -- explosives.spawn_barrel(300, 600)
  -- explosives.spawn_barrel(400, 360)

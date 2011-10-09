@@ -16,6 +16,7 @@ gas_nodes.done = false
 --gasoline is made up of a number of small 
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
+gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y)
 	--gas nodes don't collide with anything
@@ -26,13 +27,13 @@ function gas_node:new(x, y)
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
-    instance.body.density = 300
+    instance.body.density = 100
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
     instance.health = 200
     
-    setmetatable(instance, {__index = gas_node})
+    setmetatable(instance, gas_metatable)
     return instance
 end
 
