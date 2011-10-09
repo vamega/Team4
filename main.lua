@@ -16,7 +16,7 @@ local explosives = require("explosives")
 system.activate( "multitouch" )
 
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()
@@ -173,7 +173,6 @@ local function update_all(table_to_update, elapsed_time)
 		object:on_enter_frame(elapsed_time)
 	end
 end
-
 
 level = 0
 spawned = true

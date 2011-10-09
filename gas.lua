@@ -21,12 +21,12 @@ function gas_node:new(x, y)
 	--gas nodes don't collide with anything
 	--local collision_filter = {categoryBits = 0x1, maskBits = 0}
 	
-    local instance = flammable:new(display.newCircle(x, y,
-    				15-10*(gas_nodes.size/gas_nodes.capacity)), true,
-    				nil, 10000)
+    circle = display.newCircle(x, y, 15-10*(gas_nodes.size/gas_nodes.capacity))
+    local instance = flammable:new((circle), true,nil, 10000)
     
     instance.body.isSensor = true
     instance.body:setFillColor(155, 150, 145)
+    mainDisplay:insert(circle)
     
     --gas starts burning early but lasts a while
     instance.flash_point = 4
@@ -50,6 +50,7 @@ function gas_node:animate()
 end
 
 function gas_node:burn_up()
+    --mainDisplay:remove(self.body)
 	flammable.burn_up(self)
 	
 	table.remove(gas_nodes, utils.index_of(gas_nodes, self))
