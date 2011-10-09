@@ -191,17 +191,24 @@ local function on_enter_frame(event)
 	update_all(flammable_module.flammable_list, elapsed_time)
 	
     if spawned == false then
-        print ("spawning level")
+        print ("spawning level"..level)
         if level == 0 then
             levels.tutorial_level()
         end
         if level == 1 then
             levels.level_one()
         end
+        if level == 2 then
+            levels.level_two()
+        end
+        if level == 3 then
+            levels.level_three()
+        end
         spawned = true
     end
     
     if crate.crates.size==0 and table.getn(explosives.barrels)==0 then
+        print ("killing level")
         levels.kill_level()
         level = level+1
         spawned = false
