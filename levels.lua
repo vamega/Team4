@@ -19,6 +19,10 @@ function kill_level()
 end
 
 function tutorial_level()
+    --background
+    background = display.newImage("background.png")
+    mainDisplay:insert(background)
+    
     crate.spawn_crate(400, 600)
     crate.spawn_crate(100, 100)
     explosives.spawn_barrel(150, 700)
@@ -32,6 +36,10 @@ function tutorial_level()
 end
 
 function level_one()
+    --background
+    background = display.newImage("background.png")
+    mainDisplay:insert(background)
+    
     crate.spawn_crate(50, 50)
     crate.spawn_crate(50, 700)
     crate.spawn_crate(400, 300)
@@ -39,7 +47,7 @@ function level_one()
     explosives.spawn_barrel(100, 150)
     explosives.spawn_barrel(100, 150)
     explosives.spawn_barrel(100, 150)
-
+    
 end
 
 function level_two()
