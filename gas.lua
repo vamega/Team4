@@ -33,7 +33,6 @@ gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y, angle)
     angle = 90+angle*(180/math.pi)
-    print ("angle is "..angle)
 	local radius = 15-10*(gas_nodes.size/gas_nodes.capacity)
     local nodeImage = sprite.newSprite(gas_set)
     nodeImage.x = x
