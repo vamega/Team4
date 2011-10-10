@@ -2,6 +2,7 @@ math = require "math"
 utils = require "utils"
 flammable_module = require "flammable"
 flammable = flammable_module.flammable
+sprite = require "sprite"
 
 module(..., package.seeall)
 
@@ -14,21 +15,37 @@ gas_nodes.lock = false
 
 --THE GAS STATION
 
+--animations for gas
+gas_sheet = sprite.newSpriteSheet("FireBrush3.png", 30, 30)
+gas_set = sprite.newSpriteSet(gas_sheet, 1,7)
+
 --gasoline is made up of a number of small circular nodes
 gas_node = {}
 setmetatable(gas_node, {__index = flammable})
 gas_metatable = {__index = gas_node}
 
-function gas_node:new(x, y)
+--[[    local crateImage = sprite.newSprite(crate_burning_set)--display.newRect(x, y, 50, 50)
+	crateImage.x = x
+    crateImage.y = y
+    
+    local instance = flammable:new(crateImage, {density=5})
+    mainDisplay:insert(crateImage)]]
+
+function gas_node:new(x, y, angle)
+    angle = 90+angle*(180/math.pi)
+    print ("angle is "..angle)
 	local radius = 15-10*(gas_nodes.size/gas_nodes.capacity)
+    local nodeImage = sprite.newSprite(gas_set)
+    nodeImage.x = x
+    nodeImage.y = y
+    local scale = 1-.66*(gas_nodes.size/gas_nodes.capacity)
+    nodeImage:scale(scale, scale)
+    nodeImage:rotate(angle)
 	
-	circle = display.newCircle(x, y, radius)
-    local instance = flammable:new(circle, {radius = radius, density = 4000})
+    local instance = flammable:new(nodeImage, {density = 4000})
     
     instance.body.isSensor = true
-    instance.body:setFillColor(155, 150, 145)
-    mainDisplay:insert(circle)
-    instance.body.density = 100
+    mainDisplay:insert(nodeImage)
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
@@ -50,7 +67,9 @@ end
 
 function gas_node:animate()
     if self.current_heat >= self.flash_point then
-        self.body:setFillColor(255,0,0)
+        --self.body:setFillColor(255,0,0)
+        self.body.currentFrame = 1+(120-self.health)/20
+        --self.body.currentFrame = 1 + math.ceil((300-self.health) * self.frames_per_health_lost)
     end
 end
 
@@ -71,6 +90,8 @@ function add_gas(event)
         return
     end
     
+    local angle = 0
+    
 	if event.phase == "began" and gas_nodes.done == false then
         prev_touch_x = event.x
         prev_touch_y = event.y
@@ -79,14 +100,14 @@ function add_gas(event)
         local distance = math.sqrt(utils.dist_squared(
         		prev_touch_x, prev_touch_y, event.x, event.y))
   
-        local angle = math.atan2(event.y - prev_touch_y,
+        angle = math.atan2(event.y - prev_touch_y,
         						event.x - prev_touch_x)
         local displacement = 0
         
         while displacement < distance do
             table.insert(gas_nodes,
             	gas_node:new(prev_touch_x+math.cos(angle)*displacement, 
-                			prev_touch_y+math.sin(angle)*displacement))
+                			prev_touch_y+math.sin(angle)*displacement, angle))
             displacement = displacement + gas_nodes[gas_nodes.size+1].body.width / 2
             gas_nodes.size = gas_nodes.size+1
             if gas_nodes.size > gas_nodes.capacity then
@@ -100,7 +121,7 @@ function add_gas(event)
     end
     
     if gas_nodes.size < gas_nodes.capacity and gas_nodes.done == false then
-        table.insert(gas_nodes, gas_node:new(event.x, event.y))
+        table.insert(gas_nodes, gas_node:new(event.x, event.y, angle))
         gas_nodes.size = gas_nodes.size + 1
     end
 end
