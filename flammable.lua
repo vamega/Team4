@@ -94,6 +94,14 @@ function flammable:burn_up()
 	self.body:removeSelf()
 	
 	table.remove(flammable_list, utils.index_of(flammable_list, self))
+	
+	local index = 0
+	for i, object in ipairs(flammable_list) do
+		index = utils.index_of(object.nearby_objects, self)
+		if index > 0 then
+			table.remove(object.nearby_objects, index)
+		end
+	end
 end
 
 --increases a flammable object's heat if it is touching burning objects

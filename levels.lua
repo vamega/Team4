@@ -69,8 +69,11 @@ function spawn_level(level)
     elseif level == 4 then
         crate.spawn_crate(400, 600)
         crate.spawn_crate(100, 100)
-        barrel.spawn_barrel(150, 700)
-        barrel.spawn_barrel(100, 800)
+        barrel.spawn_barrel(160, 650)
+        barrel.spawn_barrel(100, 750)
+        water.spawn_water(150, 570)
+        water.spawn_water(200, 600)
+        water.spawn_water(250, 630)
     elseif level == 5 then
     
     end
