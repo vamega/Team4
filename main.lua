@@ -167,6 +167,7 @@ local function on_enter_frame(event)
 	last_frame_time = event.time
 	
 	update_all(flammable_module.flammable_list, elapsed_time)
+	water.on_enter_frame(elapsed_time)
 	
     if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
         print ("spawning level"..level)
