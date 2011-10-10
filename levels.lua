@@ -10,7 +10,7 @@ gas = require "gas"
 module(..., package.seeall)
 
 text = {}
-levels_capacity = {0, 150, 150, 150}
+levels_capacity = {0, 150, 50, 100}
 background = display.newImage("background.png")
 number_of_levels = 6
 cur_level = 1
@@ -65,7 +65,7 @@ function spawn_level(level)
         barrel.spawn_barrel(100, 300)
         barrel.spawn_barrel(100, 400)
         barrel.spawn_barrel(100, 500)
-        crate.spawn_crate(display.contentWidth-50, 200)
+        crate.spawn_crate(display.contentWidth-50, 400)
     elseif level == 4 then
         crate.spawn_crate(400, 600)
         crate.spawn_crate(100, 100)
