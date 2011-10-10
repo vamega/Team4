@@ -71,10 +71,6 @@ function add_gas(event)
         return
     end
     
-    if gas_nodes.size == 0 then
-    	gas_nodes.done = false
-    end
-    
 	if event.phase == "began" and gas_nodes.done == false then
         prev_touch_x = event.x
         prev_touch_y = event.y
