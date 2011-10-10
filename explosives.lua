@@ -34,7 +34,7 @@ function barrel:new(x, y)
     instance.body.friction = 5
     instance.body.bounce = 0.5
     
-    --barrels catch fire more easily than normal and burn up quickly
+    --barrels catch fire more easily than crates
     instance.flash_point = instance.flash_point - 5
     instance.health = 80
     instance.max_burn_rate = 4
@@ -85,8 +85,7 @@ function spawn_explosion(x, y, radius, heat)
         local xDist = flammable_obj.body.x - x
         local yDist = flammable_obj.body.y - y
     	local dist_squared = xDist^2 + yDist^2
-        if x ~= flammable_obj.body.x and y ~= flammable_obj.body.y
-        		and dist_squared < radius^2 then
+        if dist_squared < radius^2 then
             flammable_obj:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)

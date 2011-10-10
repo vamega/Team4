@@ -34,13 +34,16 @@ function kill_level()
     table_size = table.getn(flammable_module.flammable_list)
     for i =table_size, 1, -1 do
         flammable_module.flammable_list[i]:burn_up()
-    end 
+    end
+    
+    water.remove_all_water()
 end
 
 function spawn_level(level)
     reset_lock = false
     cur_level = level
     gas.gas_nodes.capacity = levels_capacity[level]
+    gas.gas_nodes.done = false
     if level == 1 then
         background = display.newImage("background.png")
         mainDisplay:insert(background)

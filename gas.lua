@@ -6,7 +6,6 @@ sprite = require "sprite"
 
 module(..., package.seeall)
 
-
 --all gas nodes
 gas_nodes = {}
 gas_nodes.size = 0
@@ -16,7 +15,7 @@ gas_nodes.lock = false
 
 --THE GAS STATION
 
---animations for crate
+--animations for gas
 gas_sheet = sprite.newSpriteSheet("FireBrush3.png", 30, 30)
 gas_set = sprite.newSpriteSet(gas_sheet, 1,7)
 
@@ -43,14 +42,10 @@ function gas_node:new(x, y, angle)
     nodeImage:scale(scale, scale)
     nodeImage:rotate(angle)
 	
-	--circle = display.newCircle(x, y, radius)
     local instance = flammable:new(nodeImage, {density = 4000})
     
     instance.body.isSensor = true
-    --instance.body:setFillColor(155, 150, 145)
-    --mainDisplay:insert(circle)
     mainDisplay:insert(nodeImage)
-    --instance.body.density = 100
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
@@ -93,10 +88,6 @@ function add_gas(event)
     if event.phase == "ended" then
         gas_nodes.done = true
         return
-    end
-    
-    if gas_nodes.size == 0 then
-    	gas_nodes.done = false
     end
     
     local angle = 0
