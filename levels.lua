@@ -10,7 +10,7 @@ gas = require "gas"
 module(..., package.seeall)
 
 text = {}
-levels_capacity = {0, 150, 50, 100}
+levels_capacity = {0, 700, 300, 450, 450}
 background = display.newImage("background.png")
 number_of_levels = 6
 cur_level = 1
@@ -42,8 +42,8 @@ end
 function spawn_level(level)
     reset_lock = false
     cur_level = level
-    gas.gas_nodes.capacity = levels_capacity[level]
-    gas.gas_nodes.done = false
+    gas.distance_allowed = levels_capacity[level]
+    gas.distance_covered = 0
     if level == 1 then
         background = display.newImage("background.png")
         mainDisplay:insert(background)
@@ -82,6 +82,5 @@ function spawn_level(level)
         water.spawn_water(150, 570)
         water.spawn_water(200, 600)
         water.spawn_water(250, 630)
-    
     end
 end
