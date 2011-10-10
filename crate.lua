@@ -29,7 +29,7 @@ function crate:new(x, y)
 	setmetatable(instance, {__index = crate})
 	
 	--crates have plenty of health, so they last a while
-	instance.health = 300
+	instance.health = 200
 	
 	local frame_count = 8
 	instance.frames_per_health_lost = (frame_count - 1) / instance.health
@@ -39,7 +39,7 @@ end
 
 function crate:animate()
     if self.current_heat >= self.flash_point then
-        self.body.currentFrame = 1 + math.ceil((300-self.health) * self.frames_per_health_lost)
+        self.body.currentFrame = 1 + math.ceil((200-self.health) * self.frames_per_health_lost)
     end
 end
 
