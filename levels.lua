@@ -35,6 +35,7 @@ function kill_level()
     for i =table_size, 1, -1 do
         flammable_module.flammable_list[i]:burn_up()
     end
+        
     
     water.remove_all_water()
 end
@@ -82,6 +83,6 @@ function spawn_level(level)
         water.spawn_water(150, 570)
         water.spawn_water(200, 600)
         water.spawn_water(250, 630)
-    
     end
+    
 end

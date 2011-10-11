@@ -7,6 +7,7 @@ flammable = flammable_module.flammable
 module(..., package.seeall)
 
 --THE BARREL ZONE
+ghost = false
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
