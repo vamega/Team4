@@ -11,7 +11,7 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 text = {}
-levels_capacity = {0, 700, 300, 450, 450}
+levels_capacity = {0, 700, 350, 500, 500}
 background = display.newImage("background.png")
 number_of_levels = 6
 cur_level = 1
@@ -37,7 +37,6 @@ function kill_level()
         flammable_module.flammable_list[i]:burn_up()
     end
     buttons.kill_buttons()
-    barrel.kill_ghosts()
     barrel.ghost_flag = false
     
     water.remove_all_water()

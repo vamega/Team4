@@ -8,7 +8,7 @@ module(..., package.seeall)
 
 --THE BARREL ZONE
 ghost_flag = false
-ghosts = {}
+--[[ghosts = {}
 ghosts.size = 0
 
 ghost = {}
@@ -26,11 +26,6 @@ function ghost:kill()
     self.image:removeSelf()
 end
 
-function spawn_ghost(x, y)
-    ghosts[ghosts.size+1] = ghost:new(x, y)
-    ghosts.size = ghosts.size + 1
-end
-
 function kill_ghosts()
     table_size = ghosts.size
     for i=table_size, 1, -1 do
@@ -43,7 +38,7 @@ function kill_ghost(i)
     ghosts[i]:kill()
     table.remove(ghosts, i)
     ghosts.size = ghosts.size -1
-end
+end]]
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
@@ -76,10 +71,39 @@ function barrel:new(x, y)
     instance.health = 80
     instance.max_burn_rate = 4
     
+    --ghost stuff
+    instance.ghost = nil
+    
     setmetatable(instance, {__index = barrel})
     instance.body:addEventListener("touch", instance)
     
     return instance
+end
+
+function barrel:spawn_ghost()
+    self.ghost = display.newImage("Range.png")
+    self.ghost.x = self.body.x
+    self.ghost.y = self.body.y + 25
+end
+
+function barrel:kill_ghost()
+    if self.ghost ~= nil then
+        self.ghost:removeSelf()
+    end
+end
+
+function kill_ghosts()
+    table_size = table.getn(barrels)
+    for i=table_size, 1, -1 do
+        barrels[i]:kill_ghost()
+    end
+end
+
+function spawn_ghosts()
+    table_size = table.getn(barrels)
+    for i=table_size, 1, -1 do
+        barrels[i]:spawn_ghost()
+    end
 end
 
 function barrel:animate()
@@ -102,6 +126,10 @@ end
 function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
+    if self.ghost ~= nil then
+        self.ghost.x = self.body.x
+        self.ghost.y = self.body.y + 25
+    end
     --update animation
     self:animate()
 end
@@ -109,7 +137,7 @@ end
 --makes the barrel explode
 function barrel:burn_up()
     if ghost_flag == true then
-        kill_ghost(utils.index_of(barrels, self))
+        self:kill_ghost()
 	end
     table.remove(barrels, utils.index_of(barrels, self))
 	
