@@ -141,10 +141,7 @@ end
 
 --initialization
 barrels = explosives.barrels
-gas_nodes = gas.gas_nodes
 waters = water.waters
-
-
 
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
@@ -159,8 +156,6 @@ spawned = true
 --game loop
 local last_frame_time = 0
 local function on_enter_frame(event)
-    --collisionManager = CollisionManagerBuilder:new()
-    --collisionManager:addCollisionTables(gas.gas_nodes, water.waters)
 	local elapsed_time = (event.time - last_frame_time) / 1000
 	elapsed_time = math.min(0.2, elapsed_time)
 	
