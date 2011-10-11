@@ -26,6 +26,10 @@ function help_btn:new(x, y)
     return instance
 end
 
+function help_btn:kill()
+    self.image:removeSelf()
+end
+
 function help_btn:touch(event)
     print("help touched")
     if gas_covered < gas_allowed then
@@ -52,13 +56,17 @@ function text_blurb:new(i)
     instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
 
     setmetatable(instance, {__index = text_blurb})
+    return instance
 end
 
 function text_blurb:touch(event)
     if gas_covered < gas_allowed then
         grace = true
     end
+    self:kill()
+end
 
+function text_blurb:kill()
     self.image:removeSelf()
     self.title:removeSelf()
     self.text:removeSelf()
@@ -75,17 +83,23 @@ function hint_btn:new(x, y)
     return instance
 end
 
+function hint_btn:kill()
+    if self.blurb~=nil then
+        self.blurb:kill()
+    end
+    self.image:removeSelf()
+end
+
 function hint_btn:touch(event)
-    print ("hint touched")
     if gas_covered < gas_allowed then
         grace = true
     end
     
     --spawn a help blurb
     if event.phase == "began" then
-        if self.blurb == nil then 
+        --if self.blurb == nil then 
             self.blurb = text_blurb:new(level)
-        end
+        --end
     end
 end
 
@@ -98,7 +112,7 @@ end
 function kill_buttons()
     size = buttons.size
     for i=size, 1, -1 do
-        display.remove(buttons[i].image)
+        buttons[i]:kill()
         table.remove(buttons, i)
     end
     buttons.size = 0
