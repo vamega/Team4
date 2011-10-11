@@ -7,8 +7,11 @@ crate = require "crate"
 gas = require "gas"
 levels = require "levels"
 water = require "water"
+buttons = require "buttons"
 --require "collisionmanager"
 
+gas_covered = gas.distance_covered
+gas_allowed = gas.distance_allowed
 
 --local intro = require("levels/intro")
 local explosives = require("explosives")

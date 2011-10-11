@@ -7,7 +7,43 @@ flammable = flammable_module.flammable
 module(..., package.seeall)
 
 --THE BARREL ZONE
-ghost = false
+ghost_flag = false
+ghosts = {}
+ghosts.size = 0
+
+ghost = {}
+function ghost:new(x, y)
+    local instance = {}
+    instance.image = display.newImage("Range.png")
+    instance.image.x = x
+    instance.image.y = y
+    
+    setmetatable(instance, {__index = ghost})
+    return instance
+end
+
+function ghost:kill()
+    self.image:removeSelf()
+end
+
+function spawn_ghost(x, y)
+    ghosts[ghosts.size+1] = ghost:new(x, y)
+    ghosts.size = ghosts.size + 1
+end
+
+function kill_ghosts()
+    table_size = ghosts.size
+    for i=table_size, 1, -1 do
+        ghosts[i]:kill()
+        ghosts.size = ghosts.size -1
+    end
+end
+
+function kill_ghost(i)
+    ghosts[i]:kill()
+    table.remove(ghosts, i)
+    ghosts.size = ghosts.size -1
+end
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
@@ -48,6 +84,8 @@ end
 
 function barrel:animate()
     if self.current_heat >= self.flash_point then
+        --[[ghosts[utils.index_of(barrels, self)].x = self.body.x
+        ghosts[utils.index_of(barrels, self)].y = self.body.y+25]]
         self.body.currentFrame = (80-self.health)/10
     end
 end
@@ -70,7 +108,10 @@ end
 
 --makes the barrel explode
 function barrel:burn_up()
-	table.remove(barrels, utils.index_of(barrels, self))
+    if ghost_flag == true then
+        kill_ghost(utils.index_of(barrels, self))
+	end
+    table.remove(barrels, utils.index_of(barrels, self))
 	
 	flammable.burn_up(self)
 	

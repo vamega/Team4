@@ -6,6 +6,7 @@ barrel = require "explosives"
 crate = require "crate"
 water = require "water"
 gas = require "gas"
+buttons = require "buttons"
 
 module(..., package.seeall)
 
@@ -35,7 +36,9 @@ function kill_level()
     for i =table_size, 1, -1 do
         flammable_module.flammable_list[i]:burn_up()
     end
-        
+    buttons.kill_buttons()
+    barrel.kill_ghosts()
+    barrel.ghost_flag = false
     
     water.remove_all_water()
 end
@@ -84,5 +87,5 @@ function spawn_level(level)
         water.spawn_water(200, 600)
         water.spawn_water(250, 630)
     end
-    
+    buttons.spawn_btn(300, 0)  
 end

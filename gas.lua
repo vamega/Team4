@@ -3,6 +3,7 @@ utils = require "utils"
 flammable_module = require "flammable"
 flammable = flammable_module.flammable
 sprite = require "sprite"
+button = require "buttons"
 
 module(..., package.seeall)
 
@@ -77,9 +78,14 @@ local prev_touch_y = 0
 
 function add_gas(event)
     if event.phase == "ended" then
-        distance_covered = distance_allowed
-        return
+        if button.grace == false then
+            distance_covered = distance_allowed
+            return
+        else
+            button.grace = false
+        end
     end
+    
     
     local angle = 0
     local image_angle = 90
