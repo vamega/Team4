@@ -13,7 +13,7 @@ text = {}
 text[1] = "Click on the barrel\nto detonate it.\n\nThe force of the\nexplosion will move\nnearby objects"
 text[2] = "Draw a gas line\nbetween the crate\nand barrel\n\nIf you make a\nmistake, shake the\nphone to reset\nlevel"
 text[3] = "You can only\ndetonate one barrel\nper level"
-text[4] = "Do your best!"
+--text[4] = "Do your best!"
 text[5] = "Water will \nextinguish any\nburning objects"
 
 function help_btn:new(x, y)
@@ -52,7 +52,11 @@ function text_blurb:new(i)
     instance.image:setFillColor(0, 0, 0)
     instance.image:addEventListener("touch", instance)
     instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
-    instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
+    if text[i]~=nil then
+        instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
+    else
+        instance.text = display.newText("You're on your\nown!", 50, 150, "Helvetica", 48)
+    end
     instance.killed= false
     if barrel.barrel_lock == false then
         instance.changed_barrel = true

@@ -11,10 +11,10 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {0, 700, 350, 500, 750}
-level_pannable = {true, true, false, false, false}
+levels_capacity = {0, 700, 350, 500, 750, 400, 400,400,400,400,400,400}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true}
 background = display.newImage("background.png", 0, 0)
-number_of_levels = 6
+number_of_levels = 13
 cur_level = 1
 reset_lock = false
 
@@ -24,8 +24,8 @@ edge = {}
 function edge:new(x, y, w, h, t)
     local instance = {x=x, y=y}
     instance.image = display.newRect(x, y, w, h)
-    --instance.image.isVisible = false
-    instance.image:setFillColor(255,0,0)
+    instance.image.isVisible = false
+    --instance.image:setFillColor(255,0,0)
     instance.type = t
     instance.scroll_lock = false
     
