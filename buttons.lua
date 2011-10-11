@@ -31,7 +31,6 @@ function help_btn:kill()
 end
 
 function help_btn:touch(event)
-    print("help touched")
     if gas_covered < gas_allowed then
         grace = true
     end
@@ -55,6 +54,12 @@ function text_blurb:new(i)
     instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
     instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
     instance.killed= false
+    if barrel.barrel_lock == false then
+        instance.changed_barrel = true
+        barrel.barrel_lock = true
+    else
+        instance.changed_barrel = false
+    end
 
     setmetatable(instance, {__index = text_blurb})
     return instance
@@ -64,6 +69,11 @@ function text_blurb:touch(event)
     if gas_covered < gas_allowed then
         grace = true
     end
+    
+    if self.changed_barrel == true then
+        barrel.barrel_lock = false
+    end
+    
     self:kill()
 end
 
@@ -120,9 +130,3 @@ function kill_buttons()
     buttons.size = 0
 
 end
-
---[[function help_btn:kill()
-    print("trying to kill button")
-    display.remove(self.image)
-    buttons.size = buttons.size - 1
-end]]

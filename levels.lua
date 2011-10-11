@@ -150,7 +150,9 @@ function spawn_level(level)
     cur_level = level
     gas.distance_allowed = levels_capacity[level]
     gas.distance_covered = 0
-    if level == 1 then
+    if level == 0 then
+        --intro level goes here
+    elseif level == 1 then
         background = display.newImage("background.png", 0, 0)
         mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
