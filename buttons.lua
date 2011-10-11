@@ -54,6 +54,7 @@ function text_blurb:new(i)
     instance.image:addEventListener("touch", instance)
     instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
     instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
+    instance.killed= false
 
     setmetatable(instance, {__index = text_blurb})
     return instance
@@ -67,9 +68,12 @@ function text_blurb:touch(event)
 end
 
 function text_blurb:kill()
-    self.image:removeSelf()
-    self.title:removeSelf()
-    self.text:removeSelf()
+    if self.killed == false then
+        self.image:removeSelf()
+        self.title:removeSelf()
+        self.text:removeSelf()
+        self.killed = true
+    end
 end
 
 function hint_btn:new(x, y)
@@ -97,9 +101,7 @@ function hint_btn:touch(event)
     
     --spawn a help blurb
     if event.phase == "began" then
-        --if self.blurb == nil then 
-            self.blurb = text_blurb:new(level)
-        --end
+       self.blurb = text_blurb:new(level)
     end
 end
 
