@@ -82,6 +82,8 @@ function scrollTouch(event)
             edges[i].scroll_lock = false
         end
     end
+    event.x = event.x-displacex
+    event.y = event.y-displacey
     
     gas.add_gas(event)
     
@@ -121,6 +123,7 @@ end
 function reset_level(event)
     if(event.isShake == true) then
         reset_lock = true
+        mainDisplay:translate(-displacex, -displacey)
         kill_level()
         spawn_level(cur_level)
     end
@@ -129,6 +132,8 @@ end
 function kill_level()
     barrel.barrel_lock = false
     scroll_lock = false
+    displacex=0
+    displacey=0
     
     table_size = table.getn(flammable_module.flammable_list)
     for i =table_size, 1, -1 do
