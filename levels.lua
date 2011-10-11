@@ -10,8 +10,54 @@ buttons = require "buttons"
 
 module(..., package.seeall)
 
+edges = {}
+
+edge = {}
+function edge:new(x, y, w, h, t)
+    local instance = {}
+    instance.image = display.newRect(x, y, w, h)
+    --instance.image.isVisible = false
+    instance.image:setFillColor(255,0,0)
+    instance.type = t
+    
+    instance.image:addEventListener("touch", instance)
+    setmetatable(instance, {__index = edge})
+    return instance
+end
+
+function edge:touch(event)
+    print("registered touch")
+    if level_pannable[cur_level] == true then
+        if self.type == "top" then
+            if background.y < 0 then
+                mainDisplay:translate(0, 10)
+            end
+        elseif self.type == "bot" then
+            if background.height > display.contentHeight then
+                mainDisplay:translate(0, -10)
+            end
+        elseif self.type == "left" then
+            if background.x < 0 then
+                mainDisplay:translate(10, 0)
+            end
+        elseif self.type == "right" then
+            --pan right if we can
+            if background.x > display.contentHeight then
+                mainDisplay:translate(-10, 0)
+            end
+        end
+    end
+end
+
+--add invisible scroll boundaries
+edges[1] = edge:new(0, 0, display.contentWidth, 30, "top")
+edges[2] = edge:new(0, 0, 30, display.contentHeight, "left")
+edges[3] = edge:new(display.contentWidth-30, 0, 30, display.contentHeight)
+edges[4] = edge:new(0, display.contentHeight-30, display.contentWidth, 30)
+
 text = {}
 levels_capacity = {0, 700, 350, 500, 500}
+level_pannable = {false, false, false, false, false}
 background = display.newImage("background.png")
 number_of_levels = 6
 cur_level = 1

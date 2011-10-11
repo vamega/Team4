@@ -183,16 +183,16 @@ local function on_enter_frame(event)
 end
 
 --add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, levels.background.width, 10)
+top_edge = display.newRect(0, 0, levels.background.width, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
 top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, levels.background.height)
+left_edge = display.newRect(0, 0, 10, levels.background.height)
 physics.addBody(left_edge, "static", {bounce = 0.4})
 left_edge.isVisible = false
-local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
+right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
 physics.addBody(right_edge, "static", {bounce = 0.4})
 right_edge.isVisible = false
-local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
+bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
