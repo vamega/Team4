@@ -7,6 +7,14 @@ buttons.size = 0
 grace = false
 
 help_btn = {}
+hint_btn = {}
+text_blurb = {}
+text = {}
+text[1] = "Click on the barrel\nto detonate it.\n\nThe force of the\nexplosion will move\nnearby objects"
+text[2] = "Draw a gas line\nbetween the crate\nand barrel\n\nIf you make a\nmistake, shake the\nphone to reset\nlevel"
+text[3] = "You can only\ndetonate one barrel\nper level"
+text[4] = "Do your best!"
+text[5] = "Water will \nextinguish any\nburning objects"
 
 function help_btn:new(x, y)
     local instance = {}
@@ -19,6 +27,7 @@ function help_btn:new(x, y)
 end
 
 function help_btn:touch(event)
+    print("help touched")
     if gas_covered < gas_allowed then
         grace = true
     end
@@ -34,9 +43,56 @@ function help_btn:touch(event)
     end
 end
 
+function text_blurb:new(i)
+    local instance = {}
+    instance.image = display.newRect(0, 0, display.contentWidth, display.contentHeight)
+    instance.image:setFillColor(0, 0, 0)
+    instance.image:addEventListener("touch", instance)
+    instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
+    instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
+
+    setmetatable(instance, {__index = text_blurb})
+end
+
+function text_blurb:touch(event)
+    if gas_covered < gas_allowed then
+        grace = true
+    end
+
+    self.image:removeSelf()
+    self.title:removeSelf()
+    self.text:removeSelf()
+end
+
+function hint_btn:new(x, y)
+    local instance = {}
+    instance.image = display.newRect(x, y, 100, 50)
+    instance.image:setFillColor(0, 0, 255)
+    instance.image:addEventListener("touch", instance)
+    instance.blurb = nil
+    
+    setmetatable(instance, {__index = hint_btn})
+    return instance
+end
+
+function hint_btn:touch(event)
+    print ("hint touched")
+    if gas_covered < gas_allowed then
+        grace = true
+    end
+    
+    --spawn a help blurb
+    if event.phase == "began" then
+        if self.blurb == nil then 
+            self.blurb = text_blurb:new(level)
+        end
+    end
+end
+
 function spawn_btn(x, y)
     buttons[buttons.size + 1] = help_btn:new(x, y)
-    buttons.size = buttons.size + 1
+    buttons[buttons.size + 2] = hint_btn:new(x+100, y)
+    buttons.size = buttons.size + 2
 end
 
 function kill_buttons()

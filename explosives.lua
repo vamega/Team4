@@ -8,6 +8,7 @@ module(..., package.seeall)
 
 --THE BARREL ZONE
 ghost_flag = false
+barrel_lock = false
 --[[ghosts = {}
 ghosts.size = 0
 
@@ -116,7 +117,8 @@ end
 
 --sets off the barrel when it's touched
 function barrel:touch(event)
-    if event.phase == "began" then
+    if event.phase == "began"  and barrel_lock == false then
+        barrel_lock = true
         self:apply_heat(self.flash_point)
         return true
     end

@@ -166,6 +166,7 @@ local function on_enter_frame(event)
 	
 	update_all(flammable_module.flammable_list, elapsed_time)
 	water.on_enter_frame(elapsed_time)
+    levels.scroll_update()
 	
     if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
         print ("spawning level"..level)
@@ -202,7 +203,8 @@ mainDisplay:insert(right_edge)
 mainDisplay:insert(bottom_edge)
 
 --event listeners
-Runtime:addEventListener("touch", gas.add_gas)
+--Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", levels.reset_level)
 Runtime:addEventListener("enterFrame", on_enter_frame)
+Runtime:addEventListener("touch", levels.scrollTouch)
 mainDisplay:addEventListener( "touch", mainDisplay )
