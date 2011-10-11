@@ -7,8 +7,11 @@ crate = require "crate"
 gas = require "gas"
 levels = require "levels"
 water = require "water"
+buttons = require "buttons"
 --require "collisionmanager"
 
+gas_covered = gas.distance_covered
+gas_allowed = gas.distance_allowed
 
 --local intro = require("levels/intro")
 local explosives = require("explosives")
@@ -141,10 +144,7 @@ end
 
 --initialization
 barrels = explosives.barrels
-gas_nodes = gas.gas_nodes
 waters = water.waters
-
-
 
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
@@ -153,14 +153,12 @@ local function update_all(table_to_update, elapsed_time)
 	end
 end
 
-level = 0
+level = 6
 spawned = true
 
 --game loop
 local last_frame_time = 0
 local function on_enter_frame(event)
-    --collisionManager = CollisionManagerBuilder:new()
-    --collisionManager:addCollisionTables(gas.gas_nodes, water.waters)
 	local elapsed_time = (event.time - last_frame_time) / 1000
 	elapsed_time = math.min(0.2, elapsed_time)
 	
@@ -168,6 +166,7 @@ local function on_enter_frame(event)
 	
 	update_all(flammable_module.flammable_list, elapsed_time)
 	water.on_enter_frame(elapsed_time)
+    levels.scroll_update()
 	
     if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
         print ("spawning level"..level)
@@ -185,16 +184,16 @@ local function on_enter_frame(event)
 end
 
 --add invisible boundaries so that objects don't go offscreen
-local top_edge = display.newRect(0, 0, levels.background.width, 10)
+top_edge = display.newRect(0, 0, levels.background.width, 10)
 physics.addBody(top_edge, "static", {bounce = 0.4})
 top_edge.isVisible = false
-local left_edge = display.newRect(0, 0, 10, levels.background.height)
+left_edge = display.newRect(0, 0, 10, levels.background.height)
 physics.addBody(left_edge, "static", {bounce = 0.4})
 left_edge.isVisible = false
-local right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
+right_edge = display.newRect(levels.background.width-10, 0, 10, levels.background.height)
 physics.addBody(right_edge, "static", {bounce = 0.4})
 right_edge.isVisible = false
-local bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
+bottom_edge = display.newRect(0, levels.background.height-10, levels.background.width, 10)
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
@@ -204,7 +203,8 @@ mainDisplay:insert(right_edge)
 mainDisplay:insert(bottom_edge)
 
 --event listeners
-Runtime:addEventListener("touch", gas.add_gas)
+--Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", levels.reset_level)
 Runtime:addEventListener("enterFrame", on_enter_frame)
+Runtime:addEventListener("touch", levels.scrollTouch)
 mainDisplay:addEventListener( "touch", mainDisplay )

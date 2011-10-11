@@ -7,6 +7,39 @@ flammable = flammable_module.flammable
 module(..., package.seeall)
 
 --THE BARREL ZONE
+ghost_flag = false
+barrel_lock = false
+--[[ghosts = {}
+ghosts.size = 0
+
+ghost = {}
+function ghost:new(x, y)
+    local instance = {}
+    instance.image = display.newImage("Range.png")
+    instance.image.x = x
+    instance.image.y = y
+    
+    setmetatable(instance, {__index = ghost})
+    return instance
+end
+
+function ghost:kill()
+    self.image:removeSelf()
+end
+
+function kill_ghosts()
+    table_size = ghosts.size
+    for i=table_size, 1, -1 do
+        ghosts[i]:kill()
+        ghosts.size = ghosts.size -1
+    end
+end
+
+function kill_ghost(i)
+    ghosts[i]:kill()
+    table.remove(ghosts, i)
+    ghosts.size = ghosts.size -1
+end]]
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
@@ -34,10 +67,13 @@ function barrel:new(x, y)
     instance.body.friction = 5
     instance.body.bounce = 0.5
     
-    --barrels catch fire more easily than normal and burn up quickly
+    --barrels catch fire more easily than crates
     instance.flash_point = instance.flash_point - 5
     instance.health = 80
     instance.max_burn_rate = 4
+    
+    --ghost stuff
+    instance.ghost = nil
     
     setmetatable(instance, {__index = barrel})
     instance.body:addEventListener("touch", instance)
@@ -45,15 +81,44 @@ function barrel:new(x, y)
     return instance
 end
 
+function barrel:spawn_ghost()
+    self.ghost = display.newImage("Range.png")
+    self.ghost.x = self.body.x
+    self.ghost.y = self.body.y + 25
+end
+
+function barrel:kill_ghost()
+    if self.ghost ~= nil then
+        self.ghost:removeSelf()
+    end
+end
+
+function kill_ghosts()
+    table_size = table.getn(barrels)
+    for i=table_size, 1, -1 do
+        barrels[i]:kill_ghost()
+    end
+end
+
+function spawn_ghosts()
+    table_size = table.getn(barrels)
+    for i=table_size, 1, -1 do
+        barrels[i]:spawn_ghost()
+    end
+end
+
 function barrel:animate()
     if self.current_heat >= self.flash_point then
+        --[[ghosts[utils.index_of(barrels, self)].x = self.body.x
+        ghosts[utils.index_of(barrels, self)].y = self.body.y+25]]
         self.body.currentFrame = (80-self.health)/10
     end
 end
 
 --sets off the barrel when it's touched
 function barrel:touch(event)
-    if event.phase == "began" then
+    if event.phase == "began"  and barrel_lock == false then
+        barrel_lock = true
         self:apply_heat(self.flash_point)
         return true
     end
@@ -63,13 +128,20 @@ end
 function barrel:on_enter_frame(elapsed_time)
 	--update heat
 	flammable.on_enter_frame(self, elapsed_time)
+    if self.ghost ~= nil then
+        self.ghost.x = self.body.x
+        self.ghost.y = self.body.y + 25
+    end
     --update animation
     self:animate()
 end
 
 --makes the barrel explode
 function barrel:burn_up()
-	table.remove(barrels, utils.index_of(barrels, self))
+    if ghost_flag == true then
+        self:kill_ghost()
+	end
+    table.remove(barrels, utils.index_of(barrels, self))
 	
 	flammable.burn_up(self)
 	
@@ -85,8 +157,7 @@ function spawn_explosion(x, y, radius, heat)
         local xDist = flammable_obj.body.x - x
         local yDist = flammable_obj.body.y - y
     	local dist_squared = xDist^2 + yDist^2
-        if x ~= flammable_obj.body.x and y ~= flammable_obj.body.y
-        		and dist_squared < radius^2 then
+        if dist_squared < radius^2 then
             flammable_obj:apply_heat(heat)
             
             local dist = math.sqrt(dist_squared)

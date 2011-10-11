@@ -39,11 +39,23 @@ function water:collision(event)
 	        if getmetatable(flammable_obj) == gas.gas_metatable then
 	            flammable_obj:burn_up()
 	        elseif flammable_obj.current_heat ~= nil then
-	            table.insert(objects_in_water, flammable_obj)
+	        	--use flammable_obj as the key, with the value representing
+	        	--the number of pools this object is in
+	        	if objects_in_water[flammable_obj] == nil then
+		            objects_in_water[flammable_obj] = 1
+		        else
+		        	objects_in_water[flammable_obj] =
+		        		objects_in_water[flammable_obj] + 1
+		        end
 	        end
 	    elseif flammable_obj.current_heat ~= nil then
-	    	table.remove(objects_in_water, utils.index_of(objects_in_water,
-	    				flammable_obj))
+	    	objects_in_water[flammable_obj] =
+	    		objects_in_water[flammable_obj] - 1
+	    	
+	    	--remove the reference once the object has left all pools
+	    	if objects_in_water[flammable_obj] <= 0 then
+	    		objects_in_water[flammable_obj] = nil
+	    	end
 	    end
 	end
 end
@@ -54,7 +66,7 @@ function spawn_water(x, y)
 end
 
 function on_enter_frame(elapsed_time)
-	for i, object in ipairs(objects_in_water) do
+	for object, v in pairs(objects_in_water) do
 		object.current_heat = object.current_heat
 						- object.heat_increase_rate * 3 * elapsed_time
 		if object.current_heat < 0 then
@@ -62,5 +74,17 @@ function on_enter_frame(elapsed_time)
 		elseif object.current_heat >= object.flash_point then
 			object.current_heat = object.flash_point - 1
 		end
+	end
+end
+
+function remove_all_water()
+	for i, water in ipairs(waters) do
+		water.body:removeSelf()
+		waters[i] = nil
+	end
+	waters.size = 0
+	
+	for k, v in pairs(objects_in_water) do
+		objects_in_water[k] = nil
 	end
 end
