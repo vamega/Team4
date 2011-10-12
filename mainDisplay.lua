@@ -99,12 +99,16 @@ function mainDisplay:touch( event )
                         ---[[
                         if xScaleMin > tempXScale then
                             self.xScale = xScaleMin
+                        elseif tempXScale > 1 then
+                            self.xScale = 1
                         else
                             self.xScale = tempXScale
                         end
                         
                         if yScaleMin > tempYScale then
                             self.yScale = yScaleMin
+                        elseif tempYScale > 1 then
+                            self.yScale = 1
                         else
                             self.yScale = tempYScale
                         end
