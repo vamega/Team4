@@ -115,7 +115,9 @@ function barrel:burn_up()
 	
 	flammable.burn_up(self)
 	
-	spawn_explosion(self.body.x, self.body.y, 200, self.burn_temperature)
+	if levels.reset_lock == false then
+		spawn_explosion(self.body.x, self.body.y, 200, self.burn_temperature)
+	end
 end
 
 function spawn_barrel(x, y)
@@ -144,5 +146,7 @@ function spawn_explosion(x, y, radius, heat)
             				flammable_obj.body.x, flammable_obj.body.y)
         end
     end
+    
+    media.playSound("Explosion.mp3", false)
 end
 

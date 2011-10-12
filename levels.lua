@@ -14,8 +14,8 @@ module(..., package.seeall)
 
 
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14   15
-levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,1200,300,500, 1300, 0}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true, false}
+levels_capacity = {0, 600, 225, 500, 0,700, 750, 510,1100,900,1200,1200,300,500, 1300, 0}
+level_pannable = {true, true, false, false, true, true, false, true, true, true, true,true,true,true,true, false}
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
 
@@ -195,6 +195,22 @@ function spawn_level(level)
         barrel.spawn_barrel(160, 650)
         barrel.spawn_barrel(100, 750)
     elseif level == 5 then
+        crate.spawn_crate(100,100)
+        crate.spawn_crate(100,781)
+        crate.spawn_crate(860,100)
+        crate.spawn_crate(860,781)
+        barrel.spawn_barrel(440,414)
+        barrel.spawn_barrel(520,414)
+        barrel.spawn_barrel(480,454)
+        barrel.spawn_barrel(440,494)
+        barrel.spawn_barrel(520,494)
+    elseif level == 6 then
+        barrel.spawn_barrel(100,100)
+        crate.spawn_crate(100,250)
+        crate.spawn_crate(250,250)
+        crate.spawn_crate(100,700)
+        crate.spawn_crate(300,900)
+    elseif level == 7 then
         crate.spawn_crate(400, 550)
         crate.spawn_crate(100, 100)
         barrel.spawn_barrel(160, 650)
@@ -205,7 +221,7 @@ function spawn_level(level)
         water.spawn_water(300, 675)
         water.spawn_water(350, 700)
         water.spawn_water(400, 750)
-    elseif level == 6 then
+    elseif level == 8 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,250)
         barrel.spawn_barrel(400,700)
@@ -213,28 +229,12 @@ function spawn_level(level)
         crate.spawn_crate(100,550)
         crate.spawn_crate(680,400)
         crate.spawn_crate(680,750)
-    elseif level == 7 then
-        crate.spawn_crate(100,100)
-        crate.spawn_crate(100,781)
-        crate.spawn_crate(860,100)
-        crate.spawn_crate(860,781)
-        barrel.spawn_barrel(440,414)
-        barrel.spawn_barrel(520,414)
-        barrel.spawn_barrel(480,454)
-        barrel.spawn_barrel(440,494)
-        barrel.spawn_barrel(520,494)
-    elseif level == 8 then
+    elseif level == 9 then
         crate.spawn_crate(100,100)
         crate.spawn_crate(860,900)
         barrel.spawn_barrel(480,554)
         water.spawn_water(100,300)
         water.spawn_water(860,700)
-    elseif level == 9 then
-        barrel.spawn_barrel(100,100)
-        crate.spawn_crate(100,250)
-        crate.spawn_crate(250,250)
-        crate.spawn_crate(100,700)
-        crate.spawn_crate(300,900)
     elseif level == 10 then
         crate.spawn_crate(480,50)
         crate.spawn_crate(480,400)
