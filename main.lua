@@ -22,7 +22,7 @@ mainDisplay.init_scale_values()
 display.getCurrentStage():insert(mainDisplay.mainDisplay)
 
 physics.start()
-physics.setDrawMode("hybrid")
+--physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 --initialization
@@ -31,26 +31,26 @@ waters = water.waters
 
 --calls on_enter_frame for all items in the given table
 local function update_all(table_to_update, elapsed_time)
-	for i, object in ipairs(table_to_update) do
-		object:on_enter_frame(elapsed_time)
-	end
+for i, object in ipairs(table_to_update) do
+object:on_enter_frame(elapsed_time)
+end
 end
 
-level = 4
+level = 0
 spawned = true
 
 --game loop
 local last_frame_time = 0
 local function on_enter_frame(event)
-	local elapsed_time = (event.time - last_frame_time) / 1000
-	elapsed_time = math.min(0.2, elapsed_time)
-	
-	last_frame_time = event.time
-	
-	update_all(flammable_module.flammable_list, elapsed_time)
-	water.on_enter_frame(elapsed_time)
+local elapsed_time = (event.time - last_frame_time) / 1000
+elapsed_time = math.min(0.2, elapsed_time)
+
+last_frame_time = event.time
+
+update_all(flammable_module.flammable_list, elapsed_time)
+water.on_enter_frame(elapsed_time)
     levels.scroll_update()
-	
+
     if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
         print ("spawning level"..level)
         levels.spawn_level(level)
@@ -91,3 +91,4 @@ Runtime:addEventListener("accelerometer", levels.reset_level)
 Runtime:addEventListener("enterFrame", on_enter_frame)
 Runtime:addEventListener("touch", levels.scrollTouch)
 mainDisplay.mainDisplay:addEventListener( "touch", mainDisplay.mainDisplay)
+
