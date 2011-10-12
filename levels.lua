@@ -17,12 +17,6 @@ level_pannable = {true, true, false, false, false, true, true, true, true, true,
 background = display.newImage("background.png", 0, 0)
 number_of_levels = 15
 
-edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 
-levels_capacity = {0, 600, 225, 500, 750, 700, 0,1100,700,900,1200,700,300}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
-background = display.newImage("background1.png", 0, 0)
-number_of_levels = 14
-
 cur_level = 0
 
 reset_lock = false
