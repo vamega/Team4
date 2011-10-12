@@ -8,15 +8,16 @@ gas = require "gas"
 levels = require "levels"
 water = require "water"
 buttons = require "buttons"
+mainDisplay = require "mainDisplay"
 --require "collisionmanager"
 
 gas_covered = gas.distance_covered
 gas_allowed = gas.distance_allowed
 
---local intro = require("levels/intro")
 local explosives = require("explosives")
 
 system.activate( "multitouch" )
+
 
 physics.start()
 physics.setDrawMode("physics")
@@ -72,75 +73,14 @@ function mainDisplay:touch( event )
 				dx,dy = calculateDelta( previousTouches, event )
 			end
 
-			-- initialize to distance between two touches
-			if ( dx and dy ) then
-				local d = math.sqrt( dx*dx + dy*dy )
-				if ( d > 0 ) then
-					self.distance = d
-					self.xScaleOriginal = self.xScale
-					self.yScaleOriginal = self.yScale
-					print( "distance = " .. self.distance )
-				end
-			end
-		end
+mainDisplay.init_scale_values()
 
-		if not previousTouches[event.id] then
-			self.numPreviousTouches = self.numPreviousTouches + 1
-		end
-		previousTouches[event.id] = event
 
-	elseif self.isFocus then
-		if "moved" == phase then
-			if ( self.distance ) then
-				local dx,dy
-				if previousTouches and ( numTotalTouches ) >= 2 then
-					dx,dy = calculateDelta( previousTouches, event )
-				end
-	
-				if ( dx and dy ) then
-					local newDistance = math.sqrt( dx*dx + dy*dy )
-					local scale = newDistance / self.distance
-					print( "newDistance(" ..newDistance .. ") / distance(" .. self.distance .. ") = scale("..  scale ..")" )
-					if ( scale > 0 ) then
-						self.xScale = self.xScaleOriginal * scale
-						self.yScale = self.yScaleOriginal * scale
-					end
-				end
-			end
+display.getCurrentStage():insert(mainDisplay.mainDisplay)
 
-			if not previousTouches[event.id] then
-				self.numPreviousTouches = self.numPreviousTouches + 1
-			end
-			previousTouches[event.id] = event
-
-		elseif "ended" == phase or "cancelled" == phase then
-			if previousTouches[event.id] then
-				self.numPreviousTouches = self.numPreviousTouches - 1
-				previousTouches[event.id] = nil
-			end
-
-			if ( #previousTouches > 0 ) then
-				-- must be at least 2 touches remaining to pinch/zoom
-				self.distance = nil
-			else
-				-- previousTouches is empty so no more fingers are touching the screen
-				-- Allow touch events to be sent normally to the objects they "hit"
-				display.getCurrentStage():setFocus( nil )
-
-				self.isFocus = false
-				self.distance = nil
-				self.xScaleOriginal = nil
-				self.yScaleOriginal = nil
-
-				-- reset array
-				self.previousTouches = nil
-				self.numPreviousTouches = nil
-			end
-		end
-	end
-
-	return false
-end
+physics.start()
+--physics.setDrawMode("hybrid")
+physics.setGravity(0, 0)
 
 --initialization
 barrels = explosives.barrels
@@ -197,14 +137,14 @@ bottom_edge = display.newRect(0, levels.background.height-10, levels.background.
 physics.addBody(bottom_edge, "static", {bounce = 0.4})
 bottom_edge.isVisible = false
 
-mainDisplay:insert(top_edge)
-mainDisplay:insert(left_edge)
-mainDisplay:insert(right_edge)
-mainDisplay:insert(bottom_edge)
+mainDisplay.mainDisplay:insert(top_edge)
+mainDisplay.mainDisplay:insert(left_edge)
+mainDisplay.mainDisplay:insert(right_edge)
+mainDisplay.mainDisplay:insert(bottom_edge)
 
 --event listeners
 --Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", levels.reset_level)
 Runtime:addEventListener("enterFrame", on_enter_frame)
 Runtime:addEventListener("touch", levels.scrollTouch)
-mainDisplay:addEventListener( "touch", mainDisplay )
+mainDisplay.mainDisplay:addEventListener( "touch", mainDisplay.mainDisplay)
