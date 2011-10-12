@@ -57,7 +57,7 @@ function barrel:new(x, y)
     local barrelImage = sprite.newSprite(barrel_burning_set)--display.newImage("barrel1.png", x, y)
     barrelImage.x = x
     barrelImage.y = y
-    mainDisplay:insert(barrelImage)
+    mainDisplay.mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, {radius = 70})
 	
     instance.image = barrelImage
@@ -82,7 +82,7 @@ function barrel:new(x, y)
 end
 
 function barrel:spawn_ghost()
-    self.ghost = display.newImage(mainDisplay, "Range.png")
+    self.ghost = display.newImage(mainDisplay.mainDisplay, "Range.png")
     self.ghost.x = self.body.x
     self.ghost.y = self.body.y + 25
 end
