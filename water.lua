@@ -29,7 +29,6 @@ function water:new(x, y)--constructor
     instance.body.y = y
     mainDisplay.mainDisplay:insert(instance.body)
     instance.body:toFront()
-    --instance.body:setFillColor(0, 0, 255)
     physics.addBody(instance.body, "kinematic", {radius = 50})
     instance.body.isSensor = true
     instance.body:addEventListener("collision", instance)
