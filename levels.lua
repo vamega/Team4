@@ -101,6 +101,8 @@ function scrollTouch(event)
     event.x = event.x-displacex
     event.y = event.y-displacey
     
+    barrel.barrel_lock = buttons.scroll_mode
+    
     if buttons.scroll_mode == false then
         gas.add_gas(event)
     end
