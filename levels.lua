@@ -11,13 +11,12 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 
-levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300}
+levels_capacity = {0, 600, 225, 500, 750, 700, 0,1100,700,900,1200,700,300}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
-background = display.newImage("background.png", 0, 0)
+background = display.newImage("background1.png", 0, 0)
 number_of_levels = 14
 cur_level = 0
 reset_lock = false
-
 
 
 displacex = 0
@@ -159,14 +158,14 @@ function spawn_level(level)
     if level == 0 then
         --intro level goes here
     elseif level == 1 then
-        background = display.newImage("background.png", 0, 0)
+        --background = display.newImage("background1.png", 0, 0)
         mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(100, 200)
         crate.spawn_crate(100, 400)
     elseif level == 2 then
-        background = display.newImage("background.png", 0, 0)
-        mainDisplay:insert(background)
+        --background = display.newImage("background1.png", 0, 0)
+        --mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(200,100)
         crate.spawn_crate(display.contentWidth-100, display.contentHeight-100)
