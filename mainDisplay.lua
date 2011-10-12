@@ -1,5 +1,5 @@
 module(..., package.seeall)
-
+gas = require "gas"
 mainDisplay = display.newGroup()
 
 function init_scale_values()
@@ -12,6 +12,8 @@ function init_scale_values()
         yScaleMin = xScaleMin
     end
 end
+
+numFingersDown = 0
 
 --[[
 This function calculates the distance between the two fingers
@@ -45,6 +47,8 @@ function mainDisplay:touch( event )
 	end
 
 	if "began" == phase then
+        numFingersDown = numFingersDown + 1
+        gas.add_gas(event)
 		-- Very first "began" event
 		if ( not self.isFocus ) then
 			-- Subsequent touch events will target button even if they are outside the stageBounds of button
@@ -80,6 +84,10 @@ function mainDisplay:touch( event )
 
 	elseif self.isFocus then
 		if "moved" == phase then
+            if numFingersDown == 1 then
+                return false
+            end
+        
 			if ( self.distance ) then
 				local dx,dy
 				if previousTouches and ( numTotalTouches ) >= 2 then
@@ -123,6 +131,7 @@ function mainDisplay:touch( event )
 			previousTouches[event.id] = event
 
 		elseif "ended" == phase or "cancelled" == phase then
+            numFingersDown = numFingersDown - 1
 			if previousTouches[event.id] then
 				self.numPreviousTouches = self.numPreviousTouches - 1
 				previousTouches[event.id] = nil
@@ -148,5 +157,5 @@ function mainDisplay:touch( event )
 		end
 	end
 
-	return false
+	return true
 end
