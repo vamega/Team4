@@ -211,8 +211,6 @@ end
 
 function animate_gas(gas_cap, cur_gas)
     if buttons[3] ~= nil then
-        print ("animating can"..gas_cap.." "..cur_gas)
-        print ("frame is "..9*cur_gas/gas_cap)
         buttons[4].image.currentFrame = 9*cur_gas/gas_cap
     end
 end
