@@ -54,6 +54,7 @@ water.on_enter_frame(elapsed_time)
     levels.scroll_update()
     if buttons.title_lock == true and buttons.title_lock_b == true then
         title = buttons.title_screen:new()
+        media.playSound('MenuLoop.mp3', true)
     elseif buttons.title_lock==true then
         title:animate()
     else

@@ -276,6 +276,7 @@ function title_screen:new()
     instance.credits_img = display.newImage("Credit_Screen.png")
     instance.credits_img.isVisible = false
     title_lock_b = false
+    instance.sound = nil
     
     setmetatable(instance, {__index = title_screen})
     return instance
@@ -283,7 +284,7 @@ function title_screen:new()
 end
 
 function title_screen:animate()
-    if flux < 2 then
+    if flux < 25 then
         flux_dir = true
     elseif flux > 99 then
         flux_dir = false
@@ -306,6 +307,8 @@ function title_screen:kill()
     self.credits_img:removeSelf()
     self.play:removeSelf()
     self.credits:removeSelf()
+    media.stopSound()
+    media.playSound('GameLoop.mp3', true)
 end
 
 function title_screen:touch(event)
@@ -325,5 +328,7 @@ end
 
 function spawn_title()
     title = title_screen:new()
+    media.playSound( 'MenuLoop.mp3' )
+    
 end
 

@@ -123,6 +123,10 @@ function spawn_barrel(x, y)
 end
 
 function spawn_explosion(x, y, radius, heat)
+    --[[local explode_sound = media.newEventSound( "Explosion.mp3" )
+    local playSound = function() media.playEventSound( explode_sound ) end
+    timer.performWithDelay(0, playSound, 0)]]
+    
     for i, flammable_obj in ipairs(flammable_module.flammable_list) do
         local xDist = flammable_obj.body.x - x
         local yDist = flammable_obj.body.y - y
