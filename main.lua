@@ -19,7 +19,7 @@ local explosives = require("explosives")
 system.activate( "multitouch" )
 
 physics.start()
-physics.setDrawMode("hybrid")
+physics.setDrawMode("physics")
 physics.setGravity(0, 0)
 
 mainDisplay = display.newGroup()

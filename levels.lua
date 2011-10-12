@@ -10,11 +10,11 @@ buttons = require "buttons"
 
 module(..., package.seeall)
 
-edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 
-levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
+edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14
+levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300,1000}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true}
 background = display.newImage("background.png", 0, 0)
-number_of_levels = 14
+number_of_levels = 15
 cur_level = 0
 reset_lock = false
 
@@ -270,6 +270,12 @@ function spawn_level(level)
         crate.spawn_crate(850,950)
         water.spawn_water(600,1000)
         water.spawn_water(400,200)
+    elseif level == 14 then
+        barrel.spawn_barrel(200,200)
+        barrel.spawn_barrel(500,700)
+        water.spawn_water(150,375)
+        water.spawn_water(315,360)
+        water.spawn_water(350,200)
     end
     buttons.spawn_btn(display.contentWidth-150, 0)  
 end
