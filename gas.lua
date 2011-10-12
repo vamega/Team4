@@ -46,8 +46,8 @@ function gas_node:new(x, y, angle, radius)
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
-    instance.heat_increase_rate = 30 - radius / 3
-    instance.health = 120
+    instance.heat_increase_rate = 50 - radius / 3
+    instance.health = 180
     
     setmetatable(instance, gas_metatable)
     return instance

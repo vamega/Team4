@@ -26,11 +26,11 @@ hint_btn = {}
 text_blurb = {}
 mode_btn = {}
 text = {}
-text[1] = "Click on the barrel\nto detonate it.\n\nThe force of the\nexplosion will move\nnearby objects"
-text[2] = "Draw a gas line\nbetween the crate\nand barrel\n\nIf you make a\nmistake, shake the\nphone to reset\nlevel"
-text[3] = "You can only\ndetonate one barrel\nper level"
+text[1] = "Click on the barrel \\n to detonate it. \\n \\n The force of the \\n explosion will move \\n nearby objects"
+text[2] = "Draw a gas line \n between the crate \n and barrel \n \n If you make a \n mistake, shake the \n phone to reset \n level"
+text[3] = "You can only \n detonate one barrel \n per level"
 --text[4] = "Do your best!"
-text[5] = "Water will \nextinguish any\nburning objects"
+text[5] = "Water will \n extinguish any \n burning objects"
 
 function gas_meter:new(x, y)
     local instance = {}
@@ -211,7 +211,7 @@ function kill_buttons()
 end
 
 function animate_gas(gas_cap, cur_gas)
-    if buttons[3] ~= nil then
+    if buttons[4] ~= nil then
         buttons[4].image.currentFrame = 9*cur_gas/gas_cap
     end
 end
