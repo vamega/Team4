@@ -20,14 +20,14 @@ levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,1200,300,500,
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true, false}
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
-<<<<<<< HEAD
-=======
+
+
 
 background = display.newImage("Background1.png", 0, 0)
 mainDisplay.mainDisplay:insert(background)
 number_of_levels = 17
 
->>>>>>> 56290e84db1aab5756e4fca30dcae7a036cd77d4
+
 cur_level = 0
 
 reset_lock = false
