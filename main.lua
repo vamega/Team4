@@ -23,6 +23,7 @@ mainDisplay.init_scale_values()
 display.getCurrentStage():insert(mainDisplay.mainDisplay)
 
 physics.start()
+physics.setDrawMode("hybrid")
 physics.setGravity(0, 0)
 
 --initialization
