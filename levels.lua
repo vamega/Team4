@@ -21,9 +21,12 @@ level_pannable = {true, true, false, false, false, true, true, true, true, true,
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
 
+
+
 background = display.newImage("Background1.png", 0, 0)
 mainDisplay.mainDisplay:insert(background)
 number_of_levels = 17
+
 
 cur_level = 0
 
