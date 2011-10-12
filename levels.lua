@@ -128,7 +128,7 @@ end
 function reset_level(event)
     if(event.isShake == true) then
         reset_lock = true
-        mainDisplay.mainDisplay:translate(-displacex, -displacey)
+       -- mainDisplay.mainDisplay:translate(-displacex, -displacey)
         kill_level()
         spawn_level(cur_level)
     end
@@ -159,14 +159,11 @@ function spawn_level(level)
     if level == 0 then
         --intro level goes here
     elseif level == 1 then
-        --background = display.newImage("background1.png", 0, 0)
         mainDisplay.mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(100, 200)
         crate.spawn_crate(100, 400)
     elseif level == 2 then
-        --background = display.newImage("background1.png", 0, 0)
-        --mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(200,100)
         crate.spawn_crate(display.contentWidth-100, display.contentHeight-100)
