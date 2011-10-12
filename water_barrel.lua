@@ -13,13 +13,13 @@ local barrel_burning_set = sprite.newSpriteSet(barrel_burning_sheet, 1, 8);
 
 --the water barrel
 water_barrel = {}
-setmetatable(barrel, {__index = flammable})
+setmetatable(water_barrel, {__index = flammable})
 
 function water_barrel:new(x, y)
 	local image = sprite.newSprite(barrel_burning_set)
 	image.x = x
 	image.y = y
-	mainDisplay:insert(barrelImage)
+	mainDisplay.mainDisplay:insert(image)
 	
 	local instance = flammable:new(image, {radius = 70})
 	
@@ -63,4 +63,8 @@ function spawn_water_around(x, y, radius, water_count)
 						  y + radius * math.sin(angle))
 		angle = angle + angle_increment
 	end
+end
+
+function spawn_water_barrel(x, y)
+	water_barrel:new(x, y)
 end

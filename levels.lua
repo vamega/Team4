@@ -7,11 +7,13 @@ crate = require "crate"
 water = require "water"
 gas = require "gas"
 buttons = require "buttons"
+water_barrel = require "water_barrel"
+mainDisplay = require "mainDisplay"
 
 module(..., package.seeall)
 
-edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 
-levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300}
+edges = {}        --1  2   3    4    5    6    7   8   9   10  11   12  13 
+levels_capacity = {0, 600, 225, 500, 750, 500, 0, 1100,700,900,1200,700,300}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
 
 background = display.newImage("background.png", 0, 0)
@@ -168,7 +170,6 @@ function spawn_level(level)
         crate.spawn_crate(100, 200)
         crate.spawn_crate(100, 400)
     elseif level == 2 then
-        background = display.newImage("background.png", 0, 0)
         mainDisplay.mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(200,100)
@@ -194,6 +195,7 @@ function spawn_level(level)
         water.spawn_water(250, 650)
         water.spawn_water(350, 700)
         water.spawn_water(400, 750)
+        water_barrel.spawn_water_barrel(300, 180)
     elseif level == 6 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,250)
@@ -274,5 +276,6 @@ function spawn_level(level)
         water.spawn_water(600,1000)
         water.spawn_water(400,200)
     end
+    background:toBack()
     buttons.spawn_btn(display.contentWidth-150, 0)  
 end

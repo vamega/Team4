@@ -1,6 +1,5 @@
 module(..., package.seeall)
 gas = require("gas")
-mainDisplay = require("mainDisplay")
 
 --initialize water
 waters = {}
@@ -26,7 +25,8 @@ function water:new(x, y)--constructor
     instance.name = "water"
     instance.body = display.newCircle(x, y, 50)
     mainDisplay.mainDisplay:insert(instance.body)
-    instance.body:toFront()
+    instance.body:toBack()
+    
     instance.body:setFillColor(0, 0, 255)
     physics.addBody(instance.body, "kinematic", {radius = 50})
     instance.body.isSensor = true
