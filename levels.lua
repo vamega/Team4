@@ -12,12 +12,22 @@ mainDisplay = require "mainDisplay"
 
 module(..., package.seeall)
 
+
+
+edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14   15
+levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300,500, 1300}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true}
+background = display.newImage("Background1.png", 0, 0)
+number_of_levels = 16
+
+
 edges = {}        --1  2   3    4    5    6    7   8   9   10  11   12  13  14
 levels_capacity = {0, 600, 225, 500, 750, 500, 0, 1100,700,900,1200,700,300,500}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true}
 
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 15
+
 cur_level = 0
 
 reset_lock = false
@@ -277,6 +287,21 @@ function spawn_level(level)
         water.spawn_water(150,375)
         water.spawn_water(315,360)
         water.spawn_water(350,200)
+    elseif level == 15 then
+        crate.spawn_crate(200,200)
+        barrel.spawn_barrel(225,350)
+        --crate.spawn_crate(400,200)
+        barrel.spawn_barrel(350,400)
+        barrel.spawn_barrel(350,600)
+        crate.spawn_crate(175,625)
+        crate.spawn_crate(225,900)
+        barrel.spawn_barrel(175,1000)
+        barrel.spawn_barrel(225,1000)
+        barrel.spawn_barrel(300,1000)
+        barrel.spawn_barrel(625,1000)
+        crate.spawn_crate(700, 1000)
+        barrel.spawn_barrel(800,200)
+        crate.spawn_crate(800,400)
     end
     background:toBack()
     buttons.spawn_btn(display.contentWidth-150, 0)  
