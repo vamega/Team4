@@ -14,7 +14,7 @@ module(..., package.seeall)
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14
 levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300,500}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true}
-background = display.newImage("background.png", 0, 0)
+background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 15
 
 cur_level = 0
@@ -188,8 +188,8 @@ function spawn_level(level)
         barrel.spawn_barrel(100, 750)
         water.spawn_water(150, 600)
         water.spawn_water(250, 650)
-        water.spawn_water(350, 700)
-        water.spawn_water(400, 750)
+        --water.spawn_water(350, 700)
+        --water.spawn_water(400, 750)
     elseif level == 6 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,250)
