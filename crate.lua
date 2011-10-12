@@ -27,11 +27,10 @@ function crate:new(x, y)
     mainDisplay.mainDisplay:insert(crateImage)
     
     instance.flash_point = instance.flash_point - 3
+	instance.heat_increase_rate = instance.heat_increase_rate + 4
+	instance.health = 200
     
 	setmetatable(instance, {__index = crate})
-	
-	--crates have plenty of health, so they last a while
-	instance.health = 200
 	
 	local frame_count = 8
 	instance.frames_per_health_lost = (frame_count - 1) / instance.health

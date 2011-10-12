@@ -36,7 +36,7 @@ object:on_enter_frame(elapsed_time)
 end
 end
 
-level = 15
+level = 0
 spawned = true
 title = nil
 

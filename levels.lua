@@ -14,6 +14,7 @@ module(..., package.seeall)
 
 
 
+
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14   15
 levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,1200,300,500, 1300, 0}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true, false}
@@ -123,10 +124,10 @@ end
 end]]
 
 --add invisible scroll boundaries
-edges[1] = edge:new(0, 0, display.contentWidth, 30, "top")
-edges[2] = edge:new(0, 0, 30, display.contentHeight, "left")
-edges[3] = edge:new(display.contentWidth-30, 0, 30, display.contentHeight, "right")
-edges[4] = edge:new(0, display.contentHeight-30, display.contentWidth, 30, "bot")
+edges[1] = edge:new(50, 50, display.contentWidth, 50, "top")
+edges[2] = edge:new(0, 0, 50, display.contentHeight, "left")
+edges[3] = edge:new(display.contentWidth-50, 0, 50, display.contentHeight, "right")
+edges[4] = edge:new(0, display.contentHeight-50, display.contentWidth, 50, "bot")
 
 function reset_edges()
     for i=1, 4 do
@@ -138,9 +139,14 @@ end
 function reset_level(event)
     if(event.isShake == true) then
         reset_lock = true
-       -- mainDisplay.mainDisplay:translate(-displacex, -displacey)
+        local prev_displacex = displacex
+        local prev_displacey = displacey
         kill_level()
         spawn_level(cur_level)
+        
+    	mainDisplay.mainDisplay:translate(prev_displacex, prev_displacey)
+    	displacex = prev_displacex
+    	displacey = prev_displacey
     end
 end
 
@@ -165,7 +171,6 @@ function spawn_level(level)
     reset_lock = false
     cur_level = level
     gas.distance_allowed = levels_capacity[level]
-    print("level "..level.."new capacity is"..levels_capacity[level])
     gas.distance_covered = 0
     if level == 0 then
         --intro level goes here
@@ -176,15 +181,15 @@ function spawn_level(level)
         crate.spawn_crate(100, 400)
     elseif level == 2 then
         barrel.spawn_barrel(100, 100)
-        crate.spawn_crate(200,100)
-        crate.spawn_crate(display.contentWidth-100, display.contentHeight-100)
+        crate.spawn_crate(200, 100)
+        crate.spawn_crate(380, 754)
     elseif level ==3 then
         crate.spawn_crate(50, 50)
         crate.spawn_crate(50, 700)
         barrel.spawn_barrel(100, 300)
         barrel.spawn_barrel(100, 400)
         barrel.spawn_barrel(100, 500)
-        crate.spawn_crate(display.contentWidth-50, 400)
+        crate.spawn_crate(430, 400)
     elseif level == 4 then
         crate.spawn_crate(400, 600)
         crate.spawn_crate(100, 100)
@@ -196,10 +201,11 @@ function spawn_level(level)
         barrel.spawn_barrel(160, 650)
         barrel.spawn_barrel(100, 750)
         water.spawn_water(150, 600)
+        water.spawn_water(200, 625)
         water.spawn_water(250, 650)
+        water.spawn_water(300, 675)
         water.spawn_water(350, 700)
         water.spawn_water(400, 750)
-        water_barrel.spawn_water_barrel(300, 180)
     elseif level == 6 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,250)
@@ -254,7 +260,7 @@ function spawn_level(level)
         crate.spawn_crate(480,954)
         water.spawn_water(480,754)
     elseif level == 12 then
-        barrel.spawn_barrel(100,100)
+        barrel.spawn_barrel(110,110)
         barrel.spawn_barrel(600,800)
         crate.spawn_crate(250,250)
         crate.spawn_crate(900,200)
