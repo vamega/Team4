@@ -18,6 +18,7 @@ buttons.size = 0
 grace = false
 scroll_mode = false
 title_lock = true
+title_lock_b = true
 
 gas_meter = {}
 help_btn = {}
@@ -215,6 +216,22 @@ function animate_gas(gas_cap, cur_gas)
     end
 end
 
+win_screen = {}
+
+function win_screen:new()
+    local instance = {}
+    
+    instance.background = display.newImage("WinScreen.png")
+    
+    setmetatable(instance, {__index = title_screen})
+    return instance
+
+end
+
+
+flux = 100
+flux_dir = true
+
 title_screen = {}
 
 function title_screen:new()
@@ -223,6 +240,15 @@ function title_screen:new()
     instance.background:addEventListener("touch", instance)
     instance.aura = display.newImage("TitleScreenAura.png")
     instance.foreground = display.newImage("TitleScreenTitle.png")
+    instance.play = display.newImage("TitleScreenPlay.png")
+    instance.play.x = 220
+    instance.play.y =  400
+    instance.credits = display.newImage("TitleScreenCredits.png")
+    instance.credits.x = 220
+    instance.credits.y = 500
+    instance.credits_img = display.newImage("Credit_Screen.png")
+    instance.credits_img.isVisible = false
+    title_lock_b = false
     
     setmetatable(instance, {__index = title_screen})
     return instance
@@ -230,7 +256,19 @@ function title_screen:new()
 end
 
 function title_screen:animate()
+    if flux < 2 then
+        flux_dir = true
+    elseif flux > 99 then
+        flux_dir = false
+    end
     
+    if flux_dir == true then
+        flux = flux + 1
+    else
+        flux = flux -1
+    end
+    
+    self.aura.alpha = flux/100
 
 end
 
@@ -238,15 +276,27 @@ function title_screen:kill()
     self.background:removeSelf()
     self.aura:removeSelf()
     self.foreground:removeSelf()
+    self.credits_img:removeSelf()
+    self.play:removeSelf()
+    self.credits:removeSelf()
 end
 
 function title_screen:touch(event)
-    self:kill()
-    title_lock = false
+    if event.phase == "began" then
+        if self.credits_img.isVisible==false then
+            if event.y < 500 and event.y > 300 then
+                self:kill()
+                title_lock = false
+            elseif event.y > 500 and event.y < 700 then
+                self.credits_img.isVisible=true
+            end
+        else
+            self.credits_img.isVisible=false
+        end
+    end
 end
 
 function spawn_title()
-    title_screen:new()
-    
+    title = title_screen:new()
 end
 
