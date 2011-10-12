@@ -32,7 +32,8 @@ gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y, angle, radius)
     local nodeImage = sprite.newSprite(gas_set)
-    --print(mainDisplay.mainDisplay.xScale)
+    
+    -- Need to mulitply by this factor so that the gas appears under the finger irrespective of the zoom level.
     nodeImage.x = x * (1/mainDisplay.mainDisplay.xScale)
     nodeImage.y = y * (1/mainDisplay.mainDisplay.yScale)
     

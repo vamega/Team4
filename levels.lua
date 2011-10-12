@@ -13,23 +13,17 @@ mainDisplay = require "mainDisplay"
 module(..., package.seeall)
 
 
-
-
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14   15
 levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,1200,300,500, 1300, 0}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true, false}
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
 
-
-
 background = display.newImage("Background1.png", 0, 0)
 mainDisplay.mainDisplay:insert(background)
 number_of_levels = 17
 
-
 cur_level = 0
-
 reset_lock = false
 
 
@@ -62,7 +56,7 @@ function edge:scroll()
                 displacey = displacey + 10
             end
         elseif self.type == "bot" then
-            if background.height + displacey > display.contentHeight then
+            if mainDisplay.mainDisplay.height * mainDisplay.mainDisplay.yScale + displacey > display.contentHeight then
                 mainDisplay.mainDisplay:translate(0, -10)
                 displacey = displacey - 10
             end
@@ -73,7 +67,7 @@ function edge:scroll()
             end
         elseif self.type == "right" then
             --pan right if we can
-            if background.width + displacex > display.contentWidth then
+            if mainDisplay.mainDisplay.width * mainDisplay.mainDisplay.xScale + displacex > display.contentWidth then
                 mainDisplay.mainDisplay:translate(-10, 0)
                 displacex = displacex - 10
             end

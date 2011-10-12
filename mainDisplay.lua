@@ -6,7 +6,7 @@ function init_scale_values()
     xScaleMin = display.contentHeight/levels.background.contentWidth
     yScaleMin = display.contentHeight/levels.background.contentHeight
     
-    if xScaleMin < yScaleMin then
+    if xScaleMin > yScaleMin then
         xScaleMin = yScaleMin
     else
         yScaleMin = xScaleMin
@@ -31,7 +31,6 @@ end
 -- Code to Handle zoom on the mainDisplay
 -- create a table listener object for the background image
 function mainDisplay:touch( event )
-	local result = true
 	local phase = event.phase
 	local previousTouches = self.previousTouches
     -- The number of fingers on the screen
@@ -92,7 +91,6 @@ function mainDisplay:touch( event )
         if self.isFocus then
             if numTotalTouches == 1 then
                 levels.scrollTouch(event)
-                return true
             end
         
 			if ( self.distance ) then
@@ -136,6 +134,9 @@ function mainDisplay:touch( event )
 			previousTouches[event.id] = event
         end
     elseif "ended" == phase or "cancelled" == phase then
+        if numTotalTouches == 1 then
+            levels.reset_edges()
+        end
 		if self.isFocus then
 			if previousTouches[event.id] then
 				self.numPreviousTouches = self.numPreviousTouches - 1
