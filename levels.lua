@@ -11,11 +11,11 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {0, 700, 350, 500, 750, 400, 400,400,400,400,400,400}
+levels_capacity = {0, 700, 700, 700, 750, 700, 700,700,700,700,700,700}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true}
 background = display.newImage("background.png", 0, 0)
 number_of_levels = 13
-cur_level = 1
+cur_level = 0
 reset_lock = false
 
 displacex = 0
@@ -195,7 +195,7 @@ function spawn_level(level)
     elseif level == 7 then
         crate.spawn_crate(100,100)
         crate.spawn_crate(100,781)
-        crate.spawn_crate(660,100)
+        crate.spawn_crate(860,100)
         crate.spawn_crate(860,781)
         barrel.spawn_barrel(440,414)
         barrel.spawn_barrel(520,414)
