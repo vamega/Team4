@@ -50,19 +50,22 @@ last_frame_time = event.time
 update_all(flammable_module.flammable_list, elapsed_time)
 water.on_enter_frame(elapsed_time)
     levels.scroll_update()
-
-    if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
-        print ("spawning level"..level)
-        levels.spawn_level(level)
-        spawned = true
-    end
-    
-    if crate.crates.size==0 and table.getn(explosives.barrels)==0
-            and level< levels.number_of_levels then
-        print ("killing level")
-        levels.kill_level()
-        level = level+1
-        spawned = false
+    if buttons.title_lock == true then
+        buttons.title_screen:new()
+    else
+        if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
+            print ("spawning level"..level)
+            levels.spawn_level(level)
+            spawned = true
+        end
+        
+        if crate.crates.size==0 and table.getn(explosives.barrels)==0
+                and level< levels.number_of_levels then
+            print ("killing level")
+            levels.kill_level()
+            level = level+1
+            spawned = false
+        end
     end
 end
 

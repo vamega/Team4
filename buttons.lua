@@ -17,6 +17,7 @@ buttons = {}
 buttons.size = 0
 grace = false
 scroll_mode = false
+title_lock = true
 
 gas_meter = {}
 help_btn = {}
@@ -213,3 +214,39 @@ function animate_gas(gas_cap, cur_gas)
         buttons[4].image.currentFrame = 9*cur_gas/gas_cap
     end
 end
+
+title_screen = {}
+
+function title_screen:new()
+    local instance = {}
+    instance.background = display.newImage("TitleScreenBackground.png")
+    instance.background:addEventListener("touch", instance)
+    instance.aura = display.newImage("TitleScreenAura.png")
+    instance.foreground = display.newImage("TitleScreenTitle.png")
+    
+    setmetatable(instance, {__index = title_screen})
+    return instance
+
+end
+
+function title_screen:animate()
+    
+
+end
+
+function title_screen:kill()
+    self.background:removeSelf()
+    self.aura:removeSelf()
+    self.foreground:removeSelf()
+end
+
+function title_screen:touch(event)
+    self:kill()
+    title_lock = false
+end
+
+function spawn_title()
+    title_screen:new()
+    
+end
+
