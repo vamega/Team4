@@ -25,6 +25,8 @@ function water:new(x, y)--constructor
     instance.name = "water"
     instance.body = display.newCircle(x, y, 50)
     instance.body:setFillColor(0, 0, 255)
+    mainDisplay:add(instance.body)
+    
     physics.addBody(instance.body, "kinematic", {radius = 50})
     instance.body.isSensor = true
     instance.body:addEventListener("collision", instance)
