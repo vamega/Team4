@@ -11,11 +11,11 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {0, 700, 350, 500, 750}
-level_pannable = {true, true, false, false, false}
+levels_capacity = {700, 700, 350, 500, 750, 400, 400, 400, 400,400,400,400}
+level_pannable = {true, true, true, true, true, true, true,true,true,true,true,true}
 background = display.newImage("background.png", 0, 0)
-number_of_levels = 6
-cur_level = 1
+number_of_levels = 13
+cur_level = 0
 reset_lock = false
 
 displacex = 0
@@ -24,8 +24,8 @@ edge = {}
 function edge:new(x, y, w, h, t)
     local instance = {x=x, y=y}
     instance.image = display.newRect(x, y, w, h)
-    --instance.image.isVisible = false
-    instance.image:setFillColor(255,0,0)
+    instance.image.isVisible = false
+    --instance.image:setFillColor(255,0,0)
     instance.type = t
     instance.scroll_lock = false
     
@@ -186,34 +186,34 @@ function spawn_level(level)
         water.spawn_water(250, 630)
     elseif level == 6 then
         barrel.spawn_barrel(100,100)
-        barrel.spawn_barrel(100,500)
-        barrel.spawn_barrel(500,900)
-        barrel.spawn_barrel(600,800)
-        crate.spawn_crate(100,850)
-        crate.spawn_crate(780,600)
-        crate.spawn_crate(780,950)
+        barrel.spawn_barrel(100,250)
+        barrel.spawn_barrel(400,700)
+        barrel.spawn_barrel(500,600)
+        crate.spawn_crate(100,550)
+        crate.spawn_crate(680,400)
+        crate.spawn_crate(680,750)
     elseif level == 7 then
         crate.spawn_crate(100,100)
-        crate.spawn_crate(100,1181)
-        crate.spawn_crate(860,100)
-        crate.spawn_crate(860,1181)
-        barrel.spawn_barrel(440,814)
-        barrel.spawn_barrel(520,814)
-        barrel.spawn_barrel(480,854)
-        barrel.spawn_barrel(440,894)
-        barrel.spawn_barrel(520,894)
+        crate.spawn_crate(100,781)
+        crate.spawn_crate(660,100)
+        crate.spawn_crate(860,781)
+        barrel.spawn_barrel(440,414)
+        barrel.spawn_barrel(520,414)
+        barrel.spawn_barrel(480,454)
+        barrel.spawn_barrel(440,494)
+        barrel.spawn_barrel(520,494)
     elseif level == 8 then
         crate.spawn_crate(100,100)
-        crate.spawn_crate(860,1200)
-        barrel.spawn_barrel(480,854)
+        crate.spawn_crate(860,900)
+        barrel.spawn_barrel(480,554)
         water.spawn_water(100,300)
-        water.spawn_water(860,1000)
+        water.spawn_water(860,700)
     elseif level == 9 then
         barrel.spawn_barrel(100,100)
-        crate.spawn_crate(100,300)
-        crate.spawn_crate(300,300)
-        crate.spawn_crate(100,900)
-        crate.spawn_crate(300,1100)
+        crate.spawn_crate(100,250)
+        crate.spawn_crate(250,250)
+        crate.spawn_crate(100,700)
+        crate.spawn_crate(300,900)
     elseif level == 10 then
         crate.spawn_crate(480,50)
         crate.spawn_crate(480,400)
@@ -227,28 +227,28 @@ function spawn_level(level)
         barrel.spawn_barrel(580,754)
         barrel.spawn_barrel(300,1200)
         barrel.spawn_barrel(480,1100)
-        barrel.spawn_barrel(600,1200)
+        barrel.spawn_barrel(650,1200)
     elseif level == 11 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,200)
-        barrel.spawn_barrel(480,1054)
+        barrel.spawn_barrel(480,854)
         crate.spawn_crate(200,150)
         crate.spawn_crate(600,300)
-        crate.spawn_crate(480,854)
-        crate.spawn_crate(480,1154)
-        water.spawn_water(480,954)
+        crate.spawn_crate(480,600)
+        crate.spawn_crate(480,954)
+        water.spawn_water(480,754)
     elseif level == 12 then
         barrel.spawn_barrel(100,100)
-        barrel.spawn_barrel(600,1000)
+        barrel.spawn_barrel(600,800)
         crate.spawn_crate(200,200)
         crate.spawn_crate(900,200)
-        crate.spawn_crate(480,854)
-        crate.spawn_crate(200,1200)
-        crate.spawn_crate(800,1200)
-        water.spawn_water(100,300)
+        crate.spawn_crate(480,654)
+        crate.spawn_crate(150,1100)
+        crate.spawn_crate(700,1100)
+        water.spawn_water(100,250)
         water.spawn_water(200,100)
-        water.spawn_water(480,1100)
-        water.spawn_water(600,1100)
+        water.spawn_water(300,900)
+        water.spawn_water(500,900)
     end
     buttons.spawn_btn(display.contentWidth-200, 0)  
 end
