@@ -38,6 +38,7 @@ end
 
 level = 0
 spawned = true
+title = nil
 
 --game loop
 local last_frame_time = 0
@@ -50,8 +51,10 @@ last_frame_time = event.time
 update_all(flammable_module.flammable_list, elapsed_time)
 water.on_enter_frame(elapsed_time)
     levels.scroll_update()
-    if buttons.title_lock == true then
-        buttons.title_screen:new()
+    if buttons.title_lock == true and buttons.title_lock_b == true then
+        title = buttons.title_screen:new()
+    elseif buttons.title_lock==true then
+        title:animate()
     else
         if spawned == false and levels.reset_lock == false and level < levels.number_of_levels then
             print ("spawning level"..level)
