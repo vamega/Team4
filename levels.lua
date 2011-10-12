@@ -140,7 +140,7 @@ end
 function kill_level()
     barrel.barrel_lock = false
     
-    mainDisplay:translate(-displacex, -displacey)
+    mainDisplay.mainDisplay:translate(-displacex, -displacey)
     displacex=0
     displacey=0
     
