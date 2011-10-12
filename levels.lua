@@ -85,7 +85,9 @@ function scrollTouch(event)
     event.x = event.x-displacex
     event.y = event.y-displacey
     
-    gas.add_gas(event)
+    if buttons.scroll_mode == false then
+        gas.add_gas(event)
+    end
     
     if event.phase=="ended" or event.phase=="cancelled" then
         reset_edges()
@@ -131,7 +133,6 @@ end
 
 function kill_level()
     barrel.barrel_lock = false
-    scroll_lock = false
     displacex=0
     displacey=0
     

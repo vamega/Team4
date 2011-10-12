@@ -5,16 +5,50 @@ module(..., package.seeall)
 buttons = {}
 buttons.size = 0
 grace = false
+scroll_mode = false
 
 help_btn = {}
 hint_btn = {}
 text_blurb = {}
+mode_btn = {}
 text = {}
 text[1] = "Click on the barrel\nto detonate it.\n\nThe force of the\nexplosion will move\nnearby objects"
 text[2] = "Draw a gas line\nbetween the crate\nand barrel\n\nIf you make a\nmistake, shake the\nphone to reset\nlevel"
 text[3] = "You can only\ndetonate one barrel\nper level"
 --text[4] = "Do your best!"
 text[5] = "Water will \nextinguish any\nburning objects"
+
+function mode_btn:new(x, y)
+    local instance = {}
+    instance.image = display.newRect(x, y, 100, 50)
+    instance.image:setFillColor(255,255,0)
+    instance.image:addEventListener("touch", instance)
+
+    setmetatable(instance, {__index=mode_btn})
+    return instance
+end
+
+function mode_btn:kill()
+    scroll_mode = false
+    self.image:removeSelf()
+end
+
+function mode_btn:touch(event)
+    if gas_covered < gas_allowed then
+        grace = true
+    end
+    --switch between scroll mode and draw mode
+    if event.phase == "began" then
+        if scroll_mode == false then
+            scroll_mode = true
+            self.image:setFillColor(255, 128, 0)
+        else
+            scroll_mode = false
+            self.image:setFillColor(255, 255, 0)
+        end
+    end
+
+end
 
 function help_btn:new(x, y)
     local instance = {}
@@ -122,7 +156,8 @@ end
 function spawn_btn(x, y)
     buttons[buttons.size + 1] = help_btn:new(x, y)
     buttons[buttons.size + 2] = hint_btn:new(x+100, y)
-    buttons.size = buttons.size + 2
+    buttons[buttons.size + 3] = mode_btn:new(x-100, y)
+    buttons.size = buttons.size + 3
 end
 
 function kill_buttons()
