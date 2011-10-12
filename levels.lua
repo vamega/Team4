@@ -96,6 +96,7 @@ function scrollTouch(event)
 end
 
 function scroll_update()
+    buttons.animate_gas(gas.distance_allowed, gas.distance_covered)
     for i=1, 4 do
         if edges[i].scroll_lock == true then
             edges[i]:scroll()
@@ -251,5 +252,5 @@ function spawn_level(level)
         water.spawn_water(480,1100)
         water.spawn_water(600,1100)
     end
-    buttons.spawn_btn(display.contentWidth-200, 0)  
+    buttons.spawn_btn(display.contentWidth-150, 0)  
 end

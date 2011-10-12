@@ -1,12 +1,24 @@
 barrel = require "explosives"
+sprite = require "sprite"
 
 module(..., package.seeall)
+
+--animations
+help_btn_sheet = sprite.newSpriteSheet("RangeButton.png", 100, 50)
+help_btn_set = sprite.newSpriteSet(help_btn_sheet, 1, 2)
+hint_btn_sheet = sprite.newSpriteSheet("HintButton.png", 100, 50)
+hint_btn_set = sprite.newSpriteSet(hint_btn_sheet, 1, 2)
+scroll_btn_sheet = sprite.newSpriteSheet("ScrollButton.png", 100, 50)
+scroll_btn_set = sprite.newSpriteSet(scroll_btn_sheet, 1, 2)
+gas_meter_sheet = sprite.newSpriteSheet("GasCan.png", 100, 75)
+gas_meter_set = sprite.newSpriteSet(gas_meter_sheet, 1, 9)
 
 buttons = {}
 buttons.size = 0
 grace = false
 scroll_mode = false
 
+gas_meter = {}
 help_btn = {}
 hint_btn = {}
 text_blurb = {}
@@ -18,10 +30,28 @@ text[3] = "You can only\ndetonate one barrel\nper level"
 --text[4] = "Do your best!"
 text[5] = "Water will \nextinguish any\nburning objects"
 
+function gas_meter:new(x, y)
+    local instance = {}
+    instance.image = sprite.newSprite(gas_meter_set)
+    instance.image.x = x
+    instance.image.y = y+37.5
+    
+    setmetatable(instance, {__index = gas_meter})
+    return instance
+
+end
+
+function gas_meter:kill()
+    self.image:removeSelf()
+end
+
+--sprite.newSprite(barrel_burning_set)
 function mode_btn:new(x, y)
     local instance = {}
-    instance.image = display.newRect(x, y, 100, 50)
-    instance.image:setFillColor(255,255,0)
+    instance.image = sprite.newSprite(scroll_btn_set)--display.newRect(x, y, 100, 50)
+    instance.image.x = x
+    instance.image.y = y + 25
+    --instance.image:setFillColor(255,255,0)
     instance.image:addEventListener("touch", instance)
 
     setmetatable(instance, {__index=mode_btn})
@@ -41,10 +71,12 @@ function mode_btn:touch(event)
     if event.phase == "began" then
         if scroll_mode == false then
             scroll_mode = true
-            self.image:setFillColor(255, 128, 0)
+            self.image.currentFrame = 2
+            --self.image:setFillColor(255, 128, 0)
         else
             scroll_mode = false
-            self.image:setFillColor(255, 255, 0)
+            self.image.currentFrame = 1
+            --self.image:setFillColor(255, 255, 0)
         end
     end
 
@@ -52,8 +84,10 @@ end
 
 function help_btn:new(x, y)
     local instance = {}
-    instance.image = display.newRect(x, y, 100, 50)
-    instance.image:setFillColor(255, 0, 0)   
+    instance.image = sprite.newSprite(help_btn_set)--display.newRect(x, y, 100, 50)
+    instance.image.x = x
+    instance.image.y = y + 25
+    --instance.image:setFillColor(255, 0, 0)
     instance.image:addEventListener("touch", instance)
     
     setmetatable(instance, {__index = help_btn})
@@ -73,9 +107,11 @@ function help_btn:touch(event)
         if barrel.ghost_flag == false then--spawn ghosts
             barrel.ghost_flag = true
             barrel.spawn_ghosts()
+            self.image.currentFrame = 2
         else--circles need to be removed
             barrel.ghost_flag = false
             barrel.kill_ghosts()
+            self.image.currentFrame = 1
         end
     end
 end
@@ -126,8 +162,10 @@ end
 
 function hint_btn:new(x, y)
     local instance = {}
-    instance.image = display.newRect(x, y, 100, 50)
-    instance.image:setFillColor(0, 0, 255)
+    instance.image = sprite.newSprite(hint_btn_set)--display.newRect(x, y, 100, 50)
+    instance.image.x = x
+    instance.image.y = y +25
+    --instance.image:setFillColor(0, 0, 255)
     instance.image:addEventListener("touch", instance)
     instance.blurb = nil
     
@@ -157,7 +195,8 @@ function spawn_btn(x, y)
     buttons[buttons.size + 1] = help_btn:new(x, y)
     buttons[buttons.size + 2] = hint_btn:new(x+100, y)
     buttons[buttons.size + 3] = mode_btn:new(x-100, y)
-    buttons.size = buttons.size + 3
+    buttons[buttons.size + 4] = gas_meter:new(50, 0)
+    buttons.size = buttons.size + 4
 end
 
 function kill_buttons()
@@ -168,4 +207,12 @@ function kill_buttons()
     end
     buttons.size = 0
 
+end
+
+function animate_gas(gas_cap, cur_gas)
+    if buttons[3] ~= nil then
+        print ("animating can"..gas_cap.." "..cur_gas)
+        print ("frame is "..9*cur_gas/gas_cap)
+        buttons[4].image.currentFrame = 9*cur_gas/gas_cap
+    end
 end
