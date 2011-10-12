@@ -23,11 +23,13 @@ water = {}
 function water:new(x, y)--constructor
     local instance = {}
     instance.name = "water"
-    instance.body = display.newCircle(x, y, 50)
+    instance.body = display.newImage("WaterSprite1.png")--display.newCircle(x, y, 50)
+    instance.body.x = x
+    instance.body.y = y
     mainDisplay.mainDisplay:insert(instance.body)
     instance.body:toBack()
     
-    instance.body:setFillColor(0, 0, 255)
+    --instance.body:setFillColor(0, 0, 255)
     physics.addBody(instance.body, "kinematic", {radius = 50})
     instance.body.isSensor = true
     instance.body:addEventListener("collision", instance)

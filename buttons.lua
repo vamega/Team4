@@ -118,10 +118,10 @@ end
 
 function text_blurb:new(i)
     local instance = {}
-    instance.image = display.newRect(0, 0, display.contentWidth, display.contentHeight)
-    instance.image:setFillColor(0, 0, 0)
+    instance.image = display.newImage("HintScreen2.png")--display.newRect(0, 0, display.contentWidth, display.contentHeight)
+    --instance.image:setFillColor(0, 0, 0)
     instance.image:addEventListener("touch", instance)
-    instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
+    --instance.title = display.newText("Hint:", display.contentWidth/2-50, 50, "Helvetica", 48)
     if text[i]~=nil then
         instance.text = display.newText(text[i], 50, 150, "Helvetica", 48)
     else
@@ -154,7 +154,6 @@ end
 function text_blurb:kill()
     if self.killed == false then
         self.image:removeSelf()
-        self.title:removeSelf()
         self.text:removeSelf()
         self.killed = true
     end
