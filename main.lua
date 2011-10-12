@@ -93,9 +93,7 @@ mainDisplay.mainDisplay:insert(right_edge)
 mainDisplay.mainDisplay:insert(bottom_edge)
 
 --event listeners
---Runtime:addEventListener("touch", gas.add_gas)
 Runtime:addEventListener("accelerometer", levels.reset_level)
 Runtime:addEventListener("enterFrame", on_enter_frame)
-Runtime:addEventListener("touch", levels.scrollTouch)
-mainDisplay.mainDisplay:addEventListener( "touch", mainDisplay.mainDisplay)
+Runtime:addEventListener( "touch", mainDisplay.mainDisplay)
 

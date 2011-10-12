@@ -32,8 +32,9 @@ gas_metatable = {__index = gas_node}
 
 function gas_node:new(x, y, angle, radius)
     local nodeImage = sprite.newSprite(gas_set)
-    nodeImage.x = x
-    nodeImage.y = y
+    --print(mainDisplay.mainDisplay.xScale)
+    nodeImage.x = x * (1/mainDisplay.mainDisplay.xScale)
+    nodeImage.y = y * (1/mainDisplay.mainDisplay.yScale)
     
     local scale = radius/15
     nodeImage:scale(scale, scale)
@@ -84,7 +85,6 @@ function add_gas(event)
             button.grace = false
         end
     end
-    
     
     local angle = 0
     local image_angle = 90

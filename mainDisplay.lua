@@ -13,8 +13,6 @@ function init_scale_values()
     end
 end
 
-numFingersDown = 0
-
 --[[
 This function calculates the distance between the two fingers
 --]]
@@ -36,8 +34,13 @@ function mainDisplay:touch( event )
 	local result = true
 	local phase = event.phase
 	local previousTouches = self.previousTouches
+    -- The number of fingers on the screen
+    local numTotalTouches = 1
+    
+    --local box = display.newRect( 0, 0, 200, 200)
+    --local debug2 = display.newText(numTotalTouches, 60, 30, "Times New Roman", 48)
+    --debug2:setTextColor(0, 0, 0)
 
-	local numTotalTouches = 1
 	if ( previousTouches ) then
 		-- add in total from previousTouches, subtract one if event is already in the array
 		numTotalTouches = numTotalTouches + self.numPreviousTouches
@@ -47,8 +50,11 @@ function mainDisplay:touch( event )
 	end
 
 	if "began" == phase then
-        numFingersDown = numFingersDown + 1
-        gas.add_gas(event)
+        -- Don't add gas unless you have a single finger on the screen.
+        -- Need to send gas the 
+        if numTotalTouches == 1 then
+            levels.scrollTouch(event)
+        end
 		-- Very first "began" event
 		if ( not self.isFocus ) then
 			-- Subsequent touch events will target button even if they are outside the stageBounds of button
@@ -81,11 +87,12 @@ function mainDisplay:touch( event )
 			self.numPreviousTouches = self.numPreviousTouches + 1
 		end
 		previousTouches[event.id] = event
-
-	elseif self.isFocus then
-		if "moved" == phase then
-            if numFingersDown == 1 then
-                return false
+    
+    elseif "moved" == phase then
+        if self.isFocus then
+            if numTotalTouches == 1 then
+                levels.scrollTouch(event)
+                return true
             end
         
 			if ( self.distance ) then
@@ -102,8 +109,6 @@ function mainDisplay:touch( event )
                         local tempXScale = self.xScaleOriginal * scale
                         local tempYScale = self.yScaleOriginal * scale
                         
-                        --self.xScale = tempXScale
-                        --self.yScale = tempYScale
                         ---[[
                         if xScaleMin > tempXScale then
                             self.xScale = xScaleMin
@@ -129,9 +134,9 @@ function mainDisplay:touch( event )
 				self.numPreviousTouches = self.numPreviousTouches + 1
 			end
 			previousTouches[event.id] = event
-
-		elseif "ended" == phase or "cancelled" == phase then
-            numFingersDown = numFingersDown - 1
+        end
+    elseif "ended" == phase or "cancelled" == phase then
+		if self.isFocus then
 			if previousTouches[event.id] then
 				self.numPreviousTouches = self.numPreviousTouches - 1
 				previousTouches[event.id] = nil
@@ -156,6 +161,13 @@ function mainDisplay:touch( event )
 			end
 		end
 	end
-
+    
+    --debug.text = numFingersDown
+    --debug:toFront()
+    
+    --debug2.text = numTotalTouches
+    --display.newRect()
+    --debug2:toFront()
+    
 	return true
 end
