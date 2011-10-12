@@ -211,7 +211,7 @@ function kill_buttons()
 end
 
 function animate_gas(gas_cap, cur_gas)
-    if buttons[3] ~= nil then
+    if buttons[4] ~= nil then
         buttons[4].image.currentFrame = 9*cur_gas/gas_cap
     end
 end

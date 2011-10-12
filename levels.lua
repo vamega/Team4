@@ -15,18 +15,14 @@ module(..., package.seeall)
 
 
 edges = {}        --1  2   3    4   5       6  7    8   9   10  11  12  13 14   15
-levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,700,300,500, 1300}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true}
+levels_capacity = {0, 600, 225, 500, 750, 500, 0,1100,700,900,1200,1200,300,500, 1300, 0}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true,true, false}
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
 
-
-edges = {}        --1  2   3    4    5    6    7   8   9   10  11   12  13  14
-levels_capacity = {0, 600, 225, 500, 750, 500, 0, 1100,700,900,1200,700,300,500}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true,true}
-
 background = display.newImage("Background1.png", 0, 0)
-number_of_levels = 15
+mainDisplay.mainDisplay:insert(background)
+number_of_levels = 17
 
 cur_level = 0
 
@@ -43,6 +39,7 @@ function edge:new(x, y, w, h, t)
     --instance.image:setFillColor(255,0,0)
     instance.type = t
     instance.scroll_lock = false
+    
     
     --instance.image:addEventListener("touch", instance)
     setmetatable(instance, {__index = edge})
@@ -168,11 +165,12 @@ function spawn_level(level)
     reset_lock = false
     cur_level = level
     gas.distance_allowed = levels_capacity[level]
+    print("level "..level.."new capacity is"..levels_capacity[level])
     gas.distance_covered = 0
     if level == 0 then
         --intro level goes here
     elseif level == 1 then
-        mainDisplay.mainDisplay:insert(background)
+        
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(100, 200)
         crate.spawn_crate(100, 400)
@@ -300,9 +298,14 @@ function spawn_level(level)
         barrel.spawn_barrel(300,1000)
         barrel.spawn_barrel(625,1000)
         crate.spawn_crate(700, 1000)
-        barrel.spawn_barrel(800,200)
+        barrel.spawn_barrel(800,250)
         crate.spawn_crate(800,400)
+    elseif level == 16 then
+        crate.spawn_crate(0, 0)
+        buttons.win_screen:new()
     end
-    background:toBack()
-    buttons.spawn_btn(display.contentWidth-150, 0)  
+    if level~=16 then
+        background:toBack()
+        buttons.spawn_btn(display.contentWidth-150, 0)  
+    end
 end
