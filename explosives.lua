@@ -6,7 +6,6 @@ flammable = flammable_module.flammable
 
 module(..., package.seeall)
 
---THE BARREL ZONE
 ghost_flag = false
 barrel_lock = false
 --[[ghosts = {}
@@ -46,7 +45,7 @@ barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
 barrel_burning_set = sprite.newSpriteSet(barrel_burning_sheet, 1, 8)
 --sprite.add(barrel_burning_set, "burning", 1, 8, 400)
 
---initialize barrel container
+--the list of all barrels
 barrels = {}
 
 --explosive barrels
@@ -54,18 +53,16 @@ barrel = {}
 setmetatable(barrel, {__index = flammable})
 
 function barrel:new(x, y)
-    local barrelImage = sprite.newSprite(barrel_burning_set)--display.newImage("barrel1.png", x, y)
+    local barrelImage = sprite.newSprite(barrel_burning_set)
     barrelImage.x = x
     barrelImage.y = y
     mainDisplay:insert(barrelImage)
     local instance = flammable:new(barrelImage, {radius = 70})
 	
-    instance.image = barrelImage
     instance.body.isFixedRotation = true
 	
     instance.body.density = 1
     instance.body.friction = 5
-    instance.body.bounce = 0.5
     
     --barrels catch fire more easily than crates
     instance.flash_point = instance.flash_point - 5
@@ -112,6 +109,8 @@ function barrel:animate()
         --[[ghosts[utils.index_of(barrels, self)].x = self.body.x
         ghosts[utils.index_of(barrels, self)].y = self.body.y+25]]
         self.body.currentFrame = (80-self.health)/10
+    else
+    	self.body.currentFrame = 1
     end
 end
 
