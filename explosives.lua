@@ -4,6 +4,8 @@ sprite = require "sprite"
 flammable_module = require "flammable"
 flammable = flammable_module.flammable
 
+
+
 module(..., package.seeall)
 
 ghost_flag = false
