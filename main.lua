@@ -37,7 +37,7 @@ local function update_all(table_to_update, elapsed_time)
 	end
 end
 
-level = 4
+level = 0
 spawned = true
 
 --game loop
