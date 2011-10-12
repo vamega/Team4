@@ -16,6 +16,7 @@ level_pannable = {true, true, false, false, false, true, true, true, true, true,
 background = display.newImage("background1.png", 0, 0)
 number_of_levels = 14
 cur_level = 0
+
 reset_lock = false
 
 
@@ -43,23 +44,23 @@ function edge:scroll()
     if level_pannable[cur_level] == true then
         if self.type == "top" then
             if displacey < 0 then
-                mainDisplay:translate(0, 10)
+                mainDisplay.mainDisplay:translate(0, 10)
                 displacey = displacey + 10
             end
         elseif self.type == "bot" then
             if background.height + displacey > display.contentHeight then
-                mainDisplay:translate(0, -10)
+                mainDisplay.mainDisplay:translate(0, -10)
                 displacey = displacey - 10
             end
         elseif self.type == "left" then
             if displacex < 0 then
-                mainDisplay:translate(10, 0)
+                mainDisplay.mainDisplay:translate(10, 0)
                 displacex = displacex + 10
             end
         elseif self.type == "right" then
             --pan right if we can
             if background.width + displacex > display.contentWidth then
-                mainDisplay:translate(-10, 0)
+                mainDisplay.mainDisplay:translate(-10, 0)
                 displacex = displacex - 10
             end
         end
@@ -127,7 +128,7 @@ end
 function reset_level(event)
     if(event.isShake == true) then
         reset_lock = true
-        --mainDisplay:translate(-displacex, -displacey)
+        mainDisplay.mainDisplay:translate(-displacex, -displacey)
         kill_level()
         spawn_level(cur_level)
     end
@@ -136,7 +137,7 @@ end
 function kill_level()
     barrel.barrel_lock = false
     
-    mainDisplay:translate(-displacex, -displacey)
+    mainDisplay.mainDisplay:translate(-displacex, -displacey)
     displacex=0
     displacey=0
     
@@ -159,7 +160,7 @@ function spawn_level(level)
         --intro level goes here
     elseif level == 1 then
         --background = display.newImage("background1.png", 0, 0)
-        mainDisplay:insert(background)
+        mainDisplay.mainDisplay:insert(background)
         barrel.spawn_barrel(100, 100)
         crate.spawn_crate(100, 200)
         crate.spawn_crate(100, 400)

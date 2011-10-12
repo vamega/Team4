@@ -43,7 +43,7 @@ function gas_node:new(x, y, angle)
     local instance = flammable:new(nodeImage, {density = 4000})
     
     instance.body.isSensor = true
-    mainDisplay:insert(nodeImage)
+    mainDisplay.mainDisplay:insert(nodeImage)
     
     --gas starts burning early and gets hot quickly
     instance.flash_point = 4
