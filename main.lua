@@ -8,7 +8,6 @@ gas = require "gas"
 levels = require "levels"
 water = require "water"
 buttons = require "buttons"
-mainDisplay = require "mainDisplay"
 --require "collisionmanager"
 
 gas_covered = gas.distance_covered

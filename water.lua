@@ -1,6 +1,5 @@
 module(..., package.seeall)
 gas = require("gas")
-mainDisplay = require("mainDisplay")
 
 --initialize water
 waters = {}
@@ -28,7 +27,7 @@ function water:new(x, y)--constructor
     instance.body.x = x
     instance.body.y = y
     mainDisplay.mainDisplay:insert(instance.body)
-    instance.body:toFront()
+    instance.body:toBack()
     physics.addBody(instance.body, "kinematic", {radius = 50})
     instance.body.isSensor = true
     instance.body:addEventListener("collision", instance)

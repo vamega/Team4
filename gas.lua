@@ -30,8 +30,7 @@ gas_metatable = {__index = gas_node}
     local instance = flammable:new(crateImage, {density=5})
     mainDisplay:insert(crateImage)]]
 
-function gas_node:new(x, y, angle)
-	local radius = 15-10*(distance_covered/distance_allowed)
+function gas_node:new(x, y, angle, radius)
     local nodeImage = sprite.newSprite(gas_set)
     nodeImage.x = x
     nodeImage.y = y
@@ -40,7 +39,7 @@ function gas_node:new(x, y, angle)
     nodeImage:scale(scale, scale)
     nodeImage:rotate(angle)
 	
-    local instance = flammable:new(nodeImage, {density = 4000})
+    local instance = flammable:new(nodeImage, {density = 4000, radius = radius})
     
     instance.body.isSensor = true
     mainDisplay.mainDisplay:insert(nodeImage)
@@ -110,12 +109,15 @@ function add_gas(event)
         image_angle = 90+angle*(180/math.pi)
         local displacement = 0
         local new_node = nil
+        local radius = 15
         
         while displacement < distance do
+        	radius = 15 - 10 * (distance_covered + displacement) / distance_allowed
         	new_node = gas_node:new(prev_touch_x+math.cos(angle)*displacement, 
-                		prev_touch_y+math.sin(angle)*displacement, image_angle)
+                		prev_touch_y+math.sin(angle)*displacement, image_angle,
+                		radius)
             table.insert(gas_nodes, new_node)
-            displacement = displacement + new_node.body.width / 2
+            displacement = displacement + radius
         end
         
         --displacement may be slightly greater than distance, so we have
