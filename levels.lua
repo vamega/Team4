@@ -11,12 +11,14 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {0, 600, 225, 500, 650, 500, 0,1000,700,900,1200,700,300}
+levels_capacity = {0, 600, 225, 500, 750, 500, 0,1000,700,900,1200,700,300}
 level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
 background = display.newImage("background.png", 0, 0)
 number_of_levels = 14
 cur_level = 0
 reset_lock = false
+
+
 
 displacex = 0
 displacey = 0
@@ -126,7 +128,7 @@ end
 function reset_level(event)
     if(event.isShake == true) then
         reset_lock = true
-        mainDisplay:translate(-displacex, -displacey)
+        --mainDisplay:translate(-displacex, -displacey)
         kill_level()
         spawn_level(cur_level)
     end
@@ -134,6 +136,8 @@ end
 
 function kill_level()
     barrel.barrel_lock = false
+    
+    mainDisplay:translate(-displacex, -displacey)
     displacex=0
     displacey=0
     
@@ -179,13 +183,14 @@ function spawn_level(level)
         barrel.spawn_barrel(160, 650)
         barrel.spawn_barrel(100, 750)
     elseif level == 5 then
-        crate.spawn_crate(400, 600)
+        crate.spawn_crate(400, 550)
         crate.spawn_crate(100, 100)
         barrel.spawn_barrel(160, 650)
         barrel.spawn_barrel(100, 750)
-        water.spawn_water(150, 570)
-        water.spawn_water(200, 600)
-        water.spawn_water(250, 630)
+        water.spawn_water(150, 600)
+        water.spawn_water(250, 650)
+        water.spawn_water(350, 700)
+        water.spawn_water(400, 750)
     elseif level == 6 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,250)
