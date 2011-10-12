@@ -11,11 +11,11 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {700, 700, 350, 500, 750, 400, 400, 400, 400,400,400,400}
-level_pannable = {true, true, true, true, true, true, true,true,true,true,true,true}
+levels_capacity = {0, 700, 350, 500, 750, 400, 400,400,400,400,400,400}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true}
 background = display.newImage("background.png", 0, 0)
 number_of_levels = 13
-cur_level = 0
+cur_level = 1
 reset_lock = false
 
 displacex = 0

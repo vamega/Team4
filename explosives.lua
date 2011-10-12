@@ -82,7 +82,7 @@ function barrel:new(x, y)
 end
 
 function barrel:spawn_ghost()
-    self.ghost = display.newImage("Range.png")
+    self.ghost = display.newImage(mainDisplay, "Range.png")
     self.ghost.x = self.body.x
     self.ghost.y = self.body.y + 25
 end
