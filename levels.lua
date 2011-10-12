@@ -11,10 +11,10 @@ buttons = require "buttons"
 module(..., package.seeall)
 
 edges = {}
-levels_capacity = {0, 700, 700, 700, 750, 700, 700,700,700,700,700,700}
-level_pannable = {true, true, false, false, false, true, true, true, true, true, true}
+levels_capacity = {0, 600, 225, 500, 650, 500, 0,1000,700,900,1200,700,300}
+level_pannable = {true, true, false, false, false, true, true, true, true, true, true,true,true}
 background = display.newImage("background.png", 0, 0)
-number_of_levels = 13
+number_of_levels = 14
 cur_level = 0
 reset_lock = false
 
@@ -232,7 +232,7 @@ function spawn_level(level)
     elseif level == 11 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(100,200)
-        barrel.spawn_barrel(480,854)
+        barrel.spawn_barrel(480,950)
         crate.spawn_crate(200,150)
         crate.spawn_crate(600,300)
         crate.spawn_crate(480,600)
@@ -241,15 +241,29 @@ function spawn_level(level)
     elseif level == 12 then
         barrel.spawn_barrel(100,100)
         barrel.spawn_barrel(600,800)
-        crate.spawn_crate(200,200)
+        crate.spawn_crate(250,250)
         crate.spawn_crate(900,200)
         crate.spawn_crate(480,654)
         crate.spawn_crate(150,1100)
         crate.spawn_crate(700,1100)
-        water.spawn_water(100,250)
-        water.spawn_water(200,100)
+        water.spawn_water(100,300)
+        water.spawn_water(275,100)
         water.spawn_water(300,900)
         water.spawn_water(500,900)
+    elseif level == 13 then
+        barrel.spawn_barrel(150,250)
+        barrel.spawn_barrel(600,200)
+        barrel.spawn_barrel(400,500)
+        barrel.spawn_barrel(300,600)
+        barrel.spawn_barrel(550,700)
+        crate.spawn_crate(250,400)
+        crate.spawn_crate(475,375)
+        crate.spawn_crate(275,800)
+        crate.spawn_crate(500,650)
+        crate.spawn_crate(450,950)
+        crate.spawn_crate(850,950)
+        water.spawn_water(600,1000)
+        water.spawn_water(400,200)
     end
     buttons.spawn_btn(display.contentWidth-200, 0)  
 end
