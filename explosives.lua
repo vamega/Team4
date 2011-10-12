@@ -8,37 +8,6 @@ module(..., package.seeall)
 
 ghost_flag = false
 barrel_lock = false
---[[ghosts = {}
-ghosts.size = 0
-
-ghost = {}
-function ghost:new(x, y)
-    local instance = {}
-    instance.image = display.newImage("Range.png")
-    instance.image.x = x
-    instance.image.y = y
-    
-    setmetatable(instance, {__index = ghost})
-    return instance
-end
-
-function ghost:kill()
-    self.image:removeSelf()
-end
-
-function kill_ghosts()
-    table_size = ghosts.size
-    for i=table_size, 1, -1 do
-        ghosts[i]:kill()
-        ghosts.size = ghosts.size -1
-    end
-end
-
-function kill_ghost(i)
-    ghosts[i]:kill()
-    table.remove(ghosts, i)
-    ghosts.size = ghosts.size -1
-end]]
 
 --animations
 barrel_burning_sheet = sprite.newSpriteSheet("barrel_burning.png", 147, 200)
