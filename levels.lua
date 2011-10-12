@@ -18,6 +18,7 @@ levels_capacity = {0, 600, 225, 500, 0,700, 750, 510,1100,900,1200,1200,300,500,
 level_pannable = {true, true, false, false, true, true, false, true, true, true, true,true,true,true,true, false}
 background = display.newImage("Background1.png", 0, 0)
 number_of_levels = 16
+barrel_changed = false
 
 background = display.newImage("Background1.png", 0, 0)
 mainDisplay.mainDisplay:insert(background)
@@ -95,7 +96,17 @@ function scrollTouch(event)
     event.x = event.x-displacex
     event.y = event.y-displacey
     
-    barrel.barrel_lock = buttons.scroll_mode
+    if barrel.barrel_lock == false and buttons.scroll_mode == true then
+        barrel_changed = true
+        barrel.barrel_lock = true
+    end
+    
+    if buttons.scroll_mode == false and barrel_changed == true then
+        barrel_changed = false
+        barrel.barrel_lock = false
+    end
+    
+    --barrel.barrel_lock = buttons.scroll_mode
     
     if buttons.scroll_mode == false then
         gas.add_gas(event)
@@ -151,6 +162,7 @@ end
 
 function kill_level()
     barrel.barrel_lock = false
+    barrel_changed = false
     
     mainDisplay.mainDisplay:translate(-displacex, -displacey)
     displacex=0
